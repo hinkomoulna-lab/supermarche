@@ -1,0 +1,54 @@
+{% extends 'store/base.html' %}
+{% block title %}Assistant IA - Supermarche{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Assistant IA</h1>
+        <p class="text-muted mb-0">Donne tes instructions, l'IA prepare les ameliorations de l'application.</p>
+    </div>
+    <span class="badge {% if ai_enabled %}text-bg-success{% else %}text-bg-warning{% endif %}">
+        {% if ai_enabled %}IA active: {{ ai_model }}{% else %}Mode local{% endif %}
+    </span>
+</div>
+
+<div class="row g-4 align-items-start">
+    <div class="col-lg-5">
+        <div class="card ai-panel">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Nouvelle instruction</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.instructions.label_tag }}
+                        {{ form.instructions }}
+                        {{ form.instructions.errors }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-stars me-1"></i>Demander a l'IA
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card ai-result">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+                    <h2 class="h5 mb-0">Reponse de l'IA</h2>
+                    <i class="bi bi-cpu fs-3 text-primary"></i>
+                </div>
+                {% if result %}
+                    <pre class="ai-output mb-0">{{ result }}</pre>
+                {% else %}
+                    <div class="empty-ticket text-center py-5">
+                        <i class="bi bi-lightbulb fs-1 text-primary"></i>
+                        <p class="text-muted mb-0 mt-2">Exemples: ameliorer la caisse, ajouter des rapports, corriger les factures.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

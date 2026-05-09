@@ -1,0 +1,16 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer une fonctionnalité - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-3">Supprimer la fonctionnalité</h1>
+        <p>Supprimer <strong>{{ feature.title }}</strong> ?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary ms-2" href="{% url 'store:feature_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,311 @@
+{% extends 'store/base.html' %}
+{% block title %}Accueil - Supermarché{% endblock %}
+
+{% block content %}
+<div class="py-2">
+    <div class="page-header mb-3">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                {% if store_settings.welcome_message %}
+                    <div class="welcome-msg mb-3 p-3 rounded" style="background:rgba(67,56,202,.06);border-left:4px solid var(--primary-a);">
+                        <p class="mb-0 fst-italic">{{ store_settings.welcome_message }}</p>
+                    </div>
+                {% endif %}
+                <h1 class="display-6 fw-bold">Gestion moderne de votre supermarché</h1>
+                <p class="lead text-secondary">Explorez vos ventes, suivez le stock et utilisez une interface claire et rapide.</p>
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    <a class="btn btn-primary btn-lg shadow-sm" href="{% url 'store:product_list' %}"><i class="bi bi-box-seam me-2"></i>Voir les produits</a>
+                    <a class="btn btn-outline-primary btn-lg shadow-sm" href="{% url 'store:create_sale' %}"><i class="bi bi-cash-stack me-2"></i>Créer une vente</a>
+                    <a class="btn btn-outline-secondary btn-lg shadow-sm" href="{% url 'store:expense_list' %}"><i class="bi bi-wallet2 me-2"></i>Dépenses</a>
+                    <a class="btn btn-outline-secondary btn-lg shadow-sm" href="{% url 'store:debt_list' %}"><i class="bi bi-file-earmark-text me-2"></i>Dettes</a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="scripture-panel">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-book-half fs-3 text-primary"></i>
+                        <span class="scripture-ref" id="scriptureRef">Proverbes 16:3</span>
+                    </div>
+                    <p class="scripture-text mb-0" id="scriptureText">Recommande à l'Éternel tes oeuvres, et tes projets réussiront.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-box-seam me-2 text-primary"></i>Produits</h5>
+                    <p class="display-6 mb-0">{{ total_products }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-stack me-2 text-primary"></i>Stock total</h5>
+                    <p class="display-6 mb-0">{{ total_stock }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-cart-check me-2 text-primary"></i>Ventes</h5>
+                    <p class="display-6 mb-0">{{ total_sales }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-currency-exchange me-2 text-primary"></i>Chiffre d’affaires</h5>
+                    <p class="display-6 mb-0">{{ total_revenue }} FCFA</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-calendar-day me-2 text-primary"></i>Chiffre d’affaires auj.</h5>
+                    <p class="display-6 mb-0">{{ daily_revenue }} FCFA</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-calendar3 me-2 text-primary"></i>Ce mois</h5>
+                    <p class="display-6 mb-0">{{ monthly_revenue }} FCFA</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-bar-chart-line me-2 text-primary"></i>Cette année</h5>
+                    <p class="display-6 mb-0">{{ yearly_revenue }} FCFA</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-exclamation-triangle me-2 text-warning"></i>Produits en faible stock</h5>
+                    <p class="mb-0">{{ low_stock_count }} produit(s) avec 5 unités ou moins.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-wallet2 me-2 text-primary"></i>Dépenses totales</h5>
+                    <p class="display-6 mb-0">{{ total_expenses }} FCFA</p>
+                    <a class="small text-primary fw-semibold d-block mt-3" href="{% url 'store:expense_list' %}">Voir les dépenses</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-file-earmark-text me-2 text-primary"></i>Dettes non réglées</h5>
+                    <p class="display-6 mb-0">{{ outstanding_debt_total }} FCFA</p>
+                    <a class="small text-primary fw-semibold d-block mt-3" href="{% url 'store:debt_list' %}">Voir les dettes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-alarm me-2 text-danger"></i>Dettes en retard</h5>
+                    <p class="display-6 mb-0">{{ overdue_debt_total }} FCFA</p>
+                    <a class="small text-primary fw-semibold d-block mt-3" href="{% url 'store:debt_list' %}">Voir les dettes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-folder2-open me-2 text-primary"></i>Dettes ouvertes</h5>
+                    <p class="display-6 mb-0">{{ unpaid_debt_count }}</p>
+                    <a class="small text-primary fw-semibold d-block mt-3" href="{% url 'store:debt_list' %}">Voir les dettes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-phone me-2 text-primary"></i>Crédits Téléphone</h5>
+                    <p class="display-6 mb-0">{{ total_phone_credits }} FCFA</p>
+                    <a class="small text-primary fw-semibold d-block mt-3" href="{% url 'store:phone_credit_list' %}">Voir les crédits</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-sm {% if low_phone_credit_stock_alert %}border-danger{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-sim me-2 text-primary"></i>Stock Crédits</h5>
+                    <p class="display-6 mb-0 {% if low_phone_credit_stock_alert %}text-danger{% endif %}">{{ available_phone_credit_stock }} FCFA</p>
+                    {% if low_phone_credit_stock_alert %}
+                        <div class="alert alert-danger mt-2 p-2" role="alert">
+                            <small><i class="bi bi-exclamation-triangle-fill me-1"></i>Stock faible !</small>
+                        </div>
+                    {% endif %}
+                    <a class="small text-primary fw-semibold d-block mt-3" href="{% url 'store:phone_credit_purchase_list' %}">Voir les achats</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-activity me-2 text-primary"></i>Ventes des 7 derniers jours</h5>
+                    <canvas id="dailySalesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-bar-chart me-2 text-primary"></i>Ventes mensuelles</h5>
+                    <canvas id="monthlySalesChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-graph-up-arrow me-2 text-success"></i>Ventes annuelles</h5>
+                    <canvas id="yearlySalesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-receipt-cutoff me-2 text-primary"></i>Ventes récentes</h5>
+                    {% if recent_sales %}
+                        <ul class="list-group list-group-flush">
+                            {% for sale in recent_sales %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>Vente #{{ sale.id }}</span>
+                                    <span>{{ sale.total }} FCFA</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="mb-0 text-muted">Aucune vente récente.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const dailyLabels = {{ last_7_days_labels|safe }};
+const dailyData = {{ last_7_days_values|safe }};
+const monthLabels = {{ month_labels|safe }};
+const monthData = {{ month_values|safe }};
+const yearLabels = {{ year_labels|safe }};
+const yearData = {{ year_values|safe }};
+const scriptures = [
+    {
+        ref: 'Proverbes 16:3',
+        text: "Recommande à l'Éternel tes oeuvres, et tes projets réussiront."
+    },
+    {
+        ref: 'Psaume 90:17',
+        text: "Affermis l'ouvrage de nos mains, oui, affermis l'ouvrage de nos mains."
+    },
+    {
+        ref: 'Colossiens 3:23',
+        text: "Tout ce que vous faites, faites-le de bon coeur, comme pour le Seigneur."
+    },
+    {
+        ref: 'Proverbes 11:25',
+        text: "L'âme bienfaisante sera rassasiée, et celui qui arrose sera lui-même arrosé."
+    }
+];
+let scriptureIndex = 0;
+const scriptureRef = document.getElementById('scriptureRef');
+const scriptureText = document.getElementById('scriptureText');
+
+setInterval(() => {
+    scriptureText.classList.add('is-changing');
+    setTimeout(() => {
+        scriptureIndex = (scriptureIndex + 1) % scriptures.length;
+        scriptureRef.textContent = scriptures[scriptureIndex].ref;
+        scriptureText.textContent = scriptures[scriptureIndex].text;
+        scriptureText.classList.remove('is-changing');
+    }, 450);
+}, 5500);
+
+new Chart(document.getElementById('dailySalesChart'), {
+    type: 'line',
+    data: {
+        labels: dailyLabels,
+        datasets: [{
+            label: 'Ventes (FCFA)',
+            data: dailyData,
+            borderColor: '#0d6efd',
+            backgroundColor: 'rgba(13, 110, 253, 0.2)',
+            fill: true,
+            tension: 0.3,
+        }],
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+new Chart(document.getElementById('monthlySalesChart'), {
+    type: 'bar',
+    data: {
+        labels: monthLabels,
+        datasets: [{
+            label: 'Ventes mensuelles (FCFA)',
+            data: monthData,
+            backgroundColor: 'rgba(13, 110, 253, 0.6)',
+        }],
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+new Chart(document.getElementById('yearlySalesChart'), {
+    type: 'bar',
+    data: {
+        labels: yearLabels,
+        datasets: [{
+            label: 'Ventes annuelles (FCFA)',
+            data: yearData,
+            backgroundColor: 'rgba(25, 135, 84, 0.6)',
+        }],
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
+{% endblock %}
+

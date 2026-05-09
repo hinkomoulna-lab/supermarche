@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Supermarché{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --app-bg: #eff3fb;
+            --app-text: #1f2937;
+            --surface-bg: #ffffff;
+            --surface-border: rgba(15, 23, 42, .08);
+            --nav-a: #0d6efd;
+            --nav-b: #2563eb;
+            --header-a: #ffffff;
+            --header-b: #ebf4ff;
+            --primary-a: #4338ca;
+            --primary-b: #0891b2;
+            --thead-bg-start: #4338ca;
+            --thead-bg-end: #0891b2;
+            --stripe-color: rgba(67, 56, 202, .04);
+            --hover-color: rgba(67, 56, 202, .06);
+        }
+        body.theme-green {
+            --app-bg: #eef8f1;
+            --surface-bg: #ffffff;
+            --surface-border: rgba(15, 23, 42, .08);
+            --nav-a: #15803d;
+            --nav-b: #0f766e;
+            --header-b: #e8f8ef;
+            --primary-a: #16a34a;
+            --primary-b: #0f766e;
+            --thead-bg-start: #15803d;
+            --thead-bg-end: #0f766e;
+            --stripe-color: rgba(22, 163, 74, .04);
+            --hover-color: rgba(22, 163, 74, .06);
+        }
+        body.theme-burgundy {
+            --app-bg: #fff7f7;
+            --app-text: #2a1014;
+            --surface-bg: #fff5f5;
+            --surface-border: rgba(159, 18, 57, .1);
+            --nav-a: #6f1626;
+            --nav-b: #9f1239;
+            --header-a: #ffffff;
+            --header-b: #fff1f2;
+            --primary-a: #7f1d1d;
+            --primary-b: #be123c;
+            --thead-bg-start: #7f1d1d;
+            --thead-bg-end: #be123c;
+            --stripe-color: rgba(127, 29, 29, .04);
+            --hover-color: rgba(127, 29, 29, .06);
+        }
+        body.theme-dark {
+            --app-bg: #111827;
+            --app-text: #e5e7eb;
+            --surface-bg: #1f2937;
+            --surface-border: rgba(255, 255, 255, .08);
+            --nav-a: #020617;
+            --nav-b: #334155;
+            --header-a: #1f2937;
+            --header-b: #111827;
+            --primary-a: #6366f1;
+            --primary-b: #06b6d4;
+            --thead-bg-start: #1e293b;
+            --thead-bg-end: #334155;
+            --stripe-color: rgba(99, 102, 241, .06);
+            --hover-color: rgba(99, 102, 241, .1);
+        }
+        body.theme-light {
+            --app-bg: #f8fafc;
+            --surface-bg: #ffffff;
+            --surface-border: rgba(15, 23, 42, .06);
+            --nav-a: #475569;
+            --nav-b: #64748b;
+            --header-b: #f8fafc;
+            --primary-a: #2563eb;
+            --primary-b: #14b8a6;
+            --thead-bg-start: #475569;
+            --thead-bg-end: #64748b;
+            --stripe-color: rgba(37, 99, 235, .04);
+            --hover-color: rgba(37, 99, 235, .06);
+        }
+        body {
+            background: var(--app-bg);
+            color: var(--app-text);
+            min-height: 100vh;
+            animation: appMorphIn .45s ease both;
+            font-family: "Merriweather", Georgia, "Times New Roman", serif;
+            {% if store_settings.background_image %}
+            background-image: linear-gradient(rgba(255, 255, 255, .55), rgba(255, 255, 255, .62)), url('{{ store_settings.background_image.url }}');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            {% endif %}
+        }
+        body.is-leaving {
+            opacity: 0;
+            filter: blur(8px);
+            transform: scale(.992);
+            transition: opacity .22s ease, filter .22s ease, transform .22s ease;
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--nav-a) 0%, var(--nav-b) 100%);
+            box-shadow: 0 10px 26px rgba(13, 110, 253, .16);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0;
+            font-size: 1rem;
+        }
+        .navbar .nav-link {
+            border-radius: 8px;
+            font-size: .9rem;
+            padding: .42rem .58rem;
+        }
+        .navbar .nav-link:hover,
+        .navbar .nav-link:focus {
+            background: rgba(255, 255, 255, .14);
+        }
+        .page-header {
+            background: linear-gradient(135deg, var(--header-a) 0%, var(--header-b) 100%);
+            border-radius: 8px;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, .07);
+            padding: 1rem;
+            border: 1px solid var(--surface-border);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::after {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 5px;
+            background: linear-gradient(180deg, var(--primary-a), var(--primary-b));
+            pointer-events: none;
+        }
+        .card {
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, .06);
+            animation: riseIn .38s ease both;
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, filter .2s ease;
+            background: var(--surface-bg);
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, .1);
+        }
+        .card-body {
+            padding: .95rem;
+        }
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            margin-bottom: .55rem;
+            color: #475569;
+            font-size: .9rem;
+            font-weight: 700;
+        }
+        .card-title i {
+            width: 30px;
+            height: 30px;
+            display: inline-grid;
+            place-items: center;
+            border-radius: 8px;
+            background: rgba(37, 99, 235, .1);
+            margin-right: 0 !important;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-a) 0%, var(--primary-b) 100%);
+            border: none;
+        }
+        .btn, .nav-link, .dropdown-item {
+            transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease, border-radius .22s ease;
+        }
+        .btn:hover, .nav-link:hover {
+            transform: translateY(-1px);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--nav-a) 0%, var(--nav-b) 100%);
+        }
+        .table thead {
+            background: linear-gradient(135deg, var(--thead-bg-start) 0%, var(--thead-bg-end) 100%);
+        }
+        .table thead th {
+            color: #fff !important;
+            font-weight: 600 !important;
+        }
+        .table-shell {
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            overflow: auto;
+            background: var(--surface-bg);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, .06);
+        }
+        .app-table {
+            min-width: 760px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .app-table thead th {
+            border: 0;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding: .65rem .7rem;
+        }
+        .app-table tbody td {
+            border-bottom: 1px solid var(--surface-border);
+            vertical-align: middle;
+            padding: .55rem .7rem;
+            font-size: .9rem;
+            transition: background-color .15s ease;
+        }
+        .app-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+        .qty-col {
+            width: 120px;
+        }
+        .unit-col {
+            width: 90px;
+        }
+        .action-col {
+            width: 56px;
+        }
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            display: inline-grid;
+            place-items: center;
+            padding: 0;
+        }
+        .ai-output {
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #0f172a;
+            color: #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            max-height: 520px;
+            overflow: auto;
+        }
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: var(--stripe-color);
+        }
+        tbody tr {
+            animation: fadeSlide .32s ease both;
+            position: relative;
+            transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+        }
+        tbody tr:hover {
+            z-index: 2;
+            transform: translateY(-2px) scale(1.012);
+            background-color: var(--hover-color) !important;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, .12);
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding-top: .44rem;
+            padding-bottom: .44rem;
+            font-size: .92rem;
+        }
+        .badge {
+            border-radius: 8px;
+        }
+        .btn {
+            border-radius: 8px;
+            padding: .42rem .7rem;
+            font-size: .9rem;
+        }
+        .btn-lg {
+            padding: .5rem .85rem;
+            font-size: .98rem;
+        }
+        .display-6 {
+            font-size: clamp(1.35rem, 2vw, 1.85rem);
+            line-height: 1.1;
+            font-weight: 750;
+        }
+        .footer-note {
+            color: #6b7280;
+            font-size: .95rem;
+        }
+        body.theme-burgundy .navbar {
+            box-shadow: 0 18px 45px rgba(127, 29, 29, .24);
+        }
+        .alert {
+            animation: popIn .28s ease both;
+        }
+        .product-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, .12);
+            transition: transform .18s ease, box-shadow .18s ease;
+            transform-origin: center;
+        }
+        tbody tr:hover .product-thumb,
+        .product-thumb:hover {
+            transform: scale(1.28);
+            box-shadow: 0 14px 32px rgba(15, 23, 42, .22);
+        }
+        .product-thumb-empty {
+            display: grid;
+            place-items: center;
+            background: rgba(67, 56, 202, .08);
+            color: var(--primary-a);
+            font-size: 1.4rem;
+        }
+        .scripture-panel {
+            min-height: 128px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(67, 56, 202, .09), rgba(8, 145, 178, .12));
+            border: 1px solid rgba(67, 56, 202, .14);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform .35s ease, border-radius .35s ease, box-shadow .35s ease;
+        }
+        .scripture-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(15, 23, 42, .1);
+        }
+        .scripture-text {
+            font-size: .98rem;
+            line-height: 1.45;
+            transition: opacity .45s ease, transform .45s ease;
+        }
+        .scripture-text.is-changing {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        .scripture-ref {
+            color: var(--primary-a);
+            font-weight: 700;
+        }
+        .metric-card,
+        .report-share {
+            background: var(--surface-bg);
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, .06);
+            transition: transform .28s ease, box-shadow .28s ease, border-radius .28s ease;
+        }
+        .report-share {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: .75rem;
+        }
+        .metric-card {
+            display: grid;
+            gap: .2rem;
+            padding: .75rem;
+            border-left: 4px solid var(--primary-a);
+        }
+        .metric-card:hover,
+        .report-share:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, .1);
+        }
+        .metric-card i {
+            color: var(--primary-a);
+            font-size: 1.25rem;
+        }
+        .metric-card span {
+            color: #64748b;
+            font-size: .8rem;
+        }
+        .metric-card strong {
+            font-size: 1.05rem;
+        }
+        .alert-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .5rem .7rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .9rem;
+            background: var(--surface-bg);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .alert-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, .13);
+        }
+        .alert-chip-warning {
+            color: #92400e;
+            border: 1px solid rgba(245, 158, 11, .35);
+            background: #fffbeb;
+        }
+        .alert-chip-danger {
+            color: #991b1b;
+            border: 1px solid rgba(220, 38, 38, .32);
+            background: #fef2f2;
+        }
+        .alert-chip i {
+            font-size: 1.05rem;
+        }
+        .product-pick-grid {
+            max-height: 190px;
+            overflow: auto;
+        }
+        .product-pick-btn {
+            text-align: left;
+            max-width: 100%;
+        }
+        .calculator-toggle {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 1050;
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 18px 38px rgba(15, 23, 42, .24);
+        }
+        .calculator-panel {
+            position: fixed;
+            right: 1rem;
+            bottom: 5.2rem;
+            z-index: 1050;
+            width: min(330px, calc(100vw - 2rem));
+            background: var(--surface-bg);
+            border: 1px solid var(--surface-border);
+            border-radius: 20px;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, .22);
+            padding: 1rem;
+            transform-origin: bottom right;
+            animation: popIn .22s ease both;
+        }
+        .calculator-panel[hidden] {
+            display: none;
+        }
+        .calculator-display {
+            width: 100%;
+            border: 0;
+            border-radius: 14px;
+            background: #f1f5f9;
+            color: #0f172a;
+            font-size: 1.8rem;
+            font-weight: 700;
+            padding: .8rem;
+            text-align: right;
+        }
+        .calculator-keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: .5rem;
+            margin-top: .75rem;
+        }
+        .calculator-key {
+            min-height: 48px;
+            border-radius: 14px;
+            font-weight: 700;
+        }
+        .app-shell {
+            display: grid;
+            grid-template-columns: 248px minmax(0, 1fr);
+            min-height: 100vh;
+        }
+        .app-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 248px;
+            height: 100vh;
+            overflow-y: auto;
+            background: linear-gradient(180deg, var(--nav-a) 0%, var(--nav-b) 100%);
+            color: #fff;
+            padding: .85rem;
+            box-shadow: 12px 0 30px rgba(15, 23, 42, .16);
+            z-index: 1040;
+        }
+        .side-brand {
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800;
+            padding: .55rem .55rem .8rem;
+            margin-bottom: .45rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .18);
+        }
+        .side-brand i,
+        .side-brand img {
+            width: 38px;
+            height: 38px;
+            display: inline-grid;
+            place-items: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .16);
+            object-fit: contain;
+        }
+        .side-link,
+        .side-group summary,
+        .side-sublink {
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            color: rgba(255, 255, 255, .88);
+            text-decoration: none;
+            border-radius: 8px;
+            padding: .5rem .6rem;
+            margin-bottom: .18rem;
+            cursor: pointer;
+            transition: background-color .18s ease, transform .18s ease, color .18s ease;
+        }
+        .side-link:hover,
+        .side-group summary:hover,
+        .side-sublink:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, .15);
+            transform: translateX(2px);
+        }
+        .side-link i,
+        .side-group summary i,
+        .side-sublink i {
+            width: 34px;
+            height: 34px;
+            display: inline-grid;
+            place-items: center;
+            flex: 0 0 34px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, .16);
+            font-size: 1.15rem;
+        }
+        .side-group {
+            margin: .18rem 0;
+        }
+        .side-group summary {
+            list-style: none;
+        }
+        .side-group summary::-webkit-details-marker {
+            display: none;
+        }
+        .side-group summary::after {
+            content: "\F282";
+            font-family: "bootstrap-icons";
+            margin-left: auto;
+            font-size: .75rem;
+            transition: transform .18s ease;
+        }
+        .side-group[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .side-subnav {
+            display: grid;
+            gap: .1rem;
+            margin: .15rem 0 .45rem 2.15rem;
+            padding-left: .45rem;
+            border-left: 1px solid rgba(255, 255, 255, .2);
+        }
+        .side-sublink {
+            padding: .38rem .5rem;
+            font-size: .88rem;
+        }
+        .side-sublink i {
+            width: 28px;
+            height: 28px;
+            flex-basis: 28px;
+            font-size: .95rem;
+        }
+        .app-main {
+            min-width: 0;
+        }
+        .app-sidebar ~ .navbar {
+            display: none;
+        }
+        .app-sidebar ~ .container-fluid {
+            margin-left: 248px;
+            width: calc(100% - 248px);
+        }
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes appMorphIn {
+            from { opacity: 0; filter: blur(8px); transform: scale(.992); }
+            to { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateX(-6px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @media (max-width: 768px) {
+            .app-shell {
+                display: block;
+            }
+            .app-sidebar {
+                position: static;
+                width: auto;
+                height: auto;
+                max-height: none;
+            }
+            .app-sidebar ~ .container-fluid {
+                margin-left: 0;
+                width: 100%;
+            }
+            .side-nav {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: .25rem;
+            }
+            .side-group {
+                grid-column: span 2;
+            }
+            .report-share {
+                align-items: stretch;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="theme-{{ store_settings.theme|default:'blue' }}">
+<aside class="app-sidebar">
+    <a class="side-brand" href="{% url 'store:home' %}">
+        {% if store_settings.logo %}
+            <img src="{{ store_settings.logo.url }}" alt="Logo">
+        {% else %}
+            <i class="bi bi-shop"></i>
+        {% endif %}
+        <span>{{ store_settings.store_name|default:'Supermarché' }}</span>
+    </a>
+    <nav class="side-nav" aria-label="Navigation principale">
+        <a class="side-link" href="{% url 'store:home' %}"><i class="bi bi-speedometer2"></i><span>Accueil</span></a>
+        <a class="side-link" href="{% url 'store:create_sale' %}"><i class="bi bi-cash-stack"></i><span>Caisse</span></a>
+        <a class="side-link" href="{% url 'store:product_list' %}"><i class="bi bi-box-seam"></i><span>Produits</span></a>
+        <a class="side-link" href="{% url 'store:product_manage' %}"><i class="bi bi-tags"></i><span>Gestion stock</span></a>
+        <a class="side-link" href="{% url 'store:cart' %}"><i class="bi bi-cart3"></i><span>Panier</span></a>
+
+        <details class="side-group" open>
+            <summary><i class="bi bi-graph-up-arrow"></i><span>Finance</span></summary>
+            <div class="side-subnav">
+                <a class="side-sublink" href="{% url 'store:sale_history' %}"><i class="bi bi-clock-history"></i><span>Historique</span></a>
+                <a class="side-sublink" href="{% url 'store:expense_list' %}"><i class="bi bi-wallet2"></i><span>Dépenses</span></a>
+                <a class="side-sublink" href="{% url 'store:debt_list' %}"><i class="bi bi-file-earmark-text"></i><span>Dettes</span></a>
+            </div>
+        </details>
+
+        <details class="side-group">
+            <summary><i class="bi bi-phone"></i><span>Crédits</span></summary>
+            <div class="side-subnav">
+                <a class="side-sublink" href="{% url 'store:phone_credit_list' %}"><i class="bi bi-phone-vibrate"></i><span>Ventes</span></a>
+                <a class="side-sublink" href="{% url 'store:phone_credit_purchase_list' %}"><i class="bi bi-sim"></i><span>Achats</span></a>
+            </div>
+        </details>
+
+        <details class="side-group">
+            <summary><i class="bi bi-grid-3x3-gap"></i><span>Outils</span></summary>
+            <div class="side-subnav">
+                <a class="side-sublink" href="{% url 'store:feature_list' %}"><i class="bi bi-puzzle"></i><span>Fonctionnalités</span></a>
+                <a class="side-sublink" href="{% url 'store:ai_feature_assistant' %}"><i class="bi bi-stars"></i><span>IA</span></a>
+                <a class="side-sublink" href="{% url 'store:modification_guide' %}"><i class="bi bi-journal-code"></i><span>Guide</span></a>
+                <a class="side-sublink" href="{% url 'store:mobile_access' %}"><i class="bi bi-phone-vibrate"></i><span>Téléphone</span></a>
+                <a class="side-sublink" href="{% url 'store:database_tools' %}"><i class="bi bi-database-down"></i><span>Données</span></a>
+                <a class="side-sublink" href="{% url 'store:account_create' %}"><i class="bi bi-person-plus"></i><span>Compte</span></a>
+            </div>
+        </details>
+
+        <a class="side-link" href="{% url 'store:store_settings' %}"><i class="bi bi-sliders"></i><span>Paramètres</span></a>
+    </nav>
+</aside>
+<nav class="navbar navbar-expand-lg navbar-dark py-2">
+    <div class="container-fluid px-3 px-xl-4">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'store:home' %}">
+            {% if store_settings.logo %}
+                <img src="{{ store_settings.logo.url }}" alt="Logo" style="height:34px;max-width:80px;object-fit:contain;">
+            {% else %}
+                <i class="bi bi-shop"></i>
+            {% endif %}
+            <span>{{ store_settings.store_name|default:'Supermarché' }}</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:product_list' %}"><i class="bi bi-box-seam me-1"></i>Produits</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:product_manage' %}"><i class="bi bi-gear me-1"></i>Gestion</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:create_sale' %}"><i class="bi bi-cash-stack me-1"></i>Caisse</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:cart' %}"><i class="bi bi-cart me-1"></i>Panier</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="phoneCreditDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-phone me-1"></i>Crédits Téléphone
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="phoneCreditDropdown">
+                        <li><a class="dropdown-item" href="{% url 'store:phone_credit_list' %}">Ventes</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:phone_credit_purchase_list' %}">Achats</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:expense_list' %}"><i class="bi bi-wallet2 me-1"></i>Dépenses</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:debt_list' %}"><i class="bi bi-file-earmark-text me-1"></i>Dettes</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:sale_history' %}"><i class="bi bi-clock-history me-1"></i>Historique</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:feature_list' %}"><i class="bi bi-puzzle me-1"></i>Fonctionnalités</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:ai_feature_assistant' %}"><i class="bi bi-stars me-1"></i>IA</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:modification_guide' %}"><i class="bi bi-journal-code me-1"></i>Guide</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:mobile_access' %}"><i class="bi bi-phone-vibrate me-1"></i>Téléphone</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:database_tools' %}"><i class="bi bi-database-down me-1"></i>Données</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:account_create' %}"><i class="bi bi-person-plus me-1"></i>Compte</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:store_settings' %}"><i class="bi bi-sliders me-1"></i>Paramètres</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid px-3 px-xl-4 py-3">
+    {% if global_alerts %}
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            {% for alert in global_alerts %}
+                <a class="alert-chip alert-chip-{{ alert.level }}" href="{% if 'dette' in alert.text %}{% url 'store:debt_list' %}{% else %}{% url 'store:product_manage' %}{% endif %}">
+                    <i class="bi {{ alert.icon }}"></i>
+                    <span>{{ alert.text }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} rounded-4 shadow-sm" role="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+    <div class="text-center footer-note mt-4">Développé par Hinkomou Moulna Clement</div>
+</div>
+<button class="btn btn-primary calculator-toggle" id="calculatorToggle" type="button" title="Calculatrice">
+    <i class="bi bi-calculator fs-4"></i>
+</button>
+<div class="calculator-panel" id="calculatorPanel" tabindex="0" hidden>
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <strong><i class="bi bi-calculator me-2"></i>Calculatrice</strong>
+        <button class="btn btn-sm btn-outline-secondary icon-btn" id="calculatorClose" type="button" title="Fermer">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+    <input class="calculator-display" id="calculatorDisplay" value="0" readonly>
+    <div class="calculator-keys">
+        <button class="btn btn-outline-secondary calculator-key" data-calc="clear">C</button>
+        <button class="btn btn-outline-secondary calculator-key" data-calc="back">DEL</button>
+        <button class="btn btn-outline-secondary calculator-key" data-calc="%">%</button>
+        <button class="btn btn-outline-primary calculator-key" data-calc="/">/</button>
+        <button class="btn btn-light calculator-key" data-calc="7">7</button>
+        <button class="btn btn-light calculator-key" data-calc="8">8</button>
+        <button class="btn btn-light calculator-key" data-calc="9">9</button>
+        <button class="btn btn-outline-primary calculator-key" data-calc="*">*</button>
+        <button class="btn btn-light calculator-key" data-calc="4">4</button>
+        <button class="btn btn-light calculator-key" data-calc="5">5</button>
+        <button class="btn btn-light calculator-key" data-calc="6">6</button>
+        <button class="btn btn-outline-primary calculator-key" data-calc="-">-</button>
+        <button class="btn btn-light calculator-key" data-calc="1">1</button>
+        <button class="btn btn-light calculator-key" data-calc="2">2</button>
+        <button class="btn btn-light calculator-key" data-calc="3">3</button>
+        <button class="btn btn-outline-primary calculator-key" data-calc="+">+</button>
+        <button class="btn btn-light calculator-key" data-calc="0">0</button>
+        <button class="btn btn-light calculator-key" data-calc=".">.</button>
+        <button class="btn btn-success calculator-key" data-calc="=" style="grid-column: span 2;">=</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('a[href]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const href = link.getAttribute('href');
+            const target = link.getAttribute('target');
+            if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('https://wa.me') || target === '_blank') {
+                return;
+            }
+            event.preventDefault();
+            document.body.classList.add('is-leaving');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 180);
+        });
+    });
+    const calculatorPanel = document.getElementById('calculatorPanel');
+    const calculatorDisplay = document.getElementById('calculatorDisplay');
+    const calculatorToggle = document.getElementById('calculatorToggle');
+    const calculatorClose = document.getElementById('calculatorClose');
+    let calculatorValue = '0';
+
+    function renderCalculator() {
+        calculatorDisplay.value = calculatorValue;
+    }
+
+    function calculateExpression() {
+        if (!/^[0-9+\-*/%. ()]+$/.test(calculatorValue)) {
+            calculatorValue = 'Erreur';
+            return;
+        }
+        try {
+            const result = Function(`"use strict"; return (${calculatorValue})`)();
+            calculatorValue = Number.isFinite(result) ? String(Math.round(result * 100) / 100) : 'Erreur';
+        } catch {
+            calculatorValue = 'Erreur';
+        }
+    }
+
+    calculatorToggle.addEventListener('click', () => {
+        calculatorPanel.hidden = !calculatorPanel.hidden;
+        if (!calculatorPanel.hidden) calculatorPanel.focus();
+    });
+    calculatorClose.addEventListener('click', () => {
+        calculatorPanel.hidden = true;
+    });
+    function handleCalcKey(key) {
+        if (key === 'clear') {
+            calculatorValue = '0';
+        } else if (key === 'back') {
+            calculatorValue = calculatorValue.length > 1 ? calculatorValue.slice(0, -1) : '0';
+        } else if (key === '=') {
+            calculateExpression();
+        } else if ('+-*/%.'.includes(key) && '+-*/%.'.includes(calculatorValue.slice(-1))) {
+            calculatorValue = calculatorValue.slice(0, -1) + key;
+        } else {
+            calculatorValue = calculatorValue === '0' || calculatorValue === 'Erreur' ? key : calculatorValue + key;
+        }
+        renderCalculator();
+    }
+
+    document.querySelectorAll('[data-calc]').forEach((button) => {
+        button.addEventListener('click', () => handleCalcKey(button.dataset.calc));
+    });
+
+    {% if store_settings.voice_alerts %}
+    const lowStockProducts = {{ low_stock_count|default:0 }};
+    if (lowStockProducts > 0 && 'speechSynthesis' in window) {
+        const msg = lowStockProducts === 1
+            ? 'Attention, un produit a un stock faible.'
+            : `Attention, ${lowStockProducts} produits ont un stock faible.`;
+        const utterance = new SpeechSynthesisUtterance(msg);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.9;
+        speechSynthesis.speak(utterance);
+    }
+    {% endif %}
+
+    document.addEventListener('keydown', (event) => {
+        if (calculatorPanel.hidden) return;
+        const key = event.key;
+        if (key >= '0' && key <= '9') { handleCalcKey(key); event.preventDefault(); }
+        else if (key === '.') { handleCalcKey('.'); event.preventDefault(); }
+        else if (key === '+') { handleCalcKey('+'); event.preventDefault(); }
+        else if (key === '-') { handleCalcKey('-'); event.preventDefault(); }
+        else if (key === '*') { handleCalcKey('*'); event.preventDefault(); }
+        else if (key === '/') { handleCalcKey('/'); event.preventDefault(); }
+        else if (key === '%') { handleCalcKey('%'); event.preventDefault(); }
+        else if (key === 'Enter' || key === '=') { handleCalcKey('='); event.preventDefault(); }
+        else if (key === 'Backspace') { handleCalcKey('back'); event.preventDefault(); }
+        else if (key === 'Escape') { calculatorPanel.hidden = true; event.preventDefault(); }
+        else if (key === 'c' || key === 'C') { handleCalcKey('clear'); event.preventDefault(); }
+    });
+</script>
+</body>
+</html>

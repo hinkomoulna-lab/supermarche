@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">{{ title }}</h1>
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label class="form-label">Montant acheté (FCFA)</label>
+                {{ form.amount }}
+                {{ form.amount.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Date</label>
+                {{ form.date }}
+                {{ form.date.errors }}
+            </div>
+            <div class="col-md-12 d-flex gap-2">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary" href="{% url 'store:phone_credit_purchase_list' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

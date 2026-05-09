@@ -1,0 +1,20 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer un achat de crédits - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">Supprimer un achat de crédits</h1>
+        <p>Es-tu sûr de vouloir supprimer cet achat ?</p>
+        <ul>
+            <li><strong>Montant :</strong> {{ purchase.amount }} FCFA</li>
+            <li><strong>Date :</strong> {{ purchase.date|date:'d/m/Y' }}</li>
+        </ul>
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary" href="{% url 'store:phone_credit_purchase_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer la vente #{{ sale.id }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm p-4">
+            <h1 class="h4 mb-3">Supprimer la vente #{{ sale.id }}</h1>
+            <p class="mb-3">
+                Cette action supprimera la vente et remettra les quantités vendues dans le stock.
+            </p>
+            <ul class="list-group mb-4">
+                {% for item in sale.items.all %}
+                    <li class="list-group-item d-flex justify-content-between gap-3">
+                        <span>{{ item.product.name }}</span>
+                        <strong>{{ item.quantity }} {{ item.product.get_unit_display }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Supprimer la vente</button>
+                <a class="btn btn-secondary ms-2" href="{% url 'store:sale_detail' sale.id %}">Annuler</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

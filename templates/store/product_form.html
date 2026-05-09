@@ -1,0 +1,123 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">{{ title }}</h1>
+        <form method="post" enctype="multipart/form-data" class="row g-3" id="productForm">
+            {% csrf_token %}
+            <div class="col-md-4">
+                <label class="form-label">Code article</label>
+                {{ form.code }}
+                {{ form.code.errors }}
+                <div class="form-text">Laisse vide pour générer automatiquement.</div>
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">Nom</label>
+                <div class="input-group">
+                    {{ form.name }}
+                    <button class="btn btn-outline-primary" type="button" id="googleSearchBtn" title="Rechercher cette image sur Google">
+                        <i class="bi bi-google me-1"></i>Google
+                    </button>
+                </div>
+                {{ form.name.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Image de l'article</label>
+                {{ form.image }}
+                {{ form.image.errors }}
+                {% if form.instance.image %}
+                    <div class="mt-2">
+                        <img src="{{ form.instance.image.url }}" alt="Aperçu" class="rounded shadow-sm" style="max-height:80px;max-width:100%;object-fit:contain;">
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Ou coller une URL d'image (Google)</label>
+                <div class="input-group">
+                    {{ form.image_url }}
+                    <button class="btn btn-outline-secondary" type="button" id="previewUrlBtn" title="Aperçu"><i class="bi bi-eye"></i></button>
+                </div>
+                {{ form.image_url.errors }}
+                <div class="form-text">Trouve une image sur Google Images, copie l'URL et colle-la ici.</div>
+                <div id="urlPreview" class="mt-2" hidden>
+                    <img src="" alt="Aperçu URL" class="rounded shadow-sm" style="max-height:80px;max-width:100%;object-fit:contain;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Catégorie existante</label>
+                {{ form.category }}
+                {{ form.category.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Nouvelle catégorie</label>
+                {{ form.new_category }}
+                {{ form.new_category.errors }}
+                <div class="form-text">Laisse vide si tu veux utiliser une catégorie existante.</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Unité de vente</label>
+                {{ form.unit }}
+                {{ form.unit.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Prix de vente (FCFA)</label>
+                {{ form.price }}
+                {{ form.price.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Prix d'achat (FCFA)</label>
+                {{ form.cost_price }}
+                {{ form.cost_price.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Stock</label>
+                {{ form.stock }}
+                {{ form.stock.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Stock minimum</label>
+                {{ form.min_stock }}
+                {{ form.min_stock.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Date de péremption (facultatif)</label>
+                {{ form.expiry_date }}
+                {{ form.expiry_date.errors }}
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary ms-2" href="{% url 'store:product_manage' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const nameInput = document.getElementById('id_name');
+    const googleBtn = document.getElementById('googleSearchBtn');
+    const imageUrlInput = document.getElementById('id_image_url');
+    const previewBtn = document.getElementById('previewUrlBtn');
+    const urlPreview = document.getElementById('urlPreview');
+
+    googleBtn.addEventListener('click', () => {
+        const query = encodeURIComponent(nameInput.value.trim() || 'produit');
+        window.open(`https://www.google.com/search?tbm=isch&q=${query}`, '_blank');
+    });
+
+    previewBtn.addEventListener('click', () => {
+        const url = imageUrlInput.value.trim();
+        if (!url) return;
+        const img = urlPreview.querySelector('img');
+        img.src = url;
+        urlPreview.hidden = false;
+    });
+
+    imageUrlInput.addEventListener('change', () => {
+        if (!imageUrlInput.value.trim()) {
+            urlPreview.hidden = true;
+        }
+    });
+</script>
+{% endblock %}

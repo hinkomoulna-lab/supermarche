@@ -1,0 +1,22 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer une dette - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">Supprimer une dette</h1>
+        <p>Es-tu sûr de vouloir supprimer cette dette ?</p>
+        <ul>
+            <li><strong>Contact :</strong> {{ debt.person }}</li>
+            <li><strong>Type :</strong> {{ debt.get_debt_type_display }}</li>
+            <li><strong>Montant :</strong> {{ debt.amount }} FCFA</li>
+            <li><strong>Échéance :</strong> {{ debt.due_date|date:'d/m/Y' }}</li>
+        </ul>
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary" href="{% url 'store:debt_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

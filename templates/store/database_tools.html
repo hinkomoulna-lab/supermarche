@@ -1,0 +1,47 @@
+{% extends 'store/base.html' %}
+{% block title %}Base de données - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-2">Base de données</h1>
+        <p class="text-secondary mb-0">Sauvegarde tes données avant une mise en ligne, un changement d'ordinateur ou une migration.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Sauvegarde complète</h2>
+                <p class="text-muted">Télécharge une copie exacte de la base SQLite utilisée par l'application locale.</p>
+                <a class="btn btn-primary" href="{% url 'store:database_backup' %}">
+                    <i class="bi bi-download me-1"></i>Télécharger la base SQLite
+                </a>
+                <div class="small text-muted mt-3">Fichier actuel : {{ database_path }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Export lisible</h2>
+                <p class="text-muted">Télécharge les données principales en JSON. Utile pour migrer ou vérifier le contenu.</p>
+                <a class="btn btn-outline-success" href="{% url 'store:database_export_json' %}">
+                    <i class="bi bi-filetype-json me-1"></i>Exporter en JSON
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h5">Conseil</h2>
+                <p class="mb-0 text-muted">Avant de mettre l'application en ligne ou de modifier la base, télécharge toujours une sauvegarde SQLite. Garde une copie sur clé USB, disque externe ou cloud privé.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

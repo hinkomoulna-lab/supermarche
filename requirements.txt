@@ -1,0 +1,7 @@
+Django==6.0.4
+reportlab==4.4.10
+openai
+gunicorn
+whitenoise
+dj-database-url
+psycopg[binary]

@@ -1,0 +1,52 @@
+{% extends 'store/base.html' %}
+{% block title %}Détail de la vente #{{ sale.id }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h1>Détail de la vente #{{ sale.id }}</h1>
+    <p class="text-muted">Date : {{ sale.sale_date|date:'d/m/Y' }}</p>
+    {% if sale.notes %}
+        <p class="text-muted"><em>{{ sale.notes }}</em></p>
+    {% endif %}
+    <div class="d-flex flex-wrap gap-2 mt-3">
+        <a class="btn btn-outline-primary" href="{% url 'store:sale_invoice' sale.id %}">Imprimer la facture</a>
+        <a class="btn btn-outline-success" href="{% url 'store:sale_invoice_pdf' sale.id %}">Exporter PDF</a>
+        <a class="btn btn-outline-warning" href="{% url 'store:sale_update' sale.id %}">Modifier</a>
+        <a class="btn btn-outline-danger" href="{% url 'store:sale_delete' sale.id %}">Supprimer</a>
+    </div>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5 class="card-title">Informations</h5>
+            <p class="mb-1"><strong>Total :</strong> {{ sale.total }} FCFA</p>
+            <p class="mb-0"><strong>Lignes :</strong> {{ sale.items.count }}</p>
+        </div>
+    </div>
+</div>
+<div class="table-shell">
+    <table class="table app-table align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Prix unitaire</th>
+                <th>Quantité</th>
+                <th>Mode</th>
+                <th>Sous-total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in sale.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.price }} FCFA</td>
+                    <td>{{ item.quantity }} {{ item.product.get_unit_display }}</td>
+                    <td><span class="badge bg-{% if item.sale_mode == 'paquet' %}success{% else %}info{% endif %}">{{ item.get_sale_mode_display }}</span></td>
+                    <td>{{ item.subtotal }} FCFA</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<a class="btn btn-secondary mt-3" href="{% url 'store:sale_history' %}">Retour à l'historique</a>
+{% endblock %}

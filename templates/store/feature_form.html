@@ -1,0 +1,37 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">{{ title }}</h1>
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-8">
+                <label class="form-label">Nom de la fonctionnalité</label>
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Statut</label>
+                {{ form.status }}
+                {{ form.status.errors }}
+            </div>
+            <div class="col-12">
+                <label class="form-label">Description</label>
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
+            <div class="col-12">
+                <label class="form-label">Notes de code</label>
+                {{ form.code_notes }}
+                {{ form.code_notes.errors }}
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary ms-2" href="{% url 'store:feature_list' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1026 @@
+import csv
+import json
+import os
+import socket
+import uuid
+import urllib.request
+from urllib.parse import quote
+from datetime import date, timedelta
+from decimal import Decimal, InvalidOperation
+from io import BytesIO
+from urllib.parse import urlencode
+
+from django.conf import settings
+from django.core.management import call_command
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from django.db import transaction
+from django.db.models import Sum, F
+from django.db.models.deletion import ProtectedError
+from django.db.models.functions import TruncMonth, TruncYear
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import FileResponse, HttpResponse
+from django.contrib import messages
+from django.utils import timezone
+
+from .models import (
+    Product, Sale, SaleItem,
+    Expense, Debt,
+    PhoneCredit, PhoneCreditPurchase, StoreSettings,
+    AppFeature
+)
+
+from .forms import (
+    ProductForm, SaleForm, CartAddForm,
+    ExpenseForm, DebtForm,
+    PhoneCreditForm, PhoneCreditPurchaseForm,
+    StoreSettingsForm, AppFeatureForm,
+    AccountCreationForm, AIFeatureInstructionForm
+)
+
+
+# =========================
+# HOME
+# =========================
+def home(request):
+    total_products = Product.objects.count()
+    total_stock = Product.objects.aggregate(total=Sum('stock'))['total'] or 0
+    total_sales = Sale.objects.count()
+
+    low_stock_count = Product.objects.filter(stock__lte=F('min_stock')).count()
+    recent_sales = Sale.objects.order_by('-created_at')[:5]
+
+    total_expenses = Expense.objects.aggregate(total=Sum('amount'))['total'] or 0
+
+    outstanding_debt_total = Debt.objects.filter(paid=False).aggregate(total=Sum('amount'))['total'] or 0
+    overdue_debt_total = Debt.objects.filter(paid=False, due_date__lt=date.today()).aggregate(total=Sum('amount'))['total'] or 0
+    unpaid_debt_count = Debt.objects.filter(paid=False).count()
+
+    daily_revenue = Sale.objects.filter(sale_date=date.today()).aggregate(total=Sum('total'))['total'] or 0
+    monthly_revenue = Sale.objects.filter(sale_date__year=date.today().year, sale_date__month=date.today().month).aggregate(total=Sum('total'))['total'] or 0
+    yearly_revenue = Sale.objects.filter(sale_date__year=date.today().year).aggregate(total=Sum('total'))['total'] or 0
+    total_revenue = Sale.objects.aggregate(total=Sum('total'))['total'] or 0
+
+    total_phone_credits = PhoneCredit.objects.aggregate(total=Sum('amount'))['total'] or 0
+    available_phone_credit_stock = PhoneCreditPurchase.get_available_stock()
+    low_phone_credit_stock_alert = available_phone_credit_stock < Decimal('10000.00')
+
+    # 7 jours
+    last_7_days = []
+    for i in range(6, -1, -1):
+        day = date.today() - timedelta(days=i)
+        total = Sale.objects.filter(sale_date=day).aggregate(total=Sum('total'))['total'] or 0
+        last_7_days.append({'label': day.strftime('%d/%m'), 'value': float(total)})
+
+    # mois
+    monthly_data = {m: 0 for m in range(1, 13)}
+    month_sales = Sale.objects.filter(sale_date__year=date.today().year)\
+        .annotate(month=TruncMonth('sale_date'))\
+        .values('month')\
+        .annotate(total=Sum('total'))
+
+    for row in month_sales:
+        monthly_data[row['month'].month] = float(row['total'] or 0)
+
+    # années
+    yearly_data = {y: 0 for y in range(date.today().year - 2, date.today().year + 1)}
+    year_sales = Sale.objects.filter(sale_date__year__gte=date.today().year - 2)\
+        .annotate(year=TruncYear('sale_date'))\
+        .values('year')\
+        .annotate(total=Sum('total'))
+
+    for row in year_sales:
+        yearly_data[row['year'].year] = float(row['total'] or 0)
+
+    return render(request, 'store/home.html', {
+        'total_products': total_products,
+        'total_stock': total_stock,
+        'total_sales': total_sales,
+        'low_stock_count': low_stock_count,
+        'recent_sales': recent_sales,
+
+        'total_expenses': total_expenses,
+        'outstanding_debt_total': outstanding_debt_total,
+        'overdue_debt_total': overdue_debt_total,
+        'unpaid_debt_count': unpaid_debt_count,
+
+        'daily_revenue': daily_revenue,
+        'monthly_revenue': monthly_revenue,
+        'yearly_revenue': yearly_revenue,
+        'total_revenue': total_revenue,
+        'total_phone_credits': total_phone_credits,
+        'available_phone_credit_stock': available_phone_credit_stock,
+        'low_phone_credit_stock_alert': low_phone_credit_stock_alert,
+
+        'last_7_days_labels': json.dumps([i['label'] for i in last_7_days]),
+        'last_7_days_values': json.dumps([i['value'] for i in last_7_days]),
+
+        'month_labels': json.dumps([date(1900, m, 1).strftime('%b') for m in range(1, 13)]),
+        'month_values': json.dumps([monthly_data[m] for m in range(1, 13)]),
+
+        'year_labels': json.dumps(list(yearly_data.keys())),
+        'year_values': json.dumps(list(yearly_data.values())),
+    })
+
+
+# =========================
+# PRODUITS
+# =========================
+def product_list(request):
+    form = CartAddForm()
+    query = request.GET.get('q', '')
+    min_price = request.GET.get('min_price', '')
+    max_price = request.GET.get('max_price', '')
+    sort = request.GET.get('sort', '')
+    order = request.GET.get('order', 'asc')
+
+    products = Product.objects.all()
+
+    if query:
+        products = products.filter(name__icontains=query)
+    try:
+        if min_price:
+            products = products.filter(price__gte=Decimal(min_price))
+        if max_price:
+            products = products.filter(price__lte=Decimal(max_price))
+    except InvalidOperation:
+        messages.warning(request, 'Filtre de prix invalide.')
+
+    sort_fields = {
+        'name': 'name',
+        'price': 'price',
+        'stock': 'stock',
+        'category': 'category__name',
+        'expiry': 'expiry_date',
+    }
+    if sort in sort_fields:
+        order_prefix = '-' if order == 'desc' else ''
+        products = products.order_by(f'{order_prefix}{sort_fields[sort]}')
+
+    return render(request, 'store/product_list.html', {
+        'products': products,
+        'form': form,
+        'query': query,
+        'min_price': min_price,
+        'max_price': max_price,
+        'current_sort': sort,
+        'current_order': order,
+    })
+
+
+def store_settings_view(request):
+    settings = StoreSettings.load()
+    form = StoreSettingsForm(request.POST or None, request.FILES or None, instance=settings)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Paramètres enregistrés avec succès.')
+        return redirect('store:store_settings')
+
+    return render(request, 'store/settings_form.html', {'form': form})
+
+
+def mobile_access(request):
+    hostnames = []
+    try:
+        hostname = socket.gethostname()
+        for item in socket.getaddrinfo(hostname, None):
+            ip = item[4][0]
+            if '.' in ip and not ip.startswith('127.') and ip not in hostnames:
+                hostnames.append(ip)
+    except OSError:
+        pass
+
+    return render(request, 'store/mobile_access.html', {'local_ips': hostnames})
+
+
+def database_tools(request):
+    database_path = settings.DATABASES['default'].get('NAME')
+    return render(request, 'store/database_tools.html', {'database_path': database_path})
+
+
+def database_backup(request):
+    database_path = settings.DATABASES['default'].get('NAME')
+    response = FileResponse(open(database_path, 'rb'), as_attachment=True, filename='sauvegarde_supermarche.sqlite3')
+    return response
+
+
+def database_export_json(request):
+    response = HttpResponse(content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename="donnees_supermarche.json"'
+    call_command(
+        'dumpdata',
+        'store',
+        indent=2,
+        stdout=response,
+        exclude=['contenttypes', 'auth.permission'],
+    )
+    return response
+
+
+def feature_list(request):
+    features = AppFeature.objects.all()
+    counts = {
+        'idea': features.filter(status='idea').count(),
+        'planned': features.filter(status='planned').count(),
+        'coding': features.filter(status='coding').count(),
+        'done': features.filter(status='done').count(),
+    }
+    return render(request, 'store/feature_list.html', {'features': features, 'counts': counts})
+
+
+def feature_create(request):
+    form = AppFeatureForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Fonctionnalité ajoutée avec succès.')
+        return redirect('store:feature_list')
+    return render(request, 'store/feature_form.html', {'form': form, 'title': 'Nouvelle fonctionnalité'})
+
+
+def ai_feature_assistant(request):
+    form = AIFeatureInstructionForm(request.POST or None)
+    suggestion = ''
+
+    if request.method == 'POST' and form.is_valid():
+        instruction = form.cleaned_data['instruction'].strip()
+        try:
+            from openai import OpenAI
+            client = OpenAI()
+            response = client.responses.create(
+                model=settings.OPENAI_MODEL,
+                input=(
+                    "Tu aides a modifier une application Django de gestion de magasin. "
+                    "Reponds en francais avec un titre court, les fichiers a modifier, "
+                    "les etapes de code, les validations a faire, et les risques. "
+                    "Ne dis jamais que la modification est deja faite. Instruction: "
+                    f"{instruction}"
+                ),
+            )
+            suggestion = response.output_text
+        except Exception as exc:
+            suggestion = (
+                "IA indisponible pour le moment. Verifie que la dependance openai est installee "
+                "et que la variable OPENAI_API_KEY est configuree.\n\n"
+                f"Erreur technique: {exc}"
+            )
+
+    return render(request, 'store/ai_feature_assistant.html', {'form': form, 'suggestion': suggestion})
+
+
+def feature_update(request, pk):
+    feature = get_object_or_404(AppFeature, pk=pk)
+    form = AppFeatureForm(request.POST or None, instance=feature)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Fonctionnalité mise à jour.')
+        return redirect('store:feature_list')
+    return render(request, 'store/feature_form.html', {'form': form, 'title': 'Modifier la fonctionnalité'})
+
+
+def feature_delete(request, pk):
+    feature = get_object_or_404(AppFeature, pk=pk)
+    if request.method == 'POST':
+        feature.delete()
+        messages.success(request, 'Fonctionnalité supprimée.')
+        return redirect('store:feature_list')
+    return render(request, 'store/feature_confirm_delete.html', {'feature': feature})
+
+
+def modification_guide(request):
+    return render(request, 'store/modification_guide.html')
+
+
+def account_create(request):
+    form = AccountCreationForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Compte utilisateur créé avec succès.')
+        return redirect('store:store_settings')
+    return render(request, 'store/account_form.html', {'form': form})
+
+
+def product_manage(request):
+    sort = request.GET.get('sort', '')
+    order = request.GET.get('order', 'asc')
+    products = Product.objects.select_related('category')
+    sort_fields = {
+        'name': 'name',
+        'category': 'category__name',
+        'price': 'price',
+        'cost_price': 'cost_price',
+        'stock': 'stock',
+        'expiry': 'expiry_date',
+    }
+    if sort in sort_fields:
+        order_prefix = '-' if order == 'desc' else ''
+        products = products.order_by(f'{order_prefix}{sort_fields[sort]}')
+    else:
+        products = products.order_by('name')
+    return render(request, 'store/product_manage.html', {
+        'products': products,
+        'current_sort': sort,
+        'current_order': order,
+    })
+
+
+def download_image_from_url(url):
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=10) as response:
+            content = response.read()
+        ext = os.path.splitext(urllib.parse.urlparse(url).path)[1] or '.jpg'
+        filename = f'{uuid.uuid4().hex}{ext}'
+        from django.core.files.base import ContentFile
+        return ContentFile(content, name=filename)
+    except Exception:
+        return None
+
+
+def product_create(request):
+    form = ProductForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST' and form.is_valid():
+        product = form.save(commit=False)
+        if not request.FILES.get('image') and form.cleaned_data.get('image_url'):
+            img_file = download_image_from_url(form.cleaned_data['image_url'])
+            if img_file:
+                product.image.save(*img_file)
+        product.save()
+        messages.success(request, 'Produit ajouté avec succès.')
+        return redirect('store:product_manage')
+    return render(request, 'store/product_form.html', {'form': form, 'title': 'Nouveau produit'})
+
+
+def product_update(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    form = ProductForm(request.POST or None, request.FILES or None, instance=product)
+    if request.method == 'POST' and form.is_valid():
+        product = form.save(commit=False)
+        if not request.FILES.get('image') and form.cleaned_data.get('image_url'):
+            img_file = download_image_from_url(form.cleaned_data['image_url'])
+            if img_file:
+                product.image.save(*img_file)
+        product.save()
+        messages.success(request, 'Produit modifié avec succès.')
+        return redirect('store:product_manage')
+    return render(request, 'store/product_form.html', {'form': form, 'title': 'Modifier le produit'})
+
+
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        try:
+            product.delete()
+            messages.success(request, 'Produit supprimé avec succès.')
+        except ProtectedError:
+            messages.error(
+                request,
+                "Ce produit a déjà été vendu. Modifie ou supprime d'abord la vente concernée."
+            )
+        return redirect('store:product_manage')
+    return render(request, 'store/product_confirm_delete.html', {'product': product})
+
+
+def create_sale(request):
+    products = Product.objects.select_related('category').filter(stock__gt=0)
+    quick_products = (
+        products.filter(name__icontains='pain')
+        | products.filter(name__icontains='glace')
+        | products.filter(category__name__icontains='pain')
+        | products.filter(category__name__icontains='glace')
+    ).distinct()[:8]
+
+    if request.method == 'POST':
+        product_ids = request.POST.getlist('product')
+        quantities = request.POST.getlist('quantity')
+        sale_modes = request.POST.getlist('sale_mode')
+        sale_date_str = request.POST.get('sale_date', '')
+        sale_notes = request.POST.get('notes', '')
+        rows = []
+        errors = []
+        requested_quantities = {}
+
+        try:
+            sale_date = date.fromisoformat(sale_date_str) if sale_date_str else date.today()
+        except (ValueError, TypeError):
+            sale_date = date.today()
+
+        for index, product_id in enumerate(product_ids):
+            quantity_value = quantities[index] if index < len(quantities) else ''
+            mode = sale_modes[index] if index < len(sale_modes) else 'detail'
+            if not product_id and not quantity_value:
+                continue
+            try:
+                product = Product.objects.get(pk=product_id)
+                quantity = Decimal(quantity_value)
+                if quantity <= 0:
+                    raise InvalidOperation
+            except (Product.DoesNotExist, InvalidOperation, ValueError):
+                errors.append('Une ligne de vente est invalide.')
+                continue
+
+            if mode == 'paquet' and product.pack_size > 1:
+                effective_qty = quantity * product.pack_size
+            else:
+                effective_qty = quantity
+                mode = 'detail'
+
+            requested_quantities[product.id] = requested_quantities.get(product.id, Decimal('0')) + effective_qty
+            if product.stock < requested_quantities[product.id]:
+                errors.append(f'Stock insuffisant pour {product.name}. Disponible : {product.stock} {product.get_unit_display()}.')
+            rows.append((product, quantity, mode))
+
+        if not rows:
+            errors.append('Ajoute au moins un produit à la vente.')
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+        else:
+            with transaction.atomic():
+                sale = Sale.objects.create(sale_date=sale_date, notes=sale_notes)
+                for product, quantity, mode in rows:
+                    if mode == 'paquet' and product.pack_size > 1:
+                        price = product.pack_price or (product.price * product.pack_size)
+                        stock_qty = quantity * product.pack_size
+                    else:
+                        price = product.price
+                        stock_qty = quantity
+                    SaleItem.objects.create(
+                        sale=sale, product=product,
+                        quantity=quantity, price=price,
+                        sale_mode=mode
+                    )
+                    product.stock -= stock_qty
+                    product.save(update_fields=['stock'])
+                sale.update_total()
+            messages.success(request, 'Vente multiple enregistrée avec succès.')
+            return redirect('store:sale_detail', sale_id=sale.id)
+
+    return render(request, 'store/create_sale.html', {
+        'products': products,
+        'quick_products': quick_products,
+    })
+
+
+def sale_history(request):
+    sort = request.GET.get('sort', '')
+    order = request.GET.get('order', 'desc')
+
+    sales = Sale.objects.prefetch_related('items')
+    sort_fields = {
+        'id': 'id',
+        'date': 'sale_date',
+        'total': 'total',
+        'items': 'id',
+    }
+    if sort in sort_fields:
+        order_prefix = '-' if order == 'desc' else ''
+        sales = sales.order_by(f'{order_prefix}{sort_fields[sort]}')
+    else:
+        sales = sales.order_by('-created_at')
+
+    today = date.today()
+    daily_total = Sale.objects.filter(sale_date=today).aggregate(total=Sum('total'))['total'] or 0
+    monthly_total = Sale.objects.filter(sale_date__year=today.year, sale_date__month=today.month).aggregate(total=Sum('total'))['total'] or 0
+    total_amount = Sale.objects.aggregate(total=Sum('total'))['total'] or 0
+    report_text = (
+        f"Rapport des ventes - {today.strftime('%d/%m/%Y')}\n"
+        f"Ventes du jour: {daily_total} FCFA\n"
+        f"Ventes du mois: {monthly_total} FCFA\n"
+        f"Total general: {total_amount} FCFA\n"
+        f"Nombre de ventes: {sales.count()}"
+    )
+    return render(request, 'store/sale_history.html', {
+        'sales': sales,
+        'daily_total': daily_total,
+        'monthly_total': monthly_total,
+        'total_amount': total_amount,
+        'whatsapp_report_url': f"https://wa.me/?text={quote(report_text)}",
+        'email_report_url': f"mailto:?subject={quote('Rapport des ventes')}&body={quote(report_text)}",
+        'current_sort': sort,
+        'current_order': order,
+    })
+
+
+def _restore_stock_and_delete_sales(sales):
+    with transaction.atomic():
+        for sale in sales.prefetch_related('items__product'):
+            for item in sale.items.all():
+                item.product.stock += item.quantity
+                item.product.save(update_fields=['stock'])
+            sale.delete()
+
+
+def sale_detail(request, sale_id):
+    sale = get_object_or_404(Sale.objects.prefetch_related('items__product'), pk=sale_id)
+    return render(request, 'store/sale_detail.html', {'sale': sale})
+
+
+def sale_update(request, sale_id):
+    sale = get_object_or_404(Sale.objects.prefetch_related('items__product'), pk=sale_id)
+    products = Product.objects.select_related('category').all()
+
+    original_quantities = {}
+    for item in sale.items.all():
+        original_quantities[item.product_id] = original_quantities.get(item.product_id, Decimal('0')) + item.quantity
+
+    if request.method == 'POST':
+        product_ids = request.POST.getlist('product')
+        quantities = request.POST.getlist('quantity')
+        sale_modes = request.POST.getlist('sale_mode')
+        sale_date_str = request.POST.get('sale_date', '')
+        sale_notes = request.POST.get('notes', '')
+        rows = []
+        errors = []
+        requested_quantities = {}
+
+        try:
+            sale.sale_date = date.fromisoformat(sale_date_str) if sale_date_str else date.today()
+        except (ValueError, TypeError):
+            sale.sale_date = date.today()
+        sale.notes = sale_notes
+
+        for index, product_id in enumerate(product_ids):
+            quantity_value = quantities[index] if index < len(quantities) else ''
+            mode = sale_modes[index] if index < len(sale_modes) else 'detail'
+            if not product_id and not quantity_value:
+                continue
+            try:
+                product = Product.objects.get(pk=product_id)
+                quantity = Decimal(quantity_value)
+                if quantity <= 0:
+                    raise InvalidOperation
+            except (Product.DoesNotExist, InvalidOperation, ValueError):
+                errors.append('Une ligne de vente est invalide.')
+                continue
+
+            if mode == 'paquet' and product.pack_size > 1:
+                effective_qty = quantity * product.pack_size
+            else:
+                effective_qty = quantity
+                mode = 'detail'
+
+            requested_quantities[product.id] = requested_quantities.get(product.id, Decimal('0')) + effective_qty
+            available_quantity = product.stock + original_quantities.get(product.id, Decimal('0'))
+            if available_quantity < requested_quantities[product.id]:
+                errors.append(
+                    f'Stock insuffisant pour {product.name}. Disponible : '
+                    f'{available_quantity} {product.get_unit_display()}.'
+                )
+            rows.append((product, quantity, mode))
+
+        if not rows:
+            errors.append('Ajoute au moins un produit à la vente.')
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+        else:
+            with transaction.atomic():
+                for item in sale.items.select_related('product'):
+                    if item.sale_mode == 'paquet' and item.product.pack_size > 1:
+                        item.product.stock += item.quantity * item.product.pack_size
+                    else:
+                        item.product.stock += item.quantity
+                    item.product.save(update_fields=['stock'])
+
+                sale.items.all().delete()
+
+                for product, quantity, mode in rows:
+                    if mode == 'paquet' and product.pack_size > 1:
+                        price = product.pack_price or (product.price * product.pack_size)
+                        stock_qty = quantity * product.pack_size
+                    else:
+                        price = product.price
+                        stock_qty = quantity
+                    SaleItem.objects.create(
+                        sale=sale, product=product,
+                        quantity=quantity, price=price,
+                        sale_mode=mode
+                    )
+                    product.stock -= stock_qty
+                    product.save(update_fields=['stock'])
+
+                sale.save(update_fields=['sale_date', 'notes'])
+                sale.update_total()
+
+            messages.success(request, 'Vente modifiée avec succès.')
+            return redirect('store:sale_detail', sale_id=sale.id)
+
+    sale_rows = [
+        {'product_id': item.product_id, 'quantity': item.quantity, 'sale_mode': item.sale_mode}
+        for item in sale.items.all()
+    ]
+    return render(request, 'store/sale_form.html', {
+        'sale': sale,
+        'products': products,
+        'sale_rows': sale_rows,
+        'title': f'Modifier la vente #{sale.id}',
+        'submit_label': 'Enregistrer les modifications',
+    })
+
+
+def sale_delete(request, sale_id):
+    sale = get_object_or_404(Sale.objects.prefetch_related('items__product'), pk=sale_id)
+    if request.method == 'POST':
+        _restore_stock_and_delete_sales(Sale.objects.filter(pk=sale.pk))
+        messages.success(request, 'Vente supprimée et stock restauré.')
+        return redirect('store:sale_history')
+    return render(request, 'store/sale_confirm_delete.html', {'sale': sale})
+
+
+def sale_bulk_delete(request):
+    if request.method != 'POST':
+        return redirect('store:sale_history')
+
+    action = request.POST.get('action')
+    selected_ids = request.POST.getlist('sale_ids')
+
+    if action == 'delete_all':
+        sales = Sale.objects.all()
+        count = sales.count()
+        _restore_stock_and_delete_sales(sales)
+        messages.success(request, f'{count} vente(s) supprimée(s). Stock restauré.')
+    elif action == 'delete_selected':
+        sales = Sale.objects.filter(id__in=selected_ids)
+        count = sales.count()
+        if count:
+            _restore_stock_and_delete_sales(sales)
+            messages.success(request, f'{count} vente(s) sélectionnée(s) supprimée(s). Stock restauré.')
+        else:
+            messages.warning(request, 'Sélectionne au moins une vente à supprimer.')
+    else:
+        messages.warning(request, 'Action de suppression invalide.')
+
+    return redirect('store:sale_history')
+
+
+def sale_invoice(request, sale_id):
+    sale = get_object_or_404(Sale.objects.prefetch_related('items__product'), pk=sale_id)
+    return render(request, 'store/sale_invoice.html', {'sale': sale, 'settings': StoreSettings.load()})
+
+
+def sale_invoice_pdf(request, sale_id):
+    sale = get_object_or_404(Sale.objects.prefetch_related('items__product'), pk=sale_id)
+    settings = StoreSettings.load()
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    y = height - 50
+
+    if settings.logo:
+        try:
+            pdf.drawImage(settings.logo.path, 50, y - 35, width=90, height=45, preserveAspectRatio=True, mask='auto')
+        except Exception:
+            pass
+
+    pdf.setFont('Helvetica-Bold', 18)
+    pdf.drawString(155 if settings.logo else 50, y, settings.store_name)
+    y -= 24
+    pdf.setFont('Helvetica-Bold', 15)
+    pdf.drawString(155 if settings.logo else 50, y, 'Facture')
+    pdf.setFont('Helvetica', 11)
+    y -= 25
+    pdf.drawString(50, y, f'Vente #{sale.id}')
+    y -= 18
+    pdf.drawString(50, y, f'Date : {timezone.localtime(sale.created_at).strftime("%d/%m/%Y %H:%M")}')
+    y -= 35
+
+    pdf.setFont('Helvetica-Bold', 10)
+    pdf.drawString(50, y, 'Produit')
+    pdf.drawString(250, y, 'Prix')
+    pdf.drawString(330, y, 'Quantite')
+    pdf.drawString(420, y, 'Sous-total')
+    y -= 15
+    pdf.line(50, y, width - 50, y)
+    y -= 18
+
+    pdf.setFont('Helvetica', 10)
+    for item in sale.items.all():
+        if y < 80:
+            pdf.showPage()
+            y = height - 50
+            pdf.setFont('Helvetica', 10)
+        pdf.drawString(50, y, item.product.name[:32])
+        pdf.drawString(250, y, f'{item.price} FCFA')
+        pdf.drawString(330, y, f'{item.quantity} {item.product.get_unit_display()}')
+        pdf.drawString(420, y, f'{item.subtotal} FCFA')
+        y -= 18
+
+    y -= 10
+    pdf.line(50, y, width - 50, y)
+    y -= 25
+    pdf.setFont('Helvetica-Bold', 13)
+    pdf.drawString(350, y, f'Total : {sale.total} FCFA')
+
+    pdf.showPage()
+    pdf.save()
+    buffer.seek(0)
+
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="facture_vente_{sale.id}.pdf"'
+    return response
+
+
+def export_sales_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="ventes.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Date', 'Total'])
+    for sale in Sale.objects.order_by('-created_at'):
+        writer.writerow([sale.id, timezone.localtime(sale.created_at).strftime('%d/%m/%Y %H:%M'), sale.total])
+    return response
+
+
+def _get_cart(request):
+    return request.session.setdefault('cart', {})
+
+
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    form = CartAddForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        quantity = form.cleaned_data['quantity']
+        cart = _get_cart(request)
+        key = str(product.id)
+        cart[key] = str(Decimal(cart.get(key, '0')) + quantity)
+        request.session.modified = True
+        messages.success(request, 'Produit ajouté au panier.')
+    return redirect('store:product_list')
+
+
+def remove_from_cart(request, product_id):
+    cart = _get_cart(request)
+    cart.pop(str(product_id), None)
+    request.session.modified = True
+    messages.success(request, 'Produit retiré du panier.')
+    return redirect('store:cart')
+
+
+def cart_view(request):
+    cart = _get_cart(request)
+    products = Product.objects.filter(id__in=cart.keys())
+    items = []
+    total = Decimal('0')
+
+    for product in products:
+        quantity = Decimal(cart.get(str(product.id), '0'))
+        subtotal = product.price * quantity
+        items.append({'product': product, 'quantity': quantity, 'subtotal': subtotal})
+        total += subtotal
+
+    return render(request, 'store/cart.html', {'items': items, 'total': total})
+
+
+def cart_checkout(request):
+    cart = _get_cart(request)
+    if not cart:
+        messages.warning(request, 'Le panier est vide.')
+        return redirect('store:cart')
+
+    products = {str(product.id): product for product in Product.objects.filter(id__in=cart.keys())}
+    for product_id, quantity in cart.items():
+        product = products.get(product_id)
+        quantity = Decimal(quantity)
+        if product is None or product.stock < quantity:
+            messages.error(request, 'Stock insuffisant pour valider le panier.')
+            return redirect('store:cart')
+
+    with transaction.atomic():
+        sale = Sale.objects.create()
+        for product_id, quantity in cart.items():
+            product = products[product_id]
+            quantity = Decimal(quantity)
+            SaleItem.objects.create(sale=sale, product=product, quantity=quantity, price=product.price)
+            product.stock -= quantity
+            product.save(update_fields=['stock'])
+        sale.update_total()
+
+    request.session['cart'] = {}
+    messages.success(request, 'Panier validé avec succès.')
+    return redirect('store:sale_detail', sale_id=sale.id)
+
+
+def expense_list(request):
+    sort = request.GET.get('sort', '')
+    order = request.GET.get('order', 'desc')
+    expenses = Expense.objects.all()
+    sort_fields = {
+        'description': 'description',
+        'amount': 'amount',
+        'category': 'category',
+        'date': 'date',
+    }
+    if sort in sort_fields:
+        order_prefix = '-' if order == 'desc' else ''
+        expenses = expenses.order_by(f'{order_prefix}{sort_fields[sort]}')
+    else:
+        expenses = expenses.order_by('-date')
+    total_expenses = expenses.aggregate(total=Sum('amount'))['total'] or 0
+    settings = StoreSettings.load()
+    today = date.today()
+
+    current_month_expenses = expenses.filter(date__year=today.year, date__month=today.month)
+    current_month_total = current_month_expenses.aggregate(total=Sum('amount'))['total'] or 0
+    monthly_limit = settings.monthly_expense_limit or 0
+    over_budget = monthly_limit > 0 and current_month_total > monthly_limit
+    budget_remaining = monthly_limit - current_month_total if monthly_limit else 0
+
+    category_rows = current_month_expenses.values('category').annotate(total=Sum('amount')).order_by('-total')
+    category_labels = []
+    category_values = []
+    category_display = dict(Expense.CATEGORY_CHOICES)
+    for row in category_rows:
+        category_labels.append(category_display.get(row['category'], row['category'] or 'Autre'))
+        category_values.append(float(row['total'] or 0))
+
+    monthly_totals = {m: 0 for m in range(1, 13)}
+    rows = expenses.filter(date__year=today.year).annotate(month=TruncMonth('date')).values('month').annotate(total=Sum('amount'))
+    for row in rows:
+        monthly_totals[row['month'].month] = float(row['total'] or 0)
+
+    return render(request, 'store/expense_list.html', {
+        'expenses': expenses,
+        'total_expenses': total_expenses,
+        'current_month_total': current_month_total,
+        'monthly_limit': monthly_limit,
+        'budget_remaining': budget_remaining,
+        'over_budget': over_budget,
+        'category_labels': json.dumps(category_labels),
+        'category_values': json.dumps(category_values),
+        'month_labels': json.dumps([date(1900, m, 1).strftime('%b') for m in range(1, 13)]),
+        'month_values': json.dumps([monthly_totals[m] for m in range(1, 13)]),
+        'current_sort': sort,
+        'current_order': order,
+    })
+
+
+def expense_create(request):
+    form = ExpenseForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Dépense ajoutée avec succès.')
+        return redirect('store:expense_list')
+    return render(request, 'store/expense_form.html', {'form': form, 'title': 'Nouvelle dépense'})
+
+
+def expense_update(request, pk):
+    expense = get_object_or_404(Expense, pk=pk)
+    form = ExpenseForm(request.POST or None, instance=expense)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Dépense modifiée avec succès.')
+        return redirect('store:expense_list')
+    return render(request, 'store/expense_form.html', {'form': form, 'title': 'Modifier la dépense'})
+
+
+def expense_delete(request, pk):
+    expense = get_object_or_404(Expense, pk=pk)
+    if request.method == 'POST':
+        expense.delete()
+        messages.success(request, 'Dépense supprimée avec succès.')
+        return redirect('store:expense_list')
+    return render(request, 'store/expense_confirm_delete.html', {'expense': expense})
+
+
+def debt_list(request):
+    sort = request.GET.get('sort', '')
+    order = request.GET.get('order', 'asc')
+    debts = Debt.objects.all()
+    sort_fields = {
+        'person': 'person',
+        'amount': 'amount',
+        'due_date': 'due_date',
+        'type': 'debt_type',
+        'status': 'paid',
+    }
+    if sort in sort_fields:
+        order_prefix = '-' if order == 'desc' else ''
+        debts = debts.order_by(f'{order_prefix}{sort_fields[sort]}')
+    else:
+        debts = debts.order_by('paid', 'due_date')
+
+    outstanding_debt_total = debts.filter(paid=False).aggregate(total=Sum('amount'))['total'] or 0
+    overdue_debt_total = debts.filter(paid=False, due_date__lt=date.today()).aggregate(total=Sum('amount'))['total'] or 0
+    return render(request, 'store/debt_list.html', {
+        'debts': debts,
+        'outstanding_debt_total': outstanding_debt_total,
+        'overdue_debt_total': overdue_debt_total,
+        'current_sort': sort,
+        'current_order': order,
+    })
+
+
+def debt_create(request):
+    form = DebtForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Dette ajoutée avec succès.')
+        return redirect('store:debt_list')
+    return render(request, 'store/debt_form.html', {'form': form, 'title': 'Nouvelle dette'})
+
+
+def debt_update(request, pk):
+    debt = get_object_or_404(Debt, pk=pk)
+    form = DebtForm(request.POST or None, instance=debt)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Dette modifiée avec succès.')
+        return redirect('store:debt_list')
+    return render(request, 'store/debt_form.html', {'form': form, 'title': 'Modifier la dette'})
+
+
+def debt_delete(request, pk):
+    debt = get_object_or_404(Debt, pk=pk)
+    if request.method == 'POST':
+        debt.delete()
+        messages.success(request, 'Dette supprimée avec succès.')
+        return redirect('store:debt_list')
+    return render(request, 'store/debt_confirm_delete.html', {'debt': debt})
+
+
+def debt_mark_paid(request, pk):
+    debt = get_object_or_404(Debt, pk=pk)
+    debt.paid = True
+    debt.paid_at = timezone.now()
+    debt.save(update_fields=['paid', 'paid_at'])
+    messages.success(request, 'Dette marquée comme réglée.')
+    return redirect('store:debt_list')
+
+
+def phone_credit_list(request):
+    phone_credits = PhoneCredit.objects.all()
+    total_phone_credits = phone_credits.aggregate(total=Sum('amount'))['total'] or 0
+    return render(request, 'store/phone_credit_list.html', {
+        'phone_credits': phone_credits,
+        'total_phone_credits': total_phone_credits,
+    })
+
+
+def phone_credit_create(request):
+    form = PhoneCreditForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Crédit téléphonique ajouté avec succès.')
+        return redirect('store:phone_credit_list')
+    return render(request, 'store/phone_credit_form.html', {'form': form, 'title': 'Nouveau crédit'})
+
+
+def phone_credit_update(request, pk):
+    phone_credit = get_object_or_404(PhoneCredit, pk=pk)
+    form = PhoneCreditForm(request.POST or None, instance=phone_credit)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Crédit téléphonique modifié avec succès.')
+        return redirect('store:phone_credit_list')
+    return render(request, 'store/phone_credit_form.html', {'form': form, 'title': 'Modifier le crédit'})
+
+
+def phone_credit_delete(request, pk):
+    phone_credit = get_object_or_404(PhoneCredit, pk=pk)
+    if request.method == 'POST':
+        phone_credit.delete()
+        messages.success(request, 'Crédit téléphonique supprimé avec succès.')
+        return redirect('store:phone_credit_list')
+    return render(request, 'store/phone_credit_confirm_delete.html', {'phone_credit': phone_credit})
+
+
+def phone_credit_purchase_list(request):
+    purchases = PhoneCreditPurchase.objects.all()
+    total_purchased = purchases.aggregate(total=Sum('amount'))['total'] or 0
+    available_stock = PhoneCreditPurchase.get_available_stock()
+    return render(request, 'store/phone_credit_purchase_list.html', {
+        'purchases': purchases,
+        'total_purchased': total_purchased,
+        'available_stock': available_stock,
+        'low_stock_alert': available_stock < Decimal('10000.00'),
+    })
+
+
+def phone_credit_purchase_create(request):
+    form = PhoneCreditPurchaseForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Achat de crédit ajouté avec succès.')
+        return redirect('store:phone_credit_purchase_list')
+    return render(request, 'store/phone_credit_purchase_form.html', {'form': form, 'title': 'Nouvel achat'})
+
+
+def phone_credit_purchase_update(request, pk):
+    purchase = get_object_or_404(PhoneCreditPurchase, pk=pk)
+    form = PhoneCreditPurchaseForm(request.POST or None, instance=purchase)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Achat de crédit modifié avec succès.')
+        return redirect('store:phone_credit_purchase_list')
+    return render(request, 'store/phone_credit_purchase_form.html', {'form': form, 'title': 'Modifier l’achat'})
+
+
+def phone_credit_purchase_delete(request, pk):
+    purchase = get_object_or_404(PhoneCreditPurchase, pk=pk)
+    if request.method == 'POST':
+        purchase.delete()
+        messages.success(request, 'Achat de crédit supprimé avec succès.')
+        return redirect('store:phone_credit_purchase_list')
+    return render(request, 'store/phone_credit_purchase_confirm_delete.html', {'purchase': purchase})
