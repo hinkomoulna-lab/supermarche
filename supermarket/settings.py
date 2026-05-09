@@ -99,3 +99,13 @@ LOGIN_REDIRECT_URL = 'store:home'
 LOGOUT_REDIRECT_URL = 'login'
 
 OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-5.2')
+
+# Auto-create admin if env vars set
+_admin_user = os.getenv('DJANGO_SUPERUSER_USERNAME', '').strip()
+_admin_pass = os.getenv('DJANGO_SUPERUSER_PASSWORD', '').strip()
+if _admin_user and _admin_pass:
+    import django
+    django.setup()
+    from django.contrib.auth.models import User
+    if not User.objects.filter(is_superuser=True).exists():
+        User.objects.create_superuser(_admin_user, '', _admin_pass)
