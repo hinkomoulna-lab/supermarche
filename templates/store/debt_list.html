@@ -42,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for debt in debts %}
+                {% for debt in page_obj %}
                     <tr>
                         <td>{{ debt.person }}</td>
                         <td>{{ debt.get_debt_type_display }}</td>
@@ -74,4 +74,5 @@
         </table>
     </div>
 </div>
+{% include 'store/_pagination.html' %}
 {% endblock %}

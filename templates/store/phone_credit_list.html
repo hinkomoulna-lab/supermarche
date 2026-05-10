@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for phone_credit in phone_credits %}
+                {% for phone_credit in page_obj %}
                     <tr>
                         <td>{{ phone_credit.phone_number }}</td>
                         <td>{{ phone_credit.get_operator_display }}</td>
@@ -57,4 +57,5 @@
         </table>
     </div>
 </div>
+{% include 'store/_pagination.html' %}
 {% endblock %}

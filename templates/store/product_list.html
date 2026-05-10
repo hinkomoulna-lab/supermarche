@@ -47,7 +47,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for product in products %}
+        {% for product in page_obj %}
             <tr>
                 <td>
                     {% if product.image %}
@@ -101,4 +101,5 @@
     </tbody>
 </table>
 </div>
+{% include 'store/_pagination.html' %}
 {% endblock %}

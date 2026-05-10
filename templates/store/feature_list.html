@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for feature in features %}
+                {% for feature in page_obj %}
                     <tr>
                         <td>
                             <strong>{{ feature.title }}</strong>
@@ -53,4 +53,5 @@
             </tbody>
         </table>
 </div>
+{% include 'store/_pagination.html' %}
 {% endblock %}

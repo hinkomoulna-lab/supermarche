@@ -75,7 +75,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for sale in sales %}
+        {% for sale in page_obj %}
             <tr>
                 <td><input class="form-check-input sale-check" type="checkbox" name="sale_ids" value="{{ sale.id }}" aria-label="Sélectionner la vente #{{ sale.id }}"></td>
                 <td><span class="badge bg-light text-dark">#{{ sale.id }}</span></td>
@@ -128,4 +128,5 @@
         }
     });
 </script>
+{% include 'store/_pagination.html' %}
 {% endblock %}

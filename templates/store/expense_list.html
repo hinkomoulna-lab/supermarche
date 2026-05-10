@@ -75,7 +75,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for expense in expenses %}
+                {% for expense in page_obj %}
                     <tr>
                         <td>{{ expense.description }}</td>
                         <td>{{ expense.get_category_display }}</td>
@@ -131,4 +131,5 @@ new Chart(document.getElementById('categoryExpenseChart'), {
     options: { responsive: true }
 });
 </script>
+{% include 'store/_pagination.html' %}
 {% endblock %}

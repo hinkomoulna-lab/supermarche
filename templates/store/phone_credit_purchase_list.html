@@ -44,7 +44,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for purchase in purchases %}
+                {% for purchase in page_obj %}
                     <tr>
                         <td>{{ purchase.amount }} FCFA</td>
                         <td>{{ purchase.date|date:'d/m/Y' }}</td>
@@ -62,4 +62,5 @@
         </table>
     </div>
 </div>
+{% include 'store/_pagination.html' %}
 {% endblock %}

@@ -26,7 +26,7 @@
     <div class="col-lg-4">
         <div class="card shadow-sm p-4">
             <h5 class="card-title">Nombre de pertes</h5>
-            <p class="display-6 mb-0">{{ losses|length }}</p>
+            <p class="display-6 mb-0">{{ page_obj.paginator.count }}</p>
         </div>
     </div>
 </div>
@@ -45,7 +45,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for loss in losses %}
+                {% for loss in page_obj %}
                     <tr>
                         <td>{{ loss.product.name }}</td>
                         <td>{{ loss.quantity }}</td>
@@ -63,4 +63,5 @@
         </table>
     </div>
 </div>
+{% include 'store/_pagination.html' %}
 {% endblock %}

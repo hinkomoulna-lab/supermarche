@@ -22,6 +22,7 @@ from django.db.models import Sum, F, Count
 from django.db.models.deletion import ProtectedError
 from django.db.models.functions import TruncMonth, TruncYear
 from django.core import serializers
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, HttpResponse
 from django.contrib import messages
@@ -162,14 +163,22 @@ def product_list(request):
         order_prefix = '-' if order == 'desc' else ''
         products = products.order_by(f'{order_prefix}{sort_fields[sort]}')
 
+    paginator = Paginator(products, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
+
     return render(request, 'store/product_list.html', {
-        'products': products,
+        'page_obj': page_obj,
         'form': form,
         'query': query,
         'min_price': min_price,
         'max_price': max_price,
         'current_sort': sort,
         'current_order': order,
+        'query_params': qp.urlencode(),
     })
 
 
@@ -297,7 +306,17 @@ def feature_list(request):
         'coding': features.filter(status='coding').count(),
         'done': features.filter(status='done').count(),
     }
-    return render(request, 'store/feature_list.html', {'features': features, 'counts': counts})
+    paginator = Paginator(features, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
+    return render(request, 'store/feature_list.html', {
+        'page_obj': page_obj,
+        'counts': counts,
+        'query_params': qp.urlencode(),
+    })
 
 
 def feature_create(request):
@@ -388,10 +407,17 @@ def product_manage(request):
         products = products.order_by(f'{order_prefix}{sort_fields[sort]}')
     else:
         products = products.order_by('name')
+    paginator = Paginator(products, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
     return render(request, 'store/product_manage.html', {
-        'products': products,
+        'page_obj': page_obj,
         'current_sort': sort,
         'current_order': order,
+        'query_params': qp.urlencode(),
     })
 
 
@@ -560,15 +586,24 @@ def sale_history(request):
     daily_total = Sale.objects.filter(sale_date=today).aggregate(total=Sum('total'))['total'] or 0
     monthly_total = Sale.objects.filter(sale_date__year=today.year, sale_date__month=today.month).aggregate(total=Sum('total'))['total'] or 0
     total_amount = Sale.objects.aggregate(total=Sum('total'))['total'] or 0
+
+    paginator = Paginator(sales, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
+
+    all_sales_count = Sale.objects.count()
     report_text = (
         f"Rapport des ventes - {today.strftime('%d/%m/%Y')}\n"
         f"Ventes du jour: {daily_total} FCFA\n"
         f"Ventes du mois: {monthly_total} FCFA\n"
         f"Total general: {total_amount} FCFA\n"
-        f"Nombre de ventes: {sales.count()}"
+        f"Nombre de ventes: {all_sales_count}"
     )
     return render(request, 'store/sale_history.html', {
-        'sales': sales,
+        'page_obj': page_obj,
         'daily_total': daily_total,
         'monthly_total': monthly_total,
         'total_amount': total_amount,
@@ -576,6 +611,7 @@ def sale_history(request):
         'email_report_url': f"mailto:?subject={quote('Rapport des ventes')}&body={quote(report_text)}",
         'current_sort': sort,
         'current_order': order,
+        'query_params': qp.urlencode(),
     })
 
 
@@ -984,11 +1020,11 @@ def expense_list(request):
         expenses = expenses.order_by(f'{order_prefix}{sort_fields[sort]}')
     else:
         expenses = expenses.order_by('-date')
-    total_expenses = expenses.aggregate(total=Sum('amount'))['total'] or 0
+    total_expenses = Expense.objects.aggregate(total=Sum('amount'))['total'] or 0
     settings = StoreSettings.load()
     today = date.today()
 
-    current_month_expenses = expenses.filter(date__year=today.year, date__month=today.month)
+    current_month_expenses = Expense.objects.filter(date__year=today.year, date__month=today.month)
     current_month_total = current_month_expenses.aggregate(total=Sum('amount'))['total'] or 0
     monthly_limit = settings.monthly_expense_limit or 0
     over_budget = monthly_limit > 0 and current_month_total > monthly_limit
@@ -1003,12 +1039,19 @@ def expense_list(request):
         category_values.append(float(row['total'] or 0))
 
     monthly_totals = {m: 0 for m in range(1, 13)}
-    rows = expenses.filter(date__year=today.year).annotate(month=TruncMonth('date')).values('month').annotate(total=Sum('amount'))
+    rows = Expense.objects.filter(date__year=today.year).annotate(month=TruncMonth('date')).values('month').annotate(total=Sum('amount'))
     for row in rows:
         monthly_totals[row['month'].month] = float(row['total'] or 0)
 
+    paginator = Paginator(expenses, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
+
     return render(request, 'store/expense_list.html', {
-        'expenses': expenses,
+        'page_obj': page_obj,
         'total_expenses': total_expenses,
         'current_month_total': current_month_total,
         'monthly_limit': monthly_limit,
@@ -1020,6 +1063,7 @@ def expense_list(request):
         'month_values': json.dumps([monthly_totals[m] for m in range(1, 13)]),
         'current_sort': sort,
         'current_order': order,
+        'query_params': qp.urlencode(),
     })
 
 
@@ -1068,14 +1112,23 @@ def debt_list(request):
     else:
         debts = debts.order_by('paid', 'due_date')
 
-    outstanding_debt_total = debts.filter(paid=False).aggregate(total=Sum('amount'))['total'] or 0
-    overdue_debt_total = debts.filter(paid=False, due_date__lt=date.today()).aggregate(total=Sum('amount'))['total'] or 0
+    outstanding_debt_total = Debt.objects.filter(paid=False).aggregate(total=Sum('amount'))['total'] or 0
+    overdue_debt_total = Debt.objects.filter(paid=False, due_date__lt=date.today()).aggregate(total=Sum('amount'))['total'] or 0
+
+    paginator = Paginator(debts, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
+
     return render(request, 'store/debt_list.html', {
-        'debts': debts,
+        'page_obj': page_obj,
         'outstanding_debt_total': outstanding_debt_total,
         'overdue_debt_total': overdue_debt_total,
         'current_sort': sort,
         'current_order': order,
+        'query_params': qp.urlencode(),
     })
 
 
@@ -1118,10 +1171,17 @@ def debt_mark_paid(request, pk):
 
 def phone_credit_list(request):
     phone_credits = PhoneCredit.objects.all()
-    total_phone_credits = phone_credits.aggregate(total=Sum('amount'))['total'] or 0
+    total_phone_credits = PhoneCredit.objects.aggregate(total=Sum('amount'))['total'] or 0
+    paginator = Paginator(phone_credits, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
     return render(request, 'store/phone_credit_list.html', {
-        'phone_credits': phone_credits,
+        'page_obj': page_obj,
         'total_phone_credits': total_phone_credits,
+        'query_params': qp.urlencode(),
     })
 
 
@@ -1155,13 +1215,20 @@ def phone_credit_delete(request, pk):
 
 def phone_credit_purchase_list(request):
     purchases = PhoneCreditPurchase.objects.all()
-    total_purchased = purchases.aggregate(total=Sum('amount'))['total'] or 0
+    total_purchased = PhoneCreditPurchase.objects.aggregate(total=Sum('amount'))['total'] or 0
     available_stock = PhoneCreditPurchase.get_available_stock()
+    paginator = Paginator(purchases, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
     return render(request, 'store/phone_credit_purchase_list.html', {
-        'purchases': purchases,
+        'page_obj': page_obj,
         'total_purchased': total_purchased,
         'available_stock': available_stock,
         'low_stock_alert': available_stock < Decimal('10000.00'),
+        'query_params': qp.urlencode(),
     })
 
 
@@ -1198,10 +1265,17 @@ def phone_credit_purchase_delete(request, pk):
 # =========================
 def stock_loss_list(request):
     losses = StockLoss.objects.select_related('product').all()
-    total_loss = losses.aggregate(total=Sum('loss_amount'))['total'] or 0
+    total_loss = StockLoss.objects.aggregate(total=Sum('loss_amount'))['total'] or 0
+    paginator = Paginator(losses, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    qp = request.GET.copy()
+    if 'page' in qp:
+        del qp['page']
     return render(request, 'store/stock_loss_list.html', {
-        'losses': losses,
+        'page_obj': page_obj,
         'total_loss': total_loss,
+        'query_params': qp.urlencode(),
     })
 
 
