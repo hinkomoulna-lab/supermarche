@@ -664,6 +664,7 @@
         }
     </style>
     <link href="/static/css/voice-input.css" rel="stylesheet">
+    <link href="/static/css/ribbon.css" rel="stylesheet">
 </head>
 <body class="theme-{{ store_settings.theme|default:'blue' }}">
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -750,7 +751,10 @@
         </div>
     {% endif %}
     {% block content %}{% endblock %}
-    <div class="text-center footer-note mt-4">Développé par Hinkomou Moulna Clement</div>
+    <footer class="app-footer">
+        <span>Développé par Hinkomou Moulna Clement</span>
+        <span class="update-badge"><i class="bi bi-git-commit"></i> v{{ commit_count|default:0 }}</span>
+    </footer>
 </div>
 </div> <!-- .app-content -->
 <button class="btn btn-primary calculator-toggle" id="calculatorToggle" type="button" title="Calculatrice">

@@ -2,16 +2,12 @@
 {% block title %}Caisse - Supermarché{% endblock %}
 
 {% block content %}
-<div class="page-header mb-4">
-    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
-        <div>
-            <h1 class="h3 mb-1">Caisse</h1>
-            <p class="text-secondary mb-0">Enregistre une vente avec un ou plusieurs articles.</p>
-        </div>
-        <a class="btn btn-outline-primary align-self-start" href="{% url 'store:sale_history' %}">
-            <i class="bi bi-clock-history me-1"></i>Historique
-        </a>
-    </div>
+<div class="ribbon ribbon-green"><i class="bi bi-cash-stack"></i>Caisse</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <small class="text-secondary">Enregistre une vente avec un ou plusieurs articles.</small>
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'store:sale_history' %}">
+        <i class="bi bi-clock-history me-1"></i>Historique
+    </a>
 </div>
 
 <div class="card shadow-sm mb-3">

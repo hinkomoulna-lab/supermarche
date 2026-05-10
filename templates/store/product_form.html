@@ -2,9 +2,7 @@
 {% block title %}{{ title }} - Supermarché{% endblock %}
 
 {% block content %}
-<div class="card shadow-sm">
-    <div class="card-body">
-        <h1 class="h4 mb-4">{{ title }}</h1>
+<div class="ribbon ribbon-purple"><i class="bi bi-box-seam"></i>{{ title }}</div>
         <form method="post" enctype="multipart/form-data" class="row g-3" id="productForm">
             {% csrf_token %}
             <div class="col-md-4">

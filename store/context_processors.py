@@ -1,3 +1,4 @@
+import subprocess
 from types import SimpleNamespace
 from datetime import date
 
@@ -15,6 +16,13 @@ DEFAULT_STORE_SETTINGS = SimpleNamespace(
     invoice_layout='classic',
     monthly_expense_limit=0,
 )
+
+
+def get_commit_count():
+    try:
+        return subprocess.check_output(['git', 'rev-list', '--count', 'HEAD'], stderr=subprocess.DEVNULL).decode().strip()
+    except Exception:
+        return '0'
 
 
 def store_settings(request):
@@ -49,4 +57,9 @@ def store_settings(request):
             'text': f'{overdue_debts} dette(s) en retard',
         })
 
-    return {'store_settings': settings, 'global_alerts': alerts, 'low_stock_count': low_stock_products}
+    return {
+        'store_settings': settings,
+        'global_alerts': alerts,
+        'low_stock_count': low_stock_products,
+        'commit_count': get_commit_count(),
+    }
