@@ -418,6 +418,8 @@ def create_sale(request):
         sale_modes = request.POST.getlist('sale_mode')
         sale_date_str = request.POST.get('sale_date', '')
         sale_notes = request.POST.get('notes', '')
+        customer_name = request.POST.get('customer_name', '').strip()
+        customer_phone = request.POST.get('customer_phone', '').strip()
         rows = []
         errors = []
         requested_quantities = {}
@@ -460,7 +462,11 @@ def create_sale(request):
                 messages.error(request, error)
         else:
             with transaction.atomic():
-                sale = Sale.objects.create(sale_date=sale_date, notes=sale_notes)
+                sale = Sale.objects.create(
+                    sale_date=sale_date, sale_time=timezone.localtime().time(),
+                    notes=sale_notes, customer_name=customer_name,
+                    customer_phone=customer_phone,
+                )
                 for product, quantity, mode in rows:
                     if mode == 'paquet' and product.pack_size > 1:
                         price = product.pack_price or (product.price * product.pack_size)
@@ -553,6 +559,8 @@ def sale_update(request, sale_id):
         sale_modes = request.POST.getlist('sale_mode')
         sale_date_str = request.POST.get('sale_date', '')
         sale_notes = request.POST.get('notes', '')
+        customer_name = request.POST.get('customer_name', '').strip()
+        customer_phone = request.POST.get('customer_phone', '').strip()
         rows = []
         errors = []
         requested_quantities = {}
@@ -562,6 +570,8 @@ def sale_update(request, sale_id):
         except (ValueError, TypeError):
             sale.sale_date = date.today()
         sale.notes = sale_notes
+        sale.customer_name = customer_name
+        sale.customer_phone = customer_phone
 
         for index, product_id in enumerate(product_ids):
             quantity_value = quantities[index] if index < len(quantities) else ''
@@ -684,57 +694,146 @@ def sale_invoice(request, sale_id):
 
 
 def sale_invoice_pdf(request, sale_id):
+    from reportlab.lib import colors as rl_colors
+    from reportlab.lib.units import mm
+    from .utils import montant_en_lettres
+
     sale = get_object_or_404(Sale.objects.prefetch_related('items__product'), pk=sale_id)
     settings = StoreSettings.load()
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=A4)
     width, height = A4
-    y = height - 50
+    margin = 45
+    content_width = width - 2 * margin
 
+    # Couleurs
+    primary = rl_colors.HexColor('#2563eb')
+    primary_dark = rl_colors.HexColor('#1d4ed8')
+    gray_50 = rl_colors.HexColor('#f8fafc')
+    gray_200 = rl_colors.HexColor('#e2e8f0')
+    gray_500 = rl_colors.HexColor('#64748b')
+    gray_700 = rl_colors.HexColor('#334155')
+
+    y = height - 40
+
+    # En-tête (bandeau coloré)
+    pdf.setFillColor(primary)
+    pdf.setStrokeColor(primary)
+    pdf.setLineWidth(0)
+    pdf.roundRect(margin - 5, y - 5, content_width + 10, 72, 8, fill=1, stroke=0)
+    pdf.setFillColor(rl_colors.white)
+
+    # Logo + nom magasin
+    logo_x = margin + 8
     if settings.logo:
         try:
-            pdf.drawImage(settings.logo.path, 50, y - 35, width=90, height=45, preserveAspectRatio=True, mask='auto')
+            pdf.drawImage(settings.logo.path, logo_x, y + 8, width=70, height=35, preserveAspectRatio=True, mask='auto')
+            logo_x += 80
         except Exception:
             pass
 
-    pdf.setFont('Helvetica-Bold', 18)
-    pdf.drawString(155 if settings.logo else 50, y, settings.store_name)
-    y -= 24
-    pdf.setFont('Helvetica-Bold', 15)
-    pdf.drawString(155 if settings.logo else 50, y, 'Facture')
-    pdf.setFont('Helvetica', 11)
-    y -= 25
-    pdf.drawString(50, y, f'Vente #{sale.id}')
-    y -= 18
-    pdf.drawString(50, y, f'Date : {timezone.localtime(sale.created_at).strftime("%d/%m/%Y %H:%M")}')
-    y -= 35
+    pdf.setFont('Helvetica-Bold', 16)
+    pdf.drawString(logo_x, y + 22, settings.store_name)
+    pdf.setFont('Helvetica', 8)
+    store_info = settings.address or ''
+    if settings.phone_number:
+        store_info += f"  Tel: {settings.phone_number}" if store_info else f"Tel: {settings.phone_number}"
+    if store_info:
+        pdf.drawString(logo_x, y + 8, store_info)
 
-    pdf.setFont('Helvetica-Bold', 10)
-    pdf.drawString(50, y, 'Produit')
-    pdf.drawString(250, y, 'Prix')
-    pdf.drawString(330, y, 'Quantite')
-    pdf.drawString(420, y, 'Sous-total')
-    y -= 15
-    pdf.line(50, y, width - 50, y)
-    y -= 18
+    # N° facture à droite
+    pdf.setFont('Helvetica-Bold', 22)
+    pdf.drawRightString(width - margin - 8, y + 22, f'#{sale.id}')
+    pdf.setFont('Helvetica', 9)
+    pdf.drawRightString(width - margin - 8, y + 6, f'Date: {sale.sale_date.strftime("%d/%m/%Y")}')
 
-    pdf.setFont('Helvetica', 10)
-    for item in sale.items.all():
-        if y < 80:
-            pdf.showPage()
-            y = height - 50
-            pdf.setFont('Helvetica', 10)
-        pdf.drawString(50, y, item.product.name[:32])
-        pdf.drawString(250, y, f'{item.price} FCFA')
-        pdf.drawString(330, y, f'{item.quantity} {item.product.get_unit_display()}')
-        pdf.drawString(420, y, f'{item.subtotal} FCFA')
+    y -= 60
+
+    # Client
+    if sale.customer_name:
+        pdf.setFillColor(gray_500)
+        pdf.setFont('Helvetica', 7)
+        pdf.drawString(margin, y, 'CLIENT')
+        pdf.setFillColor(gray_700)
+        pdf.setFont('Helvetica-Bold', 11)
+        y -= 14
+        pdf.drawString(margin, y, sale.customer_name)
+        y -= 14
+        if sale.customer_phone:
+            pdf.setFont('Helvetica', 9)
+            pdf.setFillColor(gray_500)
+            pdf.drawString(margin, y, f'Tel: {sale.customer_phone}')
+            y -= 18
+        else:
+            y -= 6
+
+    if sale.notes:
+        y -= 8
+        pdf.setFillColor(rl_colors.HexColor('#9a3412'))
+        pdf.setFont('Helvetica-Oblique', 9)
+        pdf.drawString(margin, y, f'Note: {sale.notes}')
         y -= 18
 
-    y -= 10
-    pdf.line(50, y, width - 50, y)
-    y -= 25
-    pdf.setFont('Helvetica-Bold', 13)
-    pdf.drawString(350, y, f'Total : {sale.total} FCFA')
+    # Tableau en-tête
+    y -= 8
+    pdf.setFillColor(primary)
+    pdf.roundRect(margin, y - 4, content_width, 18, 4, fill=1, stroke=0)
+    pdf.setFillColor(rl_colors.white)
+    pdf.setFont('Helvetica-Bold', 8)
+    col_x = [margin + 8, margin + 70, margin + 270, margin + 340, margin + 390, margin + 460]
+    headers = ['Code', 'Produit', 'Prix', 'Qté', 'Mode', 'Total']
+    for i, h in enumerate(headers):
+        pdf.drawString(col_x[i], y, h)
+    y -= 26
+
+    # Lignes du tableau
+    pdf.setFont('Helvetica', 9)
+    for item in sale.items.all():
+        if y < 70:
+            pdf.showPage()
+            y = height - 40
+        pdf.setFillColor(gray_700)
+        pdf.drawString(col_x[0], y, item.product.code or '-')
+        pdf.drawString(col_x[1], y, item.product.name[:28])
+        pdf.drawRightString(col_x[2] + 50, y, f'{item.price:,.0f} F')
+        pdf.drawString(col_x[3], y, f'{item.quantity:,.0f} {item.product.get_unit_display()}')
+        mode_text = 'Pqt' if item.sale_mode == 'paquet' else 'Dét'
+        pdf.drawString(col_x[4], y, mode_text)
+        pdf.drawRightString(col_x[5] + 50, y, f'{item.subtotal:,.0f} F')
+        y -= 18
+
+    # Ligne de total
+    y -= 6
+    pdf.setStrokeColor(primary)
+    pdf.setLineWidth(1.5)
+    pdf.line(margin, y, width - margin, y)
+    y -= 22
+    pdf.setFillColor(primary)
+    pdf.setFont('Helvetica-Bold', 14)
+    pdf.drawRightString(width - margin, y, f'Total: {sale.total:,.0f} FCFA')
+
+    # Montant en lettres
+    y -= 26
+    pdf.setFillColor(gray_500)
+    pdf.setFont('Helvetica-Oblique', 9)
+    montant_lettres = montant_en_lettres(sale.total)
+    pdf.drawString(margin, y, f'Arrêtée la présente facture à la somme de : {montant_lettres}')
+
+    # Signature
+    y -= 40
+    if settings.signature:
+        try:
+            pdf.drawImage(settings.signature.path, margin, y - 25, width=100, height=40, preserveAspectRatio=True, mask='auto')
+        except Exception:
+            pass
+    else:
+        pdf.setFont('Helvetica', 9)
+        pdf.setFillColor(gray_500)
+        pdf.drawString(margin, y, 'Cachet & signature')
+
+    pdf.setFont('Helvetica', 7)
+    pdf.setFillColor(gray_500)
+    pdf.drawRightString(width - margin, y, f'Facture #{sale.id} - {sale.sale_date.strftime("%d/%m/%Y")}')
 
     pdf.showPage()
     pdf.save()

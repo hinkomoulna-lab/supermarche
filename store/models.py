@@ -72,6 +72,9 @@ class Sale(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     sale_date = models.DateField('Date de vente', default=date.today)
+    sale_time = models.TimeField('Heure de vente', null=True, blank=True)
+    customer_name = models.CharField('Nom & prénom du client', max_length=200, blank=True, default='')
+    customer_phone = models.CharField('Téléphone client', max_length=30, blank=True, default='')
     notes = models.TextField('Notes', blank=True)
 
     class Meta:

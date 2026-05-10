@@ -2,27 +2,62 @@
 {% block title %}Détail de la vente #{{ sale.id }} - Supermarché{% endblock %}
 
 {% block content %}
-<div class="mb-4">
-    <h1>Détail de la vente #{{ sale.id }}</h1>
-    <p class="text-muted">Date : {{ sale.sale_date|date:'d/m/Y' }}</p>
-    {% if sale.notes %}
-        <p class="text-muted"><em>{{ sale.notes }}</em></p>
-    {% endif %}
-    <div class="d-flex flex-wrap gap-2 mt-3">
-        <a class="btn btn-outline-primary" href="{% url 'store:sale_invoice' sale.id %}">Imprimer la facture</a>
-        <a class="btn btn-outline-success" href="{% url 'store:sale_invoice_pdf' sale.id %}">Exporter PDF</a>
-        <a class="btn btn-outline-warning" href="{% url 'store:sale_update' sale.id %}">Modifier</a>
-        <a class="btn btn-outline-danger" href="{% url 'store:sale_delete' sale.id %}">Supprimer</a>
-    </div>
-</div>
-<div class="row g-4 mb-4">
-    <div class="col-md-4">
-        <div class="card p-3">
-            <h5 class="card-title">Informations</h5>
-            <p class="mb-1"><strong>Total :</strong> {{ sale.total }} FCFA</p>
-            <p class="mb-0"><strong>Lignes :</strong> {{ sale.items.count }}</p>
+<div class="page-header mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Détail de la vente #{{ sale.id }}</h1>
+            <p class="text-secondary mb-0">
+                {{ sale.sale_date|date:'d/m/Y' }}
+                {% if sale.sale_time %} &middot; {{ sale.sale_time|time:'H\hi' }}{% endif %}
+            </p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary" href="{% url 'store:sale_invoice' sale.id %}"><i class="bi bi-receipt me-1"></i>Facture</a>
+            <a class="btn btn-success" href="{% url 'store:sale_invoice_pdf' sale.id %}"><i class="bi bi-file-pdf me-1"></i>PDF</a>
+            <a class="btn btn-outline-warning" href="{% url 'store:sale_update' sale.id %}"><i class="bi bi-pencil me-1"></i>Modifier</a>
+            <a class="btn btn-outline-danger" href="{% url 'store:sale_delete' sale.id %}"><i class="bi bi-trash me-1"></i>Supprimer</a>
         </div>
     </div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-info-circle me-2 text-primary"></i>Informations</h5>
+                <p class="mb-1"><strong>Total :</strong> {{ sale.total }} FCFA</p>
+                <p class="mb-1"><strong>Lignes :</strong> {{ sale.items.count }}</p>
+                <p class="mb-0"><strong>Date :</strong> {{ sale.sale_date|date:'d/m/Y' }}</p>
+                {% if sale.sale_time %}
+                    <p class="mb-0"><strong>Heure :</strong> {{ sale.sale_time|time:'H\hi' }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if sale.customer_name or sale.customer_phone %}
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-person me-2 text-primary"></i>Client</h5>
+                {% if sale.customer_name %}
+                    <p class="mb-1"><strong>Nom :</strong> {{ sale.customer_name }}</p>
+                {% endif %}
+                {% if sale.customer_phone %}
+                    <p class="mb-0"><strong>Tél :</strong> {{ sale.customer_phone }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if sale.notes %}
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-chat me-2 text-primary"></i>Notes</h5>
+                <p class="mb-0">{{ sale.notes }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 <div class="table-shell">
     <table class="table app-table align-middle mb-0">

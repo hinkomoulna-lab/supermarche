@@ -3,142 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facture vente #{{ sale.id }}</title>
+    <title>Facture #{{ sale.id }} - {{ settings.store_name }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary: {% if settings.theme == 'burgundy' %}#7f1d1d{% elif settings.theme == 'green' %}#16a34a{% elif settings.theme == 'dark' %}#6366f1{% else %}#2563eb{% endif %};
+            --primary-light: color-mix(in srgb, var(--primary) 10%, white);
+            --primary-dark: color-mix(in srgb, var(--primary) 80%, black);
+        }
         @media print {
             .no-print { display: none !important; }
-            body { background: white; }
+            body { background: white !important; }
+            @page { margin: 12mm; }
         }
-        body { background: #f6f7fb; }
-        .invoice { max-width: 820px; margin: 32px auto; background: white; padding: 32px; position: relative; }
-        .invoice-modern { border-top: 8px solid #2563eb; }
-        .invoice-compact { max-width: 720px; padding: 22px; font-size: .92rem; }
-        .invoice-logo { height: 58px; max-width: 150px; object-fit: contain; }
-        .invoice-modern .invoice-title {
-            background: #eff6ff;
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 30px 0;
+        }
+        .invoice-wrap {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+        .invoice {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.08);
+            overflow: hidden;
+        }
+        .invoice-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 28px 36px;
+            position: relative;
+        }
+        .invoice-header::after {
+            content: '';
+            position: absolute;
+            bottom: -24px;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: white;
+            border-radius: 48px 48px 0 0;
+        }
+        .invoice-body {
+            padding: 24px 36px 36px;
+        }
+        .invoice-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            margin: 0;
+        }
+        .invoice-badge {
+            display: inline-block;
+            background: rgba(255,255,255,.2);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+        .info-label {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .info-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .customer-card {
+            background: var(--primary-light);
+            border: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
             border-radius: 12px;
-            padding: 18px;
+            padding: 16px 20px;
         }
-        {% if settings.invoice_watermark %}
-        .invoice::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url('{{ settings.invoice_watermark.url }}');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.08;
-            pointer-events: none;
-            z-index: 0;
+        .table-invoice {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
         }
-        .invoice > * { position: relative; z-index: 1; }
-        @media print {
-            .invoice::before { opacity: 0.12; }
+        .table-invoice thead th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: 10px 12px;
+            border-bottom: 2px solid #e2e8f0;
         }
-        {% elif settings.background_image %}
-        .invoice::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url('{{ settings.background_image.url }}');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.08;
-            pointer-events: none;
-            z-index: 0;
+        .table-invoice tbody td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: .9rem;
+            vertical-align: middle;
         }
-        .invoice > * { position: relative; z-index: 1; }
-        @media print {
-            .invoice::before { opacity: 0.1; }
+        .table-invoice tbody tr:last-child td {
+            border-bottom: none;
         }
-        {% endif %}
-        .badge-mode {
-            font-size: .75rem;
-            padding: .2em .5em;
-            border-radius: 4px;
+        .table-invoice tfoot td {
+            padding: 12px;
+            font-weight: 700;
         }
-        .badge-detail { background: #dbeafe; color: #1e40af; }
-        .badge-paquet { background: #d1fae5; color: #065f46; }
-        .invoice-total-row { background: #f0fdf4; }
+        .total-row {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+        .total-row td {
+            border-bottom: none !important;
+        }
+        .amount-words {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 14px 18px;
+            border: 1px solid #e2e8f0;
+            font-style: italic;
+        }
+        .signature-area {
+            border-top: 2px solid #e2e8f0;
+            padding-top: 20px;
+            margin-top: 10px;
+        }
+        .stamp {
+            display: inline-block;
+            border: 3px solid var(--primary);
+            color: var(--primary);
+            border-radius: 12px;
+            padding: 6px 18px;
+            font-weight: 800;
+            font-size: .8rem;
+            letter-spacing: .1em;
+            opacity: .7;
+            transform: rotate(-5deg);
+        }
+        @media (max-width: 600px) {
+            .invoice-header { padding: 20px; }
+            .invoice-body { padding: 16px 16px 24px; }
+            .invoice-title { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
-    <main class="invoice invoice-{{ settings.invoice_layout }} shadow-sm">
-        <div class="d-flex justify-content-between align-items-start mb-4 invoice-title">
-            <div class="d-flex align-items-center gap-3">
-                {% if settings.logo %}
-                    <img class="invoice-logo" src="{{ settings.logo.url }}" alt="Logo">
-                {% endif %}
-                <div>
-                    <h1 class="h3 mb-1">Facture</h1>
-                    <p class="text-muted mb-0">{{ settings.store_name }}</p>
+    <div class="invoice-wrap">
+        <div class="invoice">
+            <div class="invoice-header">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h1 class="invoice-title">Facture</h1>
+                        <p style="opacity:.85;margin:2px 0 0;font-size:.95rem">{{ settings.store_name }}</p>
+                    </div>
+                    <div class="text-end">
+                        <div class="invoice-badge">#{{ sale.id }}</div>
+                        <p style="margin:6px 0 0;opacity:.85;font-size:.82rem">
+                            {{ sale.sale_date|date:'d/m/Y' }}
+                            {% if sale.sale_time %} &middot; {{ sale.sale_time|time:'H\hi' }}{% endif %}
+                        </p>
+                    </div>
                 </div>
+                {% if settings.address or settings.phone_number %}
+                    <p style="margin:6px 0 0;opacity:.7;font-size:.8rem">
+                        {% if settings.address %}{{ settings.address }}{% endif %}
+                        {% if settings.address and settings.phone_number %} &middot; {% endif %}
+                        {% if settings.phone_number %}{{ settings.phone_number }}{% endif %}
+                    </p>
+                {% endif %}
             </div>
-            <div class="text-end">
-                <p class="mb-1"><strong>Vente #{{ sale.id }}</strong></p>
-                <p class="text-muted mb-0">{{ sale.sale_date|date:'d/m/Y' }}</p>
+
+            <div class="invoice-body">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-7">
+                        {% if sale.customer_name %}
+                            <div class="customer-card">
+                                <div class="info-label">Client</div>
+                                <div class="info-value fs-6">{{ sale.customer_name }}</div>
+                                {% if sale.customer_phone %}
+                                    <div style="color:#64748b;font-size:.85rem;margin-top:2px">
+                                        <i class="bi bi-telephone"></i> {{ sale.customer_phone }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="customer-card" style="opacity:.5">
+                                <div class="info-label">Client</div>
+                                <div class="info-value">Particulier</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex justify-content-end">
+                            <div>
+                                <div class="info-label text-end">Date d'émission</div>
+                                <div class="info-value text-end">{{ sale.sale_date|date:'d F Y' }}</div>
+                                {% if sale.sale_time %}
+                                    <div class="info-label text-end mt-2">Heure</div>
+                                    <div class="info-value text-end">{{ sale.sale_time|time:'H\hi' }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {% if sale.notes %}
-                    <p class="text-muted small mb-0 mt-1"><em>{{ sale.notes }}</em></p>
+                    <div class="mb-4 p-3 rounded" style="background:#fff7ed;border:1px solid #fed7aa;font-size:.85rem;color:#9a3412">
+                        <i class="bi bi-info-circle"></i> {{ sale.notes }}
+                    </div>
                 {% endif %}
+
+                <table class="table-invoice">
+                    <thead>
+                        <tr>
+                            <th style="width:80px">Code</th>
+                            <th>Produit</th>
+                            <th style="width:90px;text-align:right">Prix</th>
+                            <th style="width:80px;text-align:center">Qté</th>
+                            <th style="width:70px;text-align:center">Mode</th>
+                            <th style="width:100px;text-align:right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in sale.items.all %}
+                        <tr>
+                            <td><span style="background:#f1f5f9;padding:2px 8px;border-radius:4px;font-size:.78rem;color:#475569">{{ item.product.code|default:'-' }}</span></td>
+                            <td>{{ item.product.name }}</td>
+                            <td style="text-align:right">{{ item.price|floatformat:0 }} F</td>
+                            <td style="text-align:center">{{ item.quantity|floatformat:0 }} {{ item.product.get_unit_display }}</td>
+                            <td style="text-align:center">
+                                <span style="font-size:.72rem;padding:2px 8px;border-radius:4px;
+                                    {% if item.sale_mode == 'paquet' %}background:#dcfce7;color:#166534;
+                                    {% else %}background:#dbeafe;color:#1e40af;{% endif %}">
+                                    {{ item.get_sale_mode_display }}
+                                </span>
+                            </td>
+                            <td style="text-align:right;font-weight:600">{{ item.subtotal|floatformat:0 }} F</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="5" style="text-align:right;font-size:1.05rem">Total</td>
+                            <td style="text-align:right;font-size:1.15rem;color:var(--primary)">{{ sale.total|floatformat:0 }} FCFA</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="amount-words mt-4">
+                    <span style="font-size:.75rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Arrêtée la présente facture à la somme de :</span>
+                    <div style="font-size:.95rem;color:#1e293b;margin-top:4px">
+                        {{ sale.total|floatformat:0 }} FCFA
+                    </div>
+                </div>
+
+                <div class="signature-area d-flex justify-content-between align-items-end mt-4">
+                    <div>
+                        {% if settings.signature %}
+                            <div style="font-size:.8rem;color:#64748b;margin-bottom:4px">Cachet & signature</div>
+                            <img src="{{ settings.signature.url }}" alt="Signature" style="max-height:60px;max-width:160px;object-fit:contain;">
+                        {% else %}
+                            <div class="stamp">PAYÉ</div>
+                        {% endif %}
+                    </div>
+                    <div style="text-align:right;font-size:.78rem;color:#94a3b8">
+                        Facture #{{ sale.id }}<br>
+                        {{ sale.sale_date|date:'d/m/Y' }}
+                    </div>
+                </div>
             </div>
         </div>
 
-        {% if settings.invoice_layout == 'modern' %}
-            <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                    <div class="border rounded-3 p-3">
-                        <span class="text-muted small d-block">Montant total</span>
-                        <strong class="fs-4">{{ sale.total }} FCFA</strong>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="border rounded-3 p-3">
-                        <span class="text-muted small d-block">Nombre d'articles</span>
-                        <strong class="fs-4">{{ sale.items.count }}</strong>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        <table class="table {% if settings.invoice_layout != 'compact' %}table-bordered{% endif %} align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Code</th>
-                    <th>Produit</th>
-                    <th>Prix unitaire</th>
-                    <th>Quantité</th>
-                    <th>Mode</th>
-                    <th>Sous-total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in sale.items.all %}
-                    <tr>
-                        <td><span class="badge bg-light text-dark">{{ item.product.code|default:'-' }}</span></td>
-                        <td>{{ item.product.name }}</td>
-                        <td>{{ item.price }} FCFA</td>
-                        <td>{{ item.quantity }} {{ item.product.get_unit_display }}</td>
-                        <td><span class="badge-mode badge-{{ item.sale_mode }}">{{ item.get_sale_mode_display }}</span></td>
-                        <td>{{ item.subtotal }} FCFA</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr class="invoice-total-row">
-                    <th colspan="5" class="text-end">Total</th>
-                    <th>{{ sale.total }} FCFA</th>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div class="d-flex gap-2 no-print mt-4">
-            <button class="btn btn-primary" onclick="window.print()">Imprimer</button>
-            <a class="btn btn-success" href="{% url 'store:sale_invoice_pdf' sale.id %}">Exporter PDF</a>
-            <a class="btn btn-secondary" href="{% url 'store:sale_detail' sale.id %}">Retour</a>
+        <div class="d-flex gap-2 justify-content-center mt-4 no-print">
+            <button class="btn btn-primary px-4 py-2" onclick="window.print()" style="border-radius:10px">
+                <i class="bi bi-printer me-2"></i>Imprimer
+            </button>
+            <a class="btn btn-success px-4 py-2" href="{% url 'store:sale_invoice_pdf' sale.id %}" style="border-radius:10px">
+                <i class="bi bi-file-pdf me-2"></i>PDF
+            </a>
+            <a class="btn btn-outline-secondary px-4 py-2" href="{% url 'store:sale_detail' sale.id %}" style="border-radius:10px">
+                <i class="bi bi-arrow-left me-2"></i>Retour
+            </a>
         </div>
-    </main>
+    </div>
 </body>
 </html>
