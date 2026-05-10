@@ -1,6 +1,6 @@
 #!/bin/sh
 # pre-push hook : exporte automatiquement les donnees avant chaque push
-cd "$(dirname "$0")/.." || exit 1
+cd "$(dirname "$0")/../.." || exit 1
 echo "=== Export auto des donnees avant push ==="
 python manage.py export_full_data
 if [ $? -ne 0 ]; then
