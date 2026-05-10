@@ -30,7 +30,7 @@
             <tr>
                 <td>
                     {% if product.image %}
-                        <img class="product-thumb" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <img class="product-thumb" src="{{ product.image.url }}" alt="{{ product.name }}" onclick="openModal(this.src)">
                     {% else %}
                         <div class="product-thumb product-thumb-empty"><i class="bi bi-image"></i></div>
                     {% endif %}

@@ -23,11 +23,19 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Image de l'article</label>
-                {{ form.image }}
-                {{ form.image.errors }}
+                <div class="d-flex gap-2 align-items-start">
+                    <div class="flex-grow-1">
+                        {{ form.image }}
+                        {{ form.image.errors }}
+                    </div>
+                    <label class="btn btn-outline-primary" style="cursor:pointer;white-space:nowrap;">
+                        <i class="bi bi-camera me-1"></i>Photo
+                        <input type="file" accept="image/*" capture="environment" style="display:none" onchange="document.getElementById('id_image').files = this.files; this.form.querySelector('button[type=submit]').focus();">
+                    </label>
+                </div>
                 {% if form.instance.image %}
                     <div class="mt-2">
-                        <img src="{{ form.instance.image.url }}" alt="Aperçu" class="rounded shadow-sm" style="max-height:80px;max-width:100%;object-fit:contain;">
+                        <img src="{{ form.instance.image.url }}" alt="Aperçu" class="rounded shadow-sm" style="max-height:120px;max-width:100%;object-fit:contain;cursor:zoom-in" onclick="openModal(this.src)">
                     </div>
                 {% endif %}
             </div>

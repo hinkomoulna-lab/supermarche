@@ -296,25 +296,29 @@
             animation: popIn .28s ease both;
         }
         .product-thumb {
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
             object-fit: cover;
             box-shadow: 0 6px 14px rgba(15, 23, 42, .12);
-            transition: transform .18s ease, box-shadow .18s ease;
+            transition: transform .2s ease, box-shadow .2s ease;
             transform-origin: center;
+            cursor: zoom-in;
         }
         tbody tr:hover .product-thumb,
         .product-thumb:hover {
-            transform: scale(1.28);
+            transform: scale(1.35);
             box-shadow: 0 14px 32px rgba(15, 23, 42, .22);
         }
         .product-thumb-empty {
             display: grid;
             place-items: center;
+            width: 60px;
+            height: 60px;
             background: rgba(67, 56, 202, .08);
             color: var(--primary-a);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            border-radius: 10px;
         }
         .scripture-panel {
             min-height: 128px;
@@ -913,6 +917,76 @@
         else if (key === 'Escape') { calculatorPanel.hidden = true; event.preventDefault(); }
         else if (key === 'c' || key === 'C') { handleCalcKey('clear'); event.preventDefault(); }
     });
+</script>
+
+<!-- Lightbox modal for product images -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            <img src="" id="modalImage" class="img-fluid rounded shadow" alt="Agrandissement">
+        </div>
+    </div>
+</div>
+
+<!-- Long-press / context menu for product images -->
+<div class="modal fade" id="imageActionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-body p-3 text-center">
+            <p class="mb-3 fw-semibold" id="imageActionProductName"></p>
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary" id="imageActionViewBtn"><i class="bi bi-arrows-fullscreen me-1"></i>Voir l'image</button>
+                <a class="btn btn-outline-success" id="imageActionEditBtn" href=""><i class="bi bi-camera me-1"></i>Modifier la photo</a>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openModal(src) {
+    document.getElementById('modalImage').src = src;
+    new bootstrap.Modal(document.getElementById('imageModal')).show();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var actionModal = new bootstrap.Modal(document.getElementById('imageActionModal'));
+    var lastTouchTime = 0;
+
+    document.querySelectorAll('.product-thumb:not(.product-thumb-empty)').forEach(function(img) {
+        img.addEventListener('click', function(e) {
+            var now = Date.now();
+            if (now - lastTouchTime > 500) {
+                openModal(this.src);
+            }
+        });
+
+        var pressTimer = null;
+        img.addEventListener('touchstart', function(e) {
+            pressTimer = setTimeout(function() {
+                pressTimer = null;
+                lastTouchTime = Date.now();
+                var productName = this.closest('tr') ? this.closest('tr').querySelector('td:nth-child(3)')?.textContent?.trim() || '' : '';
+                document.getElementById('imageActionProductName').textContent = productName;
+                document.getElementById('imageActionViewBtn').onclick = function() { openModal(this.src); actionModal.hide(); }.bind(this);
+                var editLink = document.getElementById('imageActionEditBtn');
+                var row = this.closest('tr');
+                if (row) {
+                    var editHref = row.querySelector('a.btn-outline-secondary')?.getAttribute('href');
+                    if (editHref) editLink.href = editHref;
+                }
+                actionModal.show();
+            }.bind(this), 600);
+        }.bind(this));
+
+        img.addEventListener('touchend', function() {
+            if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+        });
+        img.addEventListener('touchmove', function() {
+            if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+        });
+    });
+});
 </script>
 </body>
 </html>
