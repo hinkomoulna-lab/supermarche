@@ -1,4 +1,7 @@
+import base64
 import csv
+import gzip
+import hashlib
 import json
 import os
 import socket
@@ -7,7 +10,7 @@ import urllib.request
 from urllib.parse import quote
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
-from io import BytesIO
+from io import BytesIO, StringIO
 from urllib.parse import urlencode
 
 from django.conf import settings
@@ -197,13 +200,59 @@ def mobile_access(request):
 
 
 def database_tools(request):
-    database_path = settings.DATABASES['default'].get('NAME')
-    return render(request, 'store/database_tools.html', {'database_path': database_path})
+    db_config = settings.DATABASES['default']
+    db_engine = 'postgresql' if 'postgresql' in db_config.get('ENGINE', '') else 'sqlite'
+    db_name = db_config.get('NAME') or db_config.get('HOST', '')
+    backup_dir = os.path.join(settings.BASE_DIR, 'backups')
+    os.makedirs(backup_dir, exist_ok=True)
+    backups = sorted(
+        [f for f in os.listdir(backup_dir) if f.endswith('.json.gz') or f.endswith('.bak')],
+        reverse=True
+    )[:10]
+    return render(request, 'store/database_tools.html', {
+        'db_engine': db_engine,
+        'db_name': db_name,
+        'backups': backups,
+        'backup_dir': backup_dir,
+    })
+
+
+def _encrypt(data, password):
+    if not password:
+        return data
+    key = hashlib.sha256(password.encode()).digest()
+    encrypted = bytearray()
+    for i, b in enumerate(data):
+        encrypted.append(b ^ key[i % len(key)])
+    return base64.b64encode(bytes(encrypted))
+
+
+def _decrypt(data, password):
+    if not password:
+        return data
+    key = hashlib.sha256(password.encode()).digest()
+    raw = base64.b64decode(data)
+    decrypted = bytearray()
+    for i, b in enumerate(raw):
+        decrypted.append(b ^ key[i % len(key)])
+    return bytes(decrypted)
 
 
 def database_backup(request):
-    database_path = settings.DATABASES['default'].get('NAME')
-    response = FileResponse(open(database_path, 'rb'), as_attachment=True, filename='sauvegarde_supermarche.sqlite3')
+    password = request.POST.get('backup_password', '')
+    buf = StringIO()
+    call_command('dumpdata', 'store', indent=2, stdout=buf, exclude=['contenttypes', 'auth.permission'])
+    raw = buf.getvalue().encode('utf-8')
+    compressed = gzip.compress(raw)
+    if password:
+        compressed = _encrypt(compressed, password)
+        filename = 'sauvegarde_supermarche.bak'
+        content_type = 'application/octet-stream'
+    else:
+        filename = 'sauvegarde_supermarche.json.gz'
+        content_type = 'application/gzip'
+    response = HttpResponse(compressed, content_type=content_type)
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
     return response
 
 

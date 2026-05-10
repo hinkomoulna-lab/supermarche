@@ -1,24 +1,34 @@
 {% extends 'store/base.html' %}
-{% block title %}Base de données - Supermarché{% endblock %}
+{% block title %}Sauvegarde & Sécurité - Supermarché{% endblock %}
 
 {% block content %}
 <div class="card page-header mb-4">
     <div class="card-body">
-        <h1 class="h3 mb-2">Base de données</h1>
-        <p class="text-secondary mb-0">Sauvegarde tes données avant une mise en ligne, un changement d'ordinateur ou une migration.</p>
+        <h1 class="h3 mb-1"><i class="bi bi-shield-lock me-2"></i>Sauvegarde & Sécurité</h1>
+        <p class="text-secondary mb-0">Sauvegarde, exporte et sécurise toutes les données du magasin.</p>
     </div>
 </div>
 
 <div class="row g-4">
+
     <div class="col-lg-6">
         <div class="card h-100">
             <div class="card-body">
-                <h2 class="h5">Sauvegarde complète</h2>
-                <p class="text-muted">Télécharge une copie exacte de la base SQLite utilisée par l'application locale.</p>
-                <a class="btn btn-primary" href="{% url 'store:database_backup' %}">
-                    <i class="bi bi-download me-1"></i>Télécharger la base SQLite
-                </a>
-                <div class="small text-muted mt-3">Fichier actuel : {{ database_path }}</div>
+                <h2 class="h5"><i class="bi bi-download me-1 text-primary"></i>Sauvegarde complète</h2>
+                <p class="text-muted small">Exporte toutes les données en JSON compressé. Fonctionne avec SQLite ET PostgreSQL.</p>
+                <form method="post" action="{% url 'store:database_backup' %}">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        <input type="password" name="backup_password" class="form-control form-control-sm" placeholder="Mot de passe (optionnel)" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-lock me-1"></i>Télécharger la sauvegarde
+                    </button>
+                </form>
+                <div class="small text-muted mt-2">
+                    <i class="bi bi-database me-1"></i>{{ db_engine|upper }}
+                    {% if db_name %} &middot; {{ db_name }}{% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -26,10 +36,10 @@
     <div class="col-lg-6">
         <div class="card h-100">
             <div class="card-body">
-                <h2 class="h5">Export lisible</h2>
-                <p class="text-muted">Télécharge les données principales en JSON. Utile pour migrer ou vérifier le contenu.</p>
+                <h2 class="h5"><i class="bi bi-filetype-json me-1 text-success"></i>Export JSON</h2>
+                <p class="text-muted small">Fichier JSON lisible sans mot de passe. Pratique pour vérifier le contenu.</p>
                 <a class="btn btn-outline-success" href="{% url 'store:database_export_json' %}">
-                    <i class="bi bi-filetype-json me-1"></i>Exporter en JSON
+                    <i class="bi bi-download me-1"></i>Exporter en JSON
                 </a>
             </div>
         </div>
@@ -38,11 +48,11 @@
     <div class="col-lg-6">
         <div class="card h-100">
             <div class="card-body">
-                <h2 class="h5">Importer des données</h2>
-                <p class="text-muted">Importe un fichier JSON exporté précédemment (utile après migration vers PostgreSQL).</p>
+                <h2 class="h5"><i class="bi bi-upload me-1 text-warning"></i>Importer des données</h2>
+                <p class="text-muted small">Importe un fichier JSON exporté précédemment.</p>
                 <form method="post" enctype="multipart/form-data" action="{% url 'store:database_import_json' %}">
                     {% csrf_token %}
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <input type="file" name="file" class="form-control" accept=".json" required>
                     </div>
                     <button type="submit" class="btn btn-warning">
@@ -53,13 +63,37 @@
         </div>
     </div>
 
-    <div class="col-12">
-        <div class="card">
+    <div class="col-lg-6">
+        <div class="card h-100">
             <div class="card-body">
-                <h2 class="h5">Conseil</h2>
-                <p class="mb-0 text-muted">Avant de mettre l'application en ligne ou de modifier la base, télécharge toujours une sauvegarde SQLite. Garde une copie sur clé USB, disque externe ou cloud privé.</p>
+                <h2 class="h5"><i class="bi bi-terminal me-1 text-secondary"></i>Sauvegarde automatique</h2>
+                <p class="text-muted small">Planifie une sauvegarde automatique avec le Planificateur de tâches Windows ou cron.</p>
+                <pre class="bg-light p-2 rounded small mb-0"><code>python manage.py backup_data</code></pre>
+                <p class="small text-muted mt-1 mb-0">Les fichiers sont enregistrés dans <code>backups/</code></p>
             </div>
         </div>
     </div>
+
+</div>
+
+{% if backups %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h2 class="h5"><i class="bi bi-clock-history me-1"></i>Sauvegardes récentes</h2>
+            <ul class="list-group list-group-flush mt-2">
+                {% for backup in backups %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center py-1 small">
+                        <span><i class="bi bi-file-earmark-zip me-1"></i>{{ backup }}</span>
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'store:database_backup' %}?file={{ backup }}">Télécharger</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
+<div class="alert alert-info mt-4 mb-0">
+    <i class="bi bi-info-circle me-1"></i>
+    <strong>Conseil :</strong> Télécharge régulièrement une sauvegarde et conserve-la dans un endroit sûr (clé USB, cloud, disque externe). Si tu définis un mot de passe, le fichier sera chiffré (.bak) et nécessitera le même mot de passe pour la restauration.
 </div>
 {% endblock %}
