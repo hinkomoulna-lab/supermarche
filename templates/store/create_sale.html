@@ -11,28 +11,35 @@
 </div>
 
 <div class="card shadow-sm mb-3">
-    <div class="card-body">
-        <h5 class="card-title mb-3"><i class="bi bi-person"></i> Client</h5>
-        <div class="row g-3">
+    <div class="card-body py-2">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <i class="bi bi-person text-primary"></i>
+            <label class="form-check-label small fw-semibold" for="enableClient">
+                <input class="form-check-input" type="checkbox" id="enableClient" checked>
+                Client (optionnel)
+            </label>
+        </div>
+        <div id="clientFields" class="row g-2">
             <div class="col-md-5">
-                <label class="form-label fw-semibold" for="customerName">Nom & prénom</label>
-                <input type="text" class="form-control" name="customer_name" id="customerName" placeholder="Ex: Jean Dupont" form="saleForm">
+                <input type="text" class="form-control form-control-sm" name="customer_name" id="customerName" placeholder="Nom & prénom (facultatif)" form="saleForm">
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-semibold" for="customerPhone">Téléphone <span class="text-muted small">(facultatif)</span></label>
-                <input type="tel" class="form-control" name="customer_phone" id="customerPhone" placeholder="Ex: 70 00 00 00" form="saleForm">
+                <input type="tel" class="form-control form-control-sm" name="customer_phone" id="customerPhone" placeholder="Téléphone (facultatif)" form="saleForm">
             </div>
             <div class="col-md-2">
-                <label class="form-label fw-semibold" for="saleDate"><i class="bi bi-calendar me-1"></i>Date</label>
-                <input type="date" class="form-control" name="sale_date" id="saleDate" value="{% now 'Y-m-d' %}" form="saleForm">
+                <input type="date" class="form-control form-control-sm" name="sale_date" id="saleDate" value="{% now 'Y-m-d' %}" form="saleForm">
             </div>
             <div class="col-md-2">
-                <label class="form-label fw-semibold" for="saleNotes"><i class="bi bi-pencil me-1"></i>Notes</label>
-                <input type="text" class="form-control" name="notes" id="saleNotes" placeholder="Optionnel" form="saleForm">
+                <input type="text" class="form-control form-control-sm" name="notes" id="saleNotes" placeholder="Notes" form="saleForm">
             </div>
         </div>
     </div>
 </div>
+<script>
+document.getElementById('enableClient').addEventListener('change', function() {
+    document.getElementById('clientFields').style.display = this.checked ? 'flex' : 'none';
+});
+</script>
 
 <div class="card shadow-sm mb-3">
     <div class="card-body">

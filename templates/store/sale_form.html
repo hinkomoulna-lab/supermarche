@@ -2,36 +2,23 @@
 {% block title %}{{ title }} - Supermarché{% endblock %}
 
 {% block content %}
-<div class="page-header mb-4">
-    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
-        <div>
-            <h1 class="h3 mb-1">{{ title }}</h1>
-            <p class="text-secondary mb-0">Corrige les articles vendus. Le stock sera ajusté automatiquement.</p>
-        </div>
-        <a class="btn btn-outline-secondary align-self-start" href="{% url 'store:sale_detail' sale.id %}">
-            Retour
-        </a>
-    </div>
-</div>
+<div class="ribbon ribbon-green"><i class="bi bi-pencil"></i>{{ title }}</div>
+<p class="text-secondary mb-3">Corrige les articles vendus. Le stock sera ajusté automatiquement.</p>
 
 <form method="post" id="saleForm">
     {% csrf_token %}
-    <div class="row g-3 mb-4">
+    <div class="row g-2 mb-3">
         <div class="col-md-4">
-            <label class="form-label fw-semibold">Nom & prénom client</label>
-            <input type="text" class="form-control" name="customer_name" value="{{ sale.customer_name }}" placeholder="Facultatif">
+            <input type="text" class="form-control form-control-sm" name="customer_name" value="{{ sale.customer_name }}" placeholder="Nom & prénom (facultatif)">
         </div>
         <div class="col-md-3">
-            <label class="form-label fw-semibold">Téléphone</label>
-            <input type="tel" class="form-control" name="customer_phone" value="{{ sale.customer_phone }}" placeholder="Facultatif">
+            <input type="tel" class="form-control form-control-sm" name="customer_phone" value="{{ sale.customer_phone }}" placeholder="Téléphone (facultatif)">
         </div>
         <div class="col-md-3">
-            <label class="form-label fw-semibold">Date</label>
-            <input type="date" class="form-control" name="sale_date" value="{{ sale.sale_date|date:'Y-m-d' }}">
+            <input type="date" class="form-control form-control-sm" name="sale_date" value="{{ sale.sale_date|date:'Y-m-d' }}">
         </div>
         <div class="col-md-2">
-            <label class="form-label fw-semibold">Notes</label>
-            <input type="text" class="form-control" name="notes" value="{{ sale.notes }}" placeholder="Optionnel">
+            <input type="text" class="form-control form-control-sm" name="notes" value="{{ sale.notes }}" placeholder="Notes">
         </div>
     </div>
     <div class="table-shell mb-3">
