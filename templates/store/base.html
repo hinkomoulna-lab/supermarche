@@ -471,8 +471,7 @@
             font-weight: 700;
         }
         .app-shell {
-            display: grid;
-            grid-template-columns: 248px minmax(0, 1fr);
+            display: flex;
             min-height: 100vh;
         }
         .app-sidebar {
@@ -487,6 +486,26 @@
             padding: .85rem;
             box-shadow: 12px 0 30px rgba(15, 23, 42, .16);
             z-index: 1040;
+            transition: transform .25s ease;
+        }
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.4);
+            z-index: 1039;
+        }
+        .sidebar-backdrop.show {
+            display: block;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            padding: .25rem;
+            line-height: 1;
         }
         .side-brand {
             display: flex;
@@ -581,12 +600,15 @@
         .app-main {
             min-width: 0;
         }
-        .app-sidebar ~ .navbar {
+        .top-navbar {
             display: none;
         }
-        .app-sidebar ~ .container-fluid {
+        .app-content {
             margin-left: 248px;
-            width: calc(100% - 248px);
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
         }
         @keyframes riseIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -604,19 +626,23 @@
             from { opacity: 0; transform: scale(.98); }
             to { opacity: 1; transform: scale(1); }
         }
-        @media (max-width: 768px) {
-            .app-shell {
-                display: block;
-            }
+        @media (max-width: 991px) {
             .app-sidebar {
-                position: static;
-                width: auto;
-                height: auto;
-                max-height: none;
+                transform: translateX(-100%);
             }
-            .app-sidebar ~ .container-fluid {
+            .app-sidebar.open {
+                transform: translateX(0);
+            }
+            .app-content {
                 margin-left: 0;
-                width: 100%;
+            }
+            .app-sidebar ~ .top-navbar {
+                display: flex;
+            }
+            .sidebar-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
             .side-nav {
                 display: grid;
@@ -626,6 +652,11 @@
             .side-group {
                 grid-column: span 2;
             }
+        }
+        @media (max-width: 575px) {
+            .side-nav {
+                grid-template-columns: 1fr;
+            }
             .report-share {
                 align-items: stretch;
                 flex-direction: column;
@@ -634,7 +665,8 @@
     </style>
 </head>
 <body class="theme-{{ store_settings.theme|default:'blue' }}">
-<aside class="app-sidebar">
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+<aside class="app-sidebar" id="appSidebar">
     <a class="side-brand" href="{% url 'store:home' %}">
         {% if store_settings.logo %}
             <img src="{{ store_settings.logo.url }}" alt="Logo">
@@ -644,87 +676,61 @@
         <span>{{ store_settings.store_name|default:'Supermarché' }}</span>
     </a>
     <nav class="side-nav" aria-label="Navigation principale">
-        <a class="side-link" href="{% url 'store:home' %}"><i class="bi bi-speedometer2"></i><span>Accueil</span></a>
-        <a class="side-link" href="{% url 'store:create_sale' %}"><i class="bi bi-cash-stack"></i><span>Caisse</span></a>
-        <a class="side-link" href="{% url 'store:product_list' %}"><i class="bi bi-box-seam"></i><span>Produits</span></a>
-        <a class="side-link" href="{% url 'store:product_manage' %}"><i class="bi bi-tags"></i><span>Gestion stock</span></a>
-        <a class="side-link" href="{% url 'store:cart' %}"><i class="bi bi-cart3"></i><span>Panier</span></a>
+        <a class="side-link sidebar-link" href="{% url 'store:home' %}"><i class="bi bi-speedometer2"></i><span>Accueil</span></a>
+        <a class="side-link sidebar-link" href="{% url 'store:create_sale' %}"><i class="bi bi-cash-stack"></i><span>Caisse</span></a>
+        <a class="side-link sidebar-link" href="{% url 'store:product_list' %}"><i class="bi bi-box-seam"></i><span>Produits</span></a>
+        <a class="side-link sidebar-link" href="{% url 'store:product_manage' %}"><i class="bi bi-tags"></i><span>Gestion stock</span></a>
+        <a class="side-link sidebar-link" href="{% url 'store:cart' %}"><i class="bi bi-cart3"></i><span>Panier</span></a>
 
-        <details class="side-group" open>
+        <details class="side-group">
             <summary><i class="bi bi-graph-up-arrow"></i><span>Finance</span></summary>
             <div class="side-subnav">
-                <a class="side-sublink" href="{% url 'store:sale_history' %}"><i class="bi bi-clock-history"></i><span>Historique</span></a>
-                <a class="side-sublink" href="{% url 'store:expense_list' %}"><i class="bi bi-wallet2"></i><span>Dépenses</span></a>
-                <a class="side-sublink" href="{% url 'store:debt_list' %}"><i class="bi bi-file-earmark-text"></i><span>Dettes</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:sale_history' %}"><i class="bi bi-clock-history"></i><span>Historique</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:expense_list' %}"><i class="bi bi-wallet2"></i><span>Dépenses</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:debt_list' %}"><i class="bi bi-file-earmark-text"></i><span>Dettes</span></a>
             </div>
         </details>
 
         <details class="side-group">
             <summary><i class="bi bi-phone"></i><span>Crédits</span></summary>
             <div class="side-subnav">
-                <a class="side-sublink" href="{% url 'store:phone_credit_list' %}"><i class="bi bi-phone-vibrate"></i><span>Ventes</span></a>
-                <a class="side-sublink" href="{% url 'store:phone_credit_purchase_list' %}"><i class="bi bi-sim"></i><span>Achats</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:phone_credit_list' %}"><i class="bi bi-phone-vibrate"></i><span>Ventes</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:phone_credit_purchase_list' %}"><i class="bi bi-sim"></i><span>Achats</span></a>
             </div>
         </details>
 
         <details class="side-group">
             <summary><i class="bi bi-grid-3x3-gap"></i><span>Outils</span></summary>
             <div class="side-subnav">
-                <a class="side-sublink" href="{% url 'store:feature_list' %}"><i class="bi bi-puzzle"></i><span>Fonctionnalités</span></a>
-                <a class="side-sublink" href="{% url 'store:ai_feature_assistant' %}"><i class="bi bi-stars"></i><span>IA</span></a>
-                <a class="side-sublink" href="{% url 'store:modification_guide' %}"><i class="bi bi-journal-code"></i><span>Guide</span></a>
-                <a class="side-sublink" href="{% url 'store:mobile_access' %}"><i class="bi bi-phone-vibrate"></i><span>Téléphone</span></a>
-                <a class="side-sublink" href="{% url 'store:database_tools' %}"><i class="bi bi-database-down"></i><span>Données</span></a>
-                <a class="side-sublink" href="{% url 'store:account_create' %}"><i class="bi bi-person-plus"></i><span>Compte</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:feature_list' %}"><i class="bi bi-puzzle"></i><span>Fonctionnalités</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:ai_feature_assistant' %}"><i class="bi bi-stars"></i><span>IA</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:modification_guide' %}"><i class="bi bi-journal-code"></i><span>Guide</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:mobile_access' %}"><i class="bi bi-phone-vibrate"></i><span>Téléphone</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:database_tools' %}"><i class="bi bi-database-down"></i><span>Données</span></a>
+                <a class="side-sublink sidebar-link" href="{% url 'store:account_create' %}"><i class="bi bi-person-plus"></i><span>Compte</span></a>
             </div>
         </details>
 
-        <a class="side-link" href="{% url 'store:store_settings' %}"><i class="bi bi-sliders"></i><span>Paramètres</span></a>
+        <a class="side-link sidebar-link" href="{% url 'store:store_settings' %}"><i class="bi bi-sliders"></i><span>Paramètres</span></a>
     </nav>
 </aside>
-<nav class="navbar navbar-expand-lg navbar-dark py-2">
-    <div class="container-fluid px-3 px-xl-4">
+<nav class="navbar navbar-dark py-2 top-navbar">
+    <div class="container-fluid px-3 d-flex align-items-center gap-2">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Menu">
+            <i class="bi bi-list"></i>
+        </button>
         <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'store:home' %}">
             {% if store_settings.logo %}
-                <img src="{{ store_settings.logo.url }}" alt="Logo" style="height:34px;max-width:80px;object-fit:contain;">
+                <img src="{{ store_settings.logo.url }}" alt="Logo" style="height:30px;max-width:70px;object-fit:contain;">
             {% else %}
                 <i class="bi bi-shop"></i>
             {% endif %}
-            <span>{{ store_settings.store_name|default:'Supermarché' }}</span>
+            <span class="small">{{ store_settings.store_name|default:'Supermarché' }}</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:product_list' %}"><i class="bi bi-box-seam me-1"></i>Produits</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:product_manage' %}"><i class="bi bi-gear me-1"></i>Gestion</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:create_sale' %}"><i class="bi bi-cash-stack me-1"></i>Caisse</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:cart' %}"><i class="bi bi-cart me-1"></i>Panier</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="phoneCreditDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-phone me-1"></i>Crédits Téléphone
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="phoneCreditDropdown">
-                        <li><a class="dropdown-item" href="{% url 'store:phone_credit_list' %}">Ventes</a></li>
-                        <li><a class="dropdown-item" href="{% url 'store:phone_credit_purchase_list' %}">Achats</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:expense_list' %}"><i class="bi bi-wallet2 me-1"></i>Dépenses</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:debt_list' %}"><i class="bi bi-file-earmark-text me-1"></i>Dettes</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:sale_history' %}"><i class="bi bi-clock-history me-1"></i>Historique</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:feature_list' %}"><i class="bi bi-puzzle me-1"></i>Fonctionnalités</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:ai_feature_assistant' %}"><i class="bi bi-stars me-1"></i>IA</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:modification_guide' %}"><i class="bi bi-journal-code me-1"></i>Guide</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:mobile_access' %}"><i class="bi bi-phone-vibrate me-1"></i>Téléphone</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:database_tools' %}"><i class="bi bi-database-down me-1"></i>Données</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:account_create' %}"><i class="bi bi-person-plus me-1"></i>Compte</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:store_settings' %}"><i class="bi bi-sliders me-1"></i>Paramètres</a></li>
-            </ul>
-        </div>
     </div>
 </nav>
-<div class="container-fluid px-3 px-xl-4 py-3">
+<div class="app-content d-flex flex-column">
+<div class="container-fluid px-3 px-xl-4 py-3 flex-grow-1">
     {% if global_alerts %}
         <div class="d-flex flex-wrap gap-2 mb-3">
             {% for alert in global_alerts %}
@@ -745,6 +751,7 @@
     {% block content %}{% endblock %}
     <div class="text-center footer-note mt-4">Développé par Hinkomou Moulna Clement</div>
 </div>
+</div> <!-- .app-content -->
 <button class="btn btn-primary calculator-toggle" id="calculatorToggle" type="button" title="Calculatrice">
     <i class="bi bi-calculator fs-4"></i>
 </button>
@@ -841,6 +848,33 @@
 
     document.querySelectorAll('[data-calc]').forEach((button) => {
         button.addEventListener('click', () => handleCalcKey(button.dataset.calc));
+    });
+
+    // Sidebar toggle for mobile
+    const sidebar = document.getElementById('appSidebar');
+    const toggle = document.getElementById('sidebarToggle');
+    const backdrop = document.getElementById('sidebarBackdrop');
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        backdrop.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        backdrop.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    if (toggle) {
+        toggle.addEventListener('click', openSidebar);
+    }
+    if (backdrop) {
+        backdrop.addEventListener('click', closeSidebar);
+    }
+    document.querySelectorAll('.sidebar-link').forEach((link) => {
+        link.addEventListener('click', closeSidebar);
     });
 
     {% if store_settings.voice_alerts %}

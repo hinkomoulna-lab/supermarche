@@ -36,6 +36,20 @@ class ProductModelTest(TestCase):
         with self.assertRaises(ValidationError):
             product.clean()
 
+    def test_clean_no_crash_when_price_none(self):
+        product = Product(name='Test', cost_price=150)
+        try:
+            product.clean()
+        except TypeError:
+            self.fail('clean() crashed with TypeError when price is None')
+
+    def test_clean_no_crash_when_cost_price_none(self):
+        product = Product(name='Test', price=100)
+        try:
+            product.clean()
+        except TypeError:
+            self.fail('clean() crashed with TypeError when cost_price is None')
+
 
 class SaleModelTest(TestCase):
     def setUp(self):
