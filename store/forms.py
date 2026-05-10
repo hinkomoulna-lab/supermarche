@@ -83,7 +83,8 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = [
-            'code', 'name', 'image', 'image_url', 'category', 'new_category',
+            'code', 'name', 'image',
+            'category',
             'unit', 'price', 'cost_price',
             'stock', 'min_stock', 'expiry_date',
             'pack_size', 'pack_price',
@@ -106,6 +107,11 @@ class ProductForm(forms.ModelForm):
             'pack_size': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 12 pour une boîte de 12'}),
             'pack_price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Laissez vide = prix unitaire × taille'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in ('unit', 'cost_price', 'stock', 'min_stock', 'pack_size'):
+            self.fields[field].required = False
 
     def clean(self):
         cleaned_data = super().clean()

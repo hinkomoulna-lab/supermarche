@@ -55,7 +55,7 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def clean(self):
-        if self.price < self.cost_price:
+        if self.price is not None and self.cost_price is not None and self.price < self.cost_price:
             raise ValidationError({'price': "Le prix de vente doit être supérieur ou égal au prix d'achat."})
         if self.expiry_date and self.expiry_date < date.today():
             raise ValidationError({'expiry_date': "La date de péremption doit être aujourd'hui ou ultérieure."})
