@@ -3,33 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Connexion - Supermarché</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4338ca 0%, #0891b2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .login-card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .login-header {
+            background: linear-gradient(135deg, #4338ca, #0891b2);
+            color: white;
+            padding: 2rem 2rem 1.5rem;
+            text-align: center;
+        }
+        .login-header i {
+            font-size: 3rem;
+            background: rgba(255,255,255,0.15);
+            width: 72px;
+            height: 72px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            margin-bottom: 0.75rem;
+        }
+        .login-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .login-header p {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            margin-bottom: 0;
+        }
+        .login-body {
+            padding: 2rem;
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #4338ca, #0891b2);
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem;
+            font-weight: 600;
+            color: white;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(67, 56, 202, 0.3);
+            color: white;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 0.6rem 0.9rem;
+        }
+        .form-control:focus {
+            border-color: #4338ca;
+            box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.15);
+        }
+        .brand-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <main class="container py-5">
+<body>
+    <main class="container">
         <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card shadow-sm">
-                    <div class="card-body p-4">
-                        <h1 class="h4 mb-4">Connexion</h1>
+            <div class="col-md-5 col-lg-4">
+                <div class="login-card card">
+                    <div class="login-header">
+                        <i class="bi bi-shop"></i>
+                        <h1>Super Marché</h1>
+                        <p>Gestion de votre boutique</p>
+                    </div>
+                    <div class="login-body">
                         {% if form.errors %}
-                            <div class="alert alert-danger">Identifiant ou mot de passe incorrect.</div>
+                            <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                <span>Identifiant ou mot de passe incorrect.</span>
+                            </div>
                         {% endif %}
                         <form method="post">
                             {% csrf_token %}
                             <input type="hidden" name="next" value="{{ next }}">
                             <div class="mb-3">
-                                <label class="form-label">Utilisateur</label>
-                                {{ form.username }}
+                                <label class="form-label fw-semibold small text-secondary" for="id_username">Utilisateur</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                    {{ form.username }}
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Mot de passe</label>
-                                {{ form.password }}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small text-secondary" for="id_password">Mot de passe</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                                    {{ form.password }}
+                                </div>
                             </div>
-                            <button class="btn btn-primary w-100" type="submit">Se connecter</button>
+                            <button class="btn btn-login w-100" type="submit">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                            </button>
                         </form>
                     </div>
+                </div>
+                <div class="brand-footer">
+                    Développé par Hinkomou Moulna Clement
                 </div>
             </div>
         </div>

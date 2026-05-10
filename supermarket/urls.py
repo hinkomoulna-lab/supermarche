@@ -3,10 +3,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from store.forms import LoginForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('connexion/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('connexion/', auth_views.LoginView.as_view(
+        template_name='registration/login.html',
+        authentication_form=LoginForm,
+    ), name='login'),
     path('deconnexion/', auth_views.LogoutView.as_view(), name='logout'),
     path('', include('store.urls')),
 ]

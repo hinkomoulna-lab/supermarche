@@ -10,12 +10,13 @@ class LoginRequiredMiddleware:
     def __call__(self, request):
         allowed_prefixes = (
             reverse('login'),
+            reverse('logout'),
             '/admin/',
             settings.STATIC_URL,
             settings.MEDIA_URL,
         )
 
-        if request.path.startswith(allowed_prefixes):
+        if any(request.path.startswith(p) for p in allowed_prefixes):
             return self.get_response(request)
 
         if not request.user.is_authenticated:

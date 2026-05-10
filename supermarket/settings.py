@@ -4,9 +4,13 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-change-me-1234567890')
-DEBUG = os.getenv('DJANGO_DEBUG', '1') == '1'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-dev-key-not-for-production')
+DEBUG = os.getenv('DJANGO_DEBUG', '0') == '1'
+if DEBUG and SECRET_KEY == 'django-insecure-dev-key-not-for-production':
+    import warnings
+    warnings.warn("Utilisez une clé secrète forte via DJANGO_SECRET_KEY en production.")
 ALLOWED_HOSTS = [host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', '*').split(',') if host.strip()]
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -90,6 +94,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+FIXTURE_DIRS = [BASE_DIR]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
