@@ -43,7 +43,7 @@
         <label class="form-label fw-semibold" for="productSearch">
             <i class="bi bi-search me-1"></i>Rechercher un produit à vendre
         </label>
-        <input type="search" class="form-control" id="productSearch" placeholder="Tape le nom, le code ou la catégorie...">
+        <input type="search" class="form-control" id="productSearch" placeholder="Tape le nom, le code ou la catégorie..." data-voice="true">
         <div class="d-flex flex-wrap gap-2 mt-3 product-pick-grid" id="productPickGrid">
             {% for product in products %}
                 <button type="button" class="btn btn-outline-primary product-pick-btn"

@@ -18,7 +18,7 @@ class SaleForm(forms.Form):
         queryset=Product.objects.filter(stock__gt=0),
         label='Produit',
         empty_label='Choisir un produit',
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-select form-select-sm'})
     )
 
     quantity = forms.DecimalField(
@@ -26,7 +26,7 @@ class SaleForm(forms.Form):
         max_digits=10,
         decimal_places=2,
         label='Quantité',
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'})
+        widget=forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'step': '0.01'})
     )
 
 
@@ -34,9 +34,10 @@ class AIFeatureInstructionForm(forms.Form):
     instruction = forms.CharField(
         label='Instruction pour l’IA',
         widget=forms.Textarea(attrs={
-            'class': 'form-control',
+            'class': 'form-control form-control-sm',
             'rows': 4,
-            'placeholder': 'Ex: ajoute une remise automatique pour les ventes de pain et de glaces...'
+            'placeholder': 'Ex: ajoute une remise automatique pour les ventes de pain et de glaces...',
+            'data-voice': 'true'
         })
     )
 
@@ -66,8 +67,9 @@ class ProductForm(forms.ModelForm):
         required=False,
         label='Nouvelle catégorie',
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Ex: Alimentation, Boisson...'
+            'class': 'form-control form-control-sm',
+            'placeholder': 'Ex: Alimentation, Boisson...',
+            'data-voice': 'true'
         })
     )
 
@@ -75,7 +77,7 @@ class ProductForm(forms.ModelForm):
         required=False,
         label='URL de l\'image (Google)',
         widget=forms.URLInput(attrs={
-            'class': 'form-control',
+            'class': 'form-control form-control-sm',
             'placeholder': 'Colle l\'URL d\'une image trouvée sur Google...'
         })
     )
@@ -92,20 +94,21 @@ class ProductForm(forms.ModelForm):
 
         widgets = {
             'code': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Automatique si vide'
+                'class': 'form-control form-control-sm',
+                'placeholder': 'Automatique si vide',
+                'data-voice': 'true'
             }),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
-            'category': forms.Select(attrs={'class': 'form-select'}),
-            'unit': forms.Select(attrs={'class': 'form-select'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'cost_price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'stock': forms.NumberInput(attrs={'class': 'form-control'}),
-            'min_stock': forms.NumberInput(attrs={'class': 'form-control'}),
-            'expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'pack_size': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 12 pour une boîte de 12'}),
-            'pack_price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Laissez vide = prix unitaire × taille'}),
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'data-voice': 'true'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm', 'accept': 'image/*'}),
+            'category': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'unit': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'cost_price': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'min_stock': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'expiry_date': forms.DateInput(attrs={'class': 'form-control form-control-sm', 'type': 'date'}),
+            'pack_size': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'placeholder': 'Ex: 12 pour une boîte de 12'}),
+            'pack_price': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'placeholder': 'Laissez vide = prix unitaire × taille'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -155,11 +158,11 @@ class ExpenseForm(forms.ModelForm):
         model = Expense
         fields = ['description', 'amount', 'category', 'date', 'notes']
         widgets = {
-            'description': forms.TextInput(attrs={'class': 'form-control'}),
-            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-select'}),
-            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'description': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'category': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'date': forms.DateInput(attrs={'class': 'form-control form-control-sm', 'type': 'date'}),
+            'notes': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 3}),
         }
 
 
@@ -171,12 +174,12 @@ class DebtForm(forms.ModelForm):
         model = Debt
         fields = ['debt_type', 'person', 'amount', 'due_date', 'paid', 'notes']
         widgets = {
-            'debt_type': forms.Select(attrs={'class': 'form-select'}),
-            'person': forms.TextInput(attrs={'class': 'form-control'}),
-            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'due_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'debt_type': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'person': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'due_date': forms.DateInput(attrs={'class': 'form-control form-control-sm', 'type': 'date'}),
             'paid': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'notes': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 3}),
         }
 
 
@@ -188,10 +191,10 @@ class PhoneCreditForm(forms.ModelForm):
         model = PhoneCredit
         fields = ['phone_number', 'operator', 'amount', 'date']
         widgets = {
-            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'operator': forms.Select(attrs={'class': 'form-select'}),
-            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'operator': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'date': forms.DateInput(attrs={'class': 'form-control form-control-sm', 'type': 'date'}),
         }
 
     def clean_amount(self):
@@ -221,8 +224,8 @@ class PhoneCreditPurchaseForm(forms.ModelForm):
         model = PhoneCreditPurchase
         fields = ['amount', 'date']
         widgets = {
-            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+            'date': forms.DateInput(attrs={'class': 'form-control form-control-sm', 'type': 'date'}),
         }
 
 
@@ -231,19 +234,19 @@ class StoreSettingsForm(forms.ModelForm):
         model = StoreSettings
         fields = ['store_name', 'welcome_message', 'language', 'logo', 'background_image', 'invoice_watermark', 'theme', 'invoice_layout', 'address', 'phone_number', 'signature', 'voice_alerts', 'monthly_expense_limit']
         widgets = {
-            'store_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'welcome_message': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Ex: Bienvenue chez nous !'}),
-            'language': forms.Select(attrs={'class': 'form-select'}),
-            'logo': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
-            'background_image': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
-            'invoice_watermark': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
-            'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 123 Rue du Marché, Bamako'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: +223 00 00 00 00'}),
-            'signature': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
+            'store_name': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'data-voice': 'true'}),
+            'welcome_message': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 3, 'placeholder': 'Ex: Bienvenue chez nous !'}),
+            'language': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'logo': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm', 'accept': 'image/*'}),
+            'background_image': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm', 'accept': 'image/*'}),
+            'invoice_watermark': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm', 'accept': 'image/*'}),
+            'address': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'placeholder': 'Ex: 123 Rue du Marché, Bamako'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'placeholder': 'Ex: +223 00 00 00 00'}),
+            'signature': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm', 'accept': 'image/*'}),
             'voice_alerts': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'theme': forms.Select(attrs={'class': 'form-select'}),
-            'invoice_layout': forms.Select(attrs={'class': 'form-select'}),
-            'monthly_expense_limit': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'}),
+            'theme': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'invoice_layout': forms.Select(attrs={'class': 'form-select form-select-sm'}),
+            'monthly_expense_limit': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'min': '0', 'step': '0.01'}),
         }
 
 
@@ -253,16 +256,16 @@ class AppFeatureForm(forms.ModelForm):
         fields = ['title', 'description', 'code_notes', 'status']
         widgets = {
             'title': forms.TextInput(attrs={
-                'class': 'form-control',
+                'class': 'form-control form-control-sm',
                 'placeholder': 'Ex: ajouter une remise, gérer les fournisseurs...'
             }),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'description': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 4}),
             'code_notes': forms.Textarea(attrs={
                 'class': 'form-control font-monospace',
                 'rows': 6,
                 'placeholder': 'Écris ici les fichiers, règles ou morceaux de code à prévoir.'
             }),
-            'status': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select form-select-sm'}),
         }
 
 
@@ -273,17 +276,17 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({
-            'class': 'form-control', 'placeholder': 'Nom d\'utilisateur'
+            'class': 'form-control form-control-sm', 'placeholder': 'Nom d\'utilisateur'
         })
         self.fields['password'].widget.attrs.update({
-            'class': 'form-control', 'placeholder': 'Mot de passe'
+            'class': 'form-control form-control-sm', 'placeholder': 'Mot de passe'
         })
 
 
 class DataImportForm(forms.Form):
     file = forms.FileField(
         label='Fichier JSON',
-        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.json'})
+        widget=forms.FileInput(attrs={'class': 'form-control form-control-sm', 'accept': '.json'})
     )
 
 
@@ -292,12 +295,12 @@ class AccountCreationForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'data-voice': 'true'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'data-voice': 'true'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'data-voice': 'true'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
-        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control form-control-sm'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control form-control-sm'})
