@@ -11,6 +11,7 @@ urlpatterns = [
     path('base-donnees/', views.database_tools, name='database_tools'),
     path('base-donnees/sauvegarde/', views.database_backup, name='database_backup'),
     path('base-donnees/export-json/', views.database_export_json, name='database_export_json'),
+    path('base-donnees/importer-json/', views.database_import_json, name='database_import_json'),
     path('fonctionnalites/', views.feature_list, name='feature_list'),
     path('fonctionnalites/assistant-ia/', views.ai_feature_assistant, name='ai_feature_assistant'),
     path('fonctionnalites/nouveau/', views.feature_create, name='feature_create'),

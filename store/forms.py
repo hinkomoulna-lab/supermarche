@@ -260,6 +260,13 @@ class AppFeatureForm(forms.ModelForm):
         }
 
 
+class DataImportForm(forms.Form):
+    file = forms.FileField(
+        label='Fichier JSON',
+        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.json'})
+    )
+
+
 class AccountCreationForm(UserCreationForm):
     class Meta:
         model = User

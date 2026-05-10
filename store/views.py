@@ -18,6 +18,7 @@ from django.db import transaction
 from django.db.models import Sum, F
 from django.db.models.deletion import ProtectedError
 from django.db.models.functions import TruncMonth, TruncYear
+from django.core import serializers
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, HttpResponse
 from django.contrib import messages
@@ -35,7 +36,8 @@ from .forms import (
     ExpenseForm, DebtForm,
     PhoneCreditForm, PhoneCreditPurchaseForm,
     StoreSettingsForm, AppFeatureForm,
-    AccountCreationForm, AIFeatureInstructionForm
+    AccountCreationForm, AIFeatureInstructionForm,
+    DataImportForm
 )
 
 
@@ -216,6 +218,26 @@ def database_export_json(request):
         exclude=['contenttypes', 'auth.permission'],
     )
     return response
+
+
+def database_import_json(request):
+    form = DataImportForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST' and form.is_valid():
+        uploaded_file = request.FILES['file']
+        if not uploaded_file.name.endswith('.json'):
+            messages.error(request, 'Le fichier doit etre au format JSON.')
+            return redirect('store:database_tools')
+        try:
+            content = uploaded_file.read().decode('utf-8')
+            count = 0
+            for obj in serializers.deserialize('json', content):
+                obj.save()
+                count += 1
+            messages.success(request, f'{count} enregistrements importes avec succes.')
+        except Exception as exc:
+            messages.error(request, f'Erreur lors de l\'import : {exc}')
+        return redirect('store:database_tools')
+    return redirect('store:database_tools')
 
 
 def feature_list(request):
