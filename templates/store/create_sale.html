@@ -107,6 +107,7 @@ document.getElementById('enableClient').addEventListener('change', function() {
                             <option value="piece">Pièce</option>
                             <option value="paquet">Paquet</option>
                             <option value="carton">Carton</option>
+                            <option value="cartouche">Cartouche</option>
                             <option value="kg">Kg</option>
                             <option value="l">Litre</option>
                         </select>
@@ -146,6 +147,7 @@ document.getElementById('enableClient').addEventListener('change', function() {
                 <option value="piece">Pièce</option>
                 <option value="paquet">Paquet</option>
                 <option value="carton">Carton</option>
+                <option value="cartouche">Cartouche</option>
                 <option value="kg">Kg</option>
                 <option value="l">Litre</option>
             </select>
@@ -162,13 +164,6 @@ document.getElementById('enableClient').addEventListener('change', function() {
         rows.querySelectorAll('.sale-row').forEach((row) => {
             const select = row.querySelector('.product-select');
             const unit = select.selectedOptions[0]?.dataset.unit || '-';
-            const pack = select.selectedOptions[0]?.dataset.pack || '1';
-            const mode = row.querySelector('.mode-select');
-            if (mode) {
-                const showPack = pack && pack > 1;
-                mode.querySelector('option[value="paquet"]').hidden = !showPack;
-                mode.querySelector('option[value="carton"]').hidden = !showPack;
-            }
             row.querySelector('.line-unit').textContent = unit;
         });
     }

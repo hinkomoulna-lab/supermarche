@@ -96,6 +96,7 @@ class SaleItem(models.Model):
         ('piece', 'Pièce'),
         ('paquet', 'Paquet'),
         ('carton', 'Carton'),
+        ('cartouche', 'Cartouche'),
         ('kg', 'Kg'),
         ('l', 'L'),
     ]

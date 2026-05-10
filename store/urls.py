@@ -73,4 +73,7 @@ urlpatterns = [
     path('pertes/', views.stock_loss_list, name='stock_loss_list'),
     path('pertes/perimes/', views.stock_loss_expired, name='stock_loss_expired'),
     path('pertes/nouveau/', views.stock_loss_create, name='stock_loss_create'),
+
+    # BÉNÉFICES
+    path('benefices/', views.profit_view, name='profit_view'),
 ]

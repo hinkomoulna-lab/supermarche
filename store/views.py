@@ -18,7 +18,7 @@ from django.core.management import call_command
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from django.db import transaction
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Count
 from django.db.models.deletion import ProtectedError
 from django.db.models.functions import TruncMonth, TruncYear
 from django.core import serializers
@@ -491,8 +491,9 @@ def create_sale(request):
                 errors.append('Une ligne de vente est invalide.')
                 continue
 
-            if mode in ('paquet', 'carton') and product.pack_size > 1:
-                multiplier = 12 if mode == 'carton' else 1
+            PACK_MODES = {'paquet': 1, 'carton': 12, 'cartouche': 1}
+            if mode in PACK_MODES and product.pack_size > 1:
+                multiplier = PACK_MODES[mode]
                 effective_qty = quantity * product.pack_size * multiplier
             else:
                 effective_qty = quantity
@@ -514,9 +515,10 @@ def create_sale(request):
                     notes=sale_notes, customer_name=customer_name,
                     customer_phone=customer_phone,
                 )
+                PACK_MODES = {'paquet': 1, 'carton': 12, 'cartouche': 1}
                 for product, quantity, mode, effective_qty in rows:
-                    if mode in ('paquet', 'carton') and product.pack_size > 1:
-                        multiplier = 12 if mode == 'carton' else 1
+                    if mode in PACK_MODES and product.pack_size > 1:
+                        multiplier = PACK_MODES[mode]
                         price = (product.pack_price or (product.price * product.pack_size)) * multiplier
                     else:
                         price = product.price
@@ -582,7 +584,7 @@ def _restore_stock_and_delete_sales(sales):
         for sale in sales.prefetch_related('items__product'):
             for item in sale.items.all():
                 qty = item.quantity
-                if item.sale_mode in ('paquet', 'carton') and item.product.pack_size > 1:
+                if item.sale_mode in ('paquet', 'carton', 'cartouche') and item.product.pack_size > 1:
                     mult = 12 if item.sale_mode == 'carton' else 1
                     qty = item.quantity * item.product.pack_size * mult
                 item.product.stock += qty
@@ -602,7 +604,7 @@ def sale_update(request, sale_id):
     original_quantities = {}
     for item in sale.items.all():
         original_qtys = Decimal('0')
-        if item.sale_mode in ('paquet', 'carton') and item.product.pack_size > 1:
+        if item.sale_mode in ('paquet', 'carton', 'cartouche') and item.product.pack_size > 1:
             mult = 12 if item.sale_mode == 'carton' else 1
             original_qtys = item.quantity * item.product.pack_size * mult
         else:
@@ -642,7 +644,7 @@ def sale_update(request, sale_id):
                 errors.append('Une ligne de vente est invalide.')
                 continue
 
-            if mode in ('paquet', 'carton') and product.pack_size > 1:
+            if mode in ('paquet', 'carton', 'cartouche') and product.pack_size > 1:
                 multiplier = 12 if mode == 'carton' else 1
                 effective_qty = quantity * product.pack_size * multiplier
             else:
@@ -661,7 +663,7 @@ def sale_update(request, sale_id):
         else:
             with transaction.atomic():
                 for item in sale.items.select_related('product'):
-                    if item.sale_mode in ('paquet', 'carton') and item.product.pack_size > 1:
+                    if item.sale_mode in ('paquet', 'carton', 'cartouche') and item.product.pack_size > 1:
                         mult = 12 if item.sale_mode == 'carton' else 1
                         item.product.stock += item.quantity * item.product.pack_size * mult
                     else:
@@ -671,7 +673,7 @@ def sale_update(request, sale_id):
                 sale.items.all().delete()
 
                 for product, quantity, mode, effective_qty in rows:
-                    if mode in ('paquet', 'carton') and product.pack_size > 1:
+                    if mode in ('paquet', 'carton', 'cartouche') and product.pack_size > 1:
                         multiplier = 12 if mode == 'carton' else 1
                         price = (product.pack_price or (product.price * product.pack_size)) * multiplier
                     else:
@@ -1246,4 +1248,57 @@ def stock_loss_expired(request):
     return render(request, 'store/stock_loss_expired.html', {
         'expired_products': expired_products,
         'today': today,
+    })
+
+
+# =========================
+# BÉNÉFICES
+# =========================
+def profit_view(request):
+    items = SaleItem.objects.select_related('product').all()
+    per_product = {}
+    total_revenue = Decimal('0')
+    total_cost = Decimal('0')
+
+    PACK_MODES = {'paquet': 1, 'carton': 12, 'cartouche': 1}
+
+    for item in items:
+        revenue = item.subtotal
+        if item.sale_mode in PACK_MODES and item.product.pack_size > 1:
+            mult = PACK_MODES[item.sale_mode]
+            effective_qty = item.quantity * item.product.pack_size * mult
+        else:
+            effective_qty = item.quantity
+        cost = effective_qty * (item.product.cost_price or 0)
+        profit = revenue - cost
+
+        total_revenue += revenue
+        total_cost += cost
+
+        pid = item.product_id
+        if pid not in per_product:
+            per_product[pid] = {
+                'product': item.product,
+                'qty': Decimal('0'),
+                'revenue': Decimal('0'),
+                'cost': Decimal('0'),
+                'profit': Decimal('0'),
+            }
+        per_product[pid]['qty'] += effective_qty
+        per_product[pid]['revenue'] += revenue
+        per_product[pid]['cost'] += cost
+        per_product[pid]['profit'] += profit
+
+    for p in per_product.values():
+        p['margin'] = (p['profit'] / p['revenue'] * 100) if p['revenue'] else 0
+
+    total_profit = total_revenue - total_cost
+    margin = (total_profit / total_revenue * 100) if total_revenue else 0
+
+    return render(request, 'store/profit_list.html', {
+        'per_product': sorted(per_product.values(), key=lambda x: -x['profit']),
+        'total_revenue': total_revenue,
+        'total_cost': total_cost,
+        'total_profit': total_profit,
+        'margin': margin,
     })
