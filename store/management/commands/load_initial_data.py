@@ -4,11 +4,17 @@ from store.models import Product
 
 
 class Command(BaseCommand):
-    help = "Charge les données initiales si la base est vide"
+    help = "Charge les données initiales (full_data.json, puis data.json en fallback)"
 
     def handle(self, *args, **options):
         if Product.objects.count() > 0:
             self.stdout.write("Des produits existent déjà, import ignoré")
             return
-        call_command("loaddata", "data.json", "--ignorenonexistent")
+
+        try:
+            call_command('sync_data', '--force')
+        except Exception as e:
+            self.stdout.write(f"Sync data indisponible ({e}), fallback sur data.json...")
+            call_command("loaddata", "data.json", "--ignorenonexistent")
+
         self.stdout.write(self.style.SUCCESS("Données initiales importées"))
