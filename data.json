@@ -1,0 +1,1542 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "alimentation"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Boisson"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "eau"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 4,
+    "fields": {
+      "name": "Biscuit"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 5,
+    "fields": {
+      "name": "Chips"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 6,
+    "fields": {
+      "name": "Lait"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 7,
+    "fields": {
+      "name": "Pain"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 8,
+    "fields": {
+      "name": "Glaces"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 9,
+    "fields": {
+      "name": "Boulangerie"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "code": "ART-00001",
+      "name": "biscuit",
+      "image": "",
+      "category": 1,
+      "unit": "pièce",
+      "price": "25.00",
+      "cost_price": "20.00",
+      "stock": "35.00",
+      "min_stock": "4.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+      "code": "ART-00002",
+      "name": "Fanta",
+      "image": "products/planet-orange-new.png",
+      "category": 2,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "154.00",
+      "stock": "17.00",
+      "min_stock": "4.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+      "code": "ART-00004",
+      "name": "Cheni",
+      "image": "products/images_16.jfif",
+      "category": null,
+      "unit": "pièce",
+      "price": "25.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+      "code": "ART-00005",
+      "name": "Liberte",
+      "image": "products/images_18.jfif",
+      "category": null,
+      "unit": "pièce",
+      "price": "30.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 6,
+    "fields": {
+      "code": "ART-00006",
+      "name": "Cheba",
+      "image": "products/images_17.jfif",
+      "category": null,
+      "unit": "pièce",
+      "price": "25.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 7,
+    "fields": {
+      "code": "ART-00007",
+      "name": "Sprite_200F",
+      "image": "products/images_14.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 8,
+    "fields": {
+      "code": "ART-00008",
+      "name": "Pomme_planet",
+      "image": "products/images_12.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 9,
+    "fields": {
+      "code": "ART-00009",
+      "name": "Coca_Planet",
+      "image": "products/jus_gazeux_-_american_cola_-_planet_-_35cl_x12_-_bouteille_plastique.jpg",
+      "category": 2,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 10,
+    "fields": {
+      "code": "ART-00010",
+      "name": "Coktail_Planet",
+      "image": "products/images_8.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 11,
+    "fields": {
+      "code": "ART-00011",
+      "name": "Ananas_Planet",
+      "image": "products/images_9.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 12,
+    "fields": {
+      "code": "ART-00012",
+      "name": "Coco_cannette",
+      "image": "products/Coca-cola.fw-copy-2048x2048-1-1024x1024.webp",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 13,
+    "fields": {
+      "code": "ART-00013",
+      "name": "Ira_grand",
+      "image": "products/images_7.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 14,
+    "fields": {
+      "code": "ART-00014",
+      "name": "Ira_Petit",
+      "image": "products/file_1.jpg",
+      "category": 2,
+      "unit": "pièce",
+      "price": "350.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 15,
+    "fields": {
+      "code": "ART-00015",
+      "name": "Fanta_Can",
+      "image": "products/orange.webp",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 16,
+    "fields": {
+      "code": "ART-00016",
+      "name": "3X",
+      "image": "products/ITM029400_Jeremy_ee5b8a73-b474-490d-9377-edb014f91431_1024x1024.webp",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 17,
+    "fields": {
+      "code": "ART-00017",
+      "name": "Double77_petit",
+      "image": "products/ljkk.webp",
+      "category": 2,
+      "unit": "pièce",
+      "price": "300.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 18,
+    "fields": {
+      "code": "ART-00018",
+      "name": "Double77_Grd",
+      "image": "products/77energydrink.jpg",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 19,
+    "fields": {
+      "code": "ART-00019",
+      "name": "Vendame",
+      "image": "products/images_10.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "300.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 20,
+    "fields": {
+      "code": "ART-00020",
+      "name": "3Cheveaux",
+      "image": "products/images_3.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 21,
+    "fields": {
+      "code": "ART-00021",
+      "name": "Xplus",
+      "image": "products/images_6.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "300.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 22,
+    "fields": {
+      "code": "ART-00022",
+      "name": "pressia_Can",
+      "image": "products/631244.webp",
+      "category": 2,
+      "unit": "pièce",
+      "price": "300.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 23,
+    "fields": {
+      "code": "ART-00023",
+      "name": "Ami",
+      "image": "products/images_4.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "250.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 24,
+    "fields": {
+      "code": "ART-00024",
+      "name": "paps_petit",
+      "image": "products/images_5.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "250.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 25,
+    "fields": {
+      "code": "ART-00025",
+      "name": "Paps_Grd",
+      "image": "products/images_5_CkjmEcU.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 26,
+    "fields": {
+      "code": "ART-00026",
+      "name": "Pressia_Grd",
+      "image": "products/illustration-pressea-1L-moushenco-scaled.webp",
+      "category": 2,
+      "unit": "pièce",
+      "price": "1000.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 27,
+    "fields": {
+      "code": "ART-00027",
+      "name": "Sprit_Can",
+      "image": "products/en_sprite_prod_12oz-can_750x750_v1.webp",
+      "category": 2,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 28,
+    "fields": {
+      "code": "ART-00028",
+      "name": "promax",
+      "image": "products/hero.png",
+      "category": 2,
+      "unit": "pièce",
+      "price": "250.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 29,
+    "fields": {
+      "code": "ART-00029",
+      "name": "Dudu",
+      "image": "products/file.jpg",
+      "category": 2,
+      "unit": "pièce",
+      "price": "600.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 30,
+    "fields": {
+      "code": "ART-00030",
+      "name": "Jus_pp_Grd",
+      "image": "products/images_11.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 31,
+    "fields": {
+      "code": "ART-00031",
+      "name": "Jus_pp_petit(50)",
+      "image": "",
+      "category": 2,
+      "unit": "pièce",
+      "price": "50.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 32,
+    "fields": {
+      "code": "ART-00032",
+      "name": "Tampico",
+      "image": "products/images_15.jfif",
+      "category": 2,
+      "unit": "pièce",
+      "price": "850.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 33,
+    "fields": {
+      "code": "ART-00033",
+      "name": "Diago",
+      "image": "products/images_13.jfif",
+      "category": 3,
+      "unit": "pièce",
+      "price": "400.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 34,
+    "fields": {
+      "code": "ART-00034",
+      "name": "Jus_pp_100f",
+      "image": "",
+      "category": 2,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 35,
+    "fields": {
+      "code": "ART-00035",
+      "name": "Sardine",
+      "image": "products/images_36.jfif",
+      "category": 1,
+      "unit": "boîte",
+      "price": "350.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 36,
+    "fields": {
+      "code": "ART-00036",
+      "name": "maccaroni",
+      "image": "products/images_22.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "550.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 37,
+    "fields": {
+      "code": "ART-00037",
+      "name": "spaghetty",
+      "image": "products/images_25.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "550.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 38,
+    "fields": {
+      "code": "ART-00038",
+      "name": "empire",
+      "image": "products/images_21.jfif",
+      "category": 4,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 39,
+    "fields": {
+      "code": "ART-00039",
+      "name": "perki",
+      "image": "products/images_20.jfif",
+      "category": 4,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 40,
+    "fields": {
+      "code": "ART-00040",
+      "name": "Chocobien",
+      "image": "products/Wafers-Choco-Bien-32G-239.99-319.99.jpg",
+      "category": 4,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 41,
+    "fields": {
+      "code": "ART-00041",
+      "name": "coconu",
+      "image": "products/coconut-cookies-1024x1024.jpg",
+      "category": 4,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 42,
+    "fields": {
+      "code": "ART-00042",
+      "name": "Chips_100",
+      "image": "",
+      "category": 5,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 43,
+    "fields": {
+      "code": "ART-00043",
+      "name": "chip_50",
+      "image": "products/images_50.jfif",
+      "category": 5,
+      "unit": "pièce",
+      "price": "50.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 44,
+    "fields": {
+      "code": "ART-00044",
+      "name": "firiti djalani",
+      "image": "products/FIESTA_-_Chips_potato_stick_8g_-_lot_de_2PCS_1.webp",
+      "category": 5,
+      "unit": "pièce",
+      "price": "25.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 45,
+    "fields": {
+      "code": "ART-00045",
+      "name": "Biscuit_25",
+      "image": "",
+      "category": 4,
+      "unit": "pièce",
+      "price": "25.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 46,
+    "fields": {
+      "code": "ART-00046",
+      "name": "biscuit_50",
+      "image": "",
+      "category": 4,
+      "unit": "pièce",
+      "price": "50.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 47,
+    "fields": {
+      "code": "ART-00047",
+      "name": "cous_cous arabe",
+      "image": "",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1000.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 48,
+    "fields": {
+      "code": "ART-00048",
+      "name": "corne flex",
+      "image": "products/images_29.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1750.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 49,
+    "fields": {
+      "code": "ART-00049",
+      "name": "corned bef_petit",
+      "image": "",
+      "category": 1,
+      "unit": "pièce",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 50,
+    "fields": {
+      "code": "ART-00050",
+      "name": "corned bef_grand",
+      "image": "",
+      "category": 1,
+      "unit": "pièce",
+      "price": "750.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 51,
+    "fields": {
+      "code": "ART-00051",
+      "name": "citronel",
+      "image": "products/images_30.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1750.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 52,
+    "fields": {
+      "code": "ART-00052",
+      "name": "Chocola_Delia",
+      "image": "products/images_47.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1000.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 53,
+    "fields": {
+      "code": "ART-00053",
+      "name": "Sel_baleine",
+      "image": "products/images_23.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1000.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 54,
+    "fields": {
+      "code": "ART-00054",
+      "name": "Nescafé_boite",
+      "image": "",
+      "category": null,
+      "unit": "boîte",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 55,
+    "fields": {
+      "code": "ART-00055",
+      "name": "nescafé_sachet",
+      "image": "products/images_45.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "50.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 56,
+    "fields": {
+      "code": "ART-00056",
+      "name": "Vinaigre_Jardinier",
+      "image": "products/images_27.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "250.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 57,
+    "fields": {
+      "code": "ART-00057",
+      "name": "Ketchup",
+      "image": "products/images_44.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1000.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 58,
+    "fields": {
+      "code": "ART-00058",
+      "name": "mayonnaise_Bama",
+      "image": "",
+      "category": 1,
+      "unit": "pièce",
+      "price": "2500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 59,
+    "fields": {
+      "code": "ART-00059",
+      "name": "Mayonnaise_MIA",
+      "image": "products/images_38.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "600.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 60,
+    "fields": {
+      "code": "ART-00060",
+      "name": "Mayonnaise_petit matin",
+      "image": "products/images_37.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 61,
+    "fields": {
+      "code": "ART-00061",
+      "name": "Mayonnaise_calvé",
+      "image": "products/images_33.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 62,
+    "fields": {
+      "code": "ART-00062",
+      "name": "Olive",
+      "image": "",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1000.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 63,
+    "fields": {
+      "code": "ART-00063",
+      "name": "Lait_concentré_Roch",
+      "image": "products/images_48.jfif",
+      "category": 6,
+      "unit": "pièce",
+      "price": "1250.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 64,
+    "fields": {
+      "code": "ART-00064",
+      "name": "Lait_Candia",
+      "image": "products/images_42.jfif",
+      "category": 6,
+      "unit": "pièce",
+      "price": "750.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 65,
+    "fields": {
+      "code": "ART-00065",
+      "name": "Lait_300f",
+      "image": "",
+      "category": 6,
+      "unit": "pièce",
+      "price": "300.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 66,
+    "fields": {
+      "code": "ART-00066",
+      "name": "Mixwell_100f",
+      "image": "products/images_39.jfif",
+      "category": 6,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 67,
+    "fields": {
+      "code": "ART-00067",
+      "name": "Lait_barkama_50f",
+      "image": "",
+      "category": null,
+      "unit": "pièce",
+      "price": "50.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 68,
+    "fields": {
+      "code": "ART-00068",
+      "name": "Yaourt_300",
+      "image": "",
+      "category": 6,
+      "unit": "pièce",
+      "price": "299.93",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 69,
+    "fields": {
+      "code": "ART-00069",
+      "name": "yoplait_200f",
+      "image": "",
+      "category": 6,
+      "unit": "pièce",
+      "price": "200.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 70,
+    "fields": {
+      "code": "ART-00070",
+      "name": "yoplait_100f",
+      "image": "",
+      "category": 6,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 71,
+    "fields": {
+      "code": "ART-00071",
+      "name": "malilait_100",
+      "image": "",
+      "category": 6,
+      "unit": "pièce",
+      "price": "100.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 72,
+    "fields": {
+      "code": "ART-00072",
+      "name": "Dégé_250",
+      "image": "",
+      "category": 6,
+      "unit": "pièce",
+      "price": "250.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 73,
+    "fields": {
+      "code": "ART-00073",
+      "name": "lipton _Chaya",
+      "image": "products/images_35.jfif",
+      "category": null,
+      "unit": "pièce",
+      "price": "16.67",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 74,
+    "fields": {
+      "code": "ART-00074",
+      "name": "Lipton_1er",
+      "image": "products/61mnztup2pL._AC_UF10001000_QL80_.jpg",
+      "category": 1,
+      "unit": "pièce",
+      "price": "25.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 75,
+    "fields": {
+      "code": "ART-00075",
+      "name": "Moutard_moy",
+      "image": "",
+      "category": 1,
+      "unit": "pièce",
+      "price": "1000.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 76,
+    "fields": {
+      "code": "ART-00076",
+      "name": "moutarde_Grd",
+      "image": "",
+      "category": null,
+      "unit": "pièce",
+      "price": "1500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 77,
+    "fields": {
+      "code": "ART-00077",
+      "name": "Moutard_sachet",
+      "image": "products/moutarde-sonia-sachets-12-25g.webp",
+      "category": 1,
+      "unit": "pièce",
+      "price": "50.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 78,
+    "fields": {
+      "code": "ART-00078",
+      "name": "mayonnaise_sachet",
+      "image": "products/images_46.jfif",
+      "category": 1,
+      "unit": "pièce",
+      "price": "50.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 79,
+    "fields": {
+      "code": "ART-00079",
+      "name": "Farine_50Kg",
+      "image": "products/images_41.jfif",
+      "category": 1,
+      "unit": "kg",
+      "price": "500.00",
+      "cost_price": "0.00",
+      "stock": "0.00",
+      "min_stock": "0.00",
+      "expiry_date": null,
+      "pack_size": "1.00",
+      "pack_price": null
+    }
+  },
+  {
+    "model": "store.sale",
+    "pk": 5,
+    "fields": {
+      "created_at": "2026-05-09T19:33:33.446Z",
+      "total": "625.00",
+      "sale_date": "2026-05-09",
+      "notes": ""
+    }
+  },
+  {
+    "model": "store.saleitem",
+    "pk": 16,
+    "fields": {
+      "sale": 5,
+      "product": 2,
+      "quantity": "1.00",
+      "price": "200.00",
+      "sale_mode": "detail"
+    }
+  },
+  {
+    "model": "store.saleitem",
+    "pk": 17,
+    "fields": {
+      "sale": 5,
+      "product": 2,
+      "quantity": "1.00",
+      "price": "200.00",
+      "sale_mode": "detail"
+    }
+  },
+  {
+    "model": "store.saleitem",
+    "pk": 18,
+    "fields": {
+      "sale": 5,
+      "product": 1,
+      "quantity": "1.00",
+      "price": "25.00",
+      "sale_mode": "detail"
+    }
+  },
+  {
+    "model": "store.saleitem",
+    "pk": 19,
+    "fields": {
+      "sale": 5,
+      "product": 2,
+      "quantity": "1.00",
+      "price": "200.00",
+      "sale_mode": "detail"
+    }
+  },
+  {
+    "model": "store.storesettings",
+    "pk": 1,
+    "fields": {
+      "store_name": "La Misericorde",
+      "welcome_message": "",
+      "language": "fr",
+      "logo": "logos/EC757506-C45E-4994-95E4-5E1379224C08.PNG",
+      "background_image": "backgrounds/blog-mini-site-37-6645eb59490f3.webp",
+      "invoice_watermark": "watermarks/EC757506-C45E-4994-95E4-5E1379224C08.PNG",
+      "theme": "burgundy",
+      "invoice_layout": "classic",
+      "address": "",
+      "phone_number": "",
+      "signature": "",
+      "voice_alerts": false,
+      "monthly_expense_limit": "0.00"
+    }
+  }
+]
