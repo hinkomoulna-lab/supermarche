@@ -125,6 +125,16 @@
 .card-accent-purple { border-left-color: #7c3aed; }
 .card-accent-pink { border-left-color: #ec4899; }
 .card-accent-teal { border-left-color: #14b8a6; }
+.card-accent-blue { border-left-color: #3b82f6; }
+
+/* Fond légèrement coloré selon la bordure */
+.card-accent-green .card-body { background: rgba(22,163,74,.04); }
+.card-accent-red .card-body { background: rgba(220,38,38,.04); }
+.card-accent-orange .card-body { background: rgba(245,158,11,.04); }
+.card-accent-purple .card-body { background: rgba(124,58,237,.04); }
+.card-accent-pink .card-body { background: rgba(236,72,153,.04); }
+.card-accent-teal .card-body { background: rgba(20,184,166,.04); }
+.card-accent-blue .card-body { background: rgba(59,130,246,.04); }
 
 /* ===== BADGES COLORÉS ===== */
 .badge-soft-green {

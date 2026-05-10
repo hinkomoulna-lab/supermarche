@@ -101,7 +101,7 @@ def home(request):
         'low_stock_count': low_stock_count,
         'recent_sales': recent_sales,
 
-        'total_expenses': total_expenses,
+        'total_expenses': float(total_expenses),
         'outstanding_debt_total': outstanding_debt_total,
         'overdue_debt_total': overdue_debt_total,
         'unpaid_debt_count': unpaid_debt_count,
