@@ -10,8 +10,3 @@ venv/
 .DS_Store
 .idea/
 .vscode/
-media/products/
-media/backgrounds/
-media/logos/
-media/watermarks/
-media/signatures/
