@@ -3,7 +3,8 @@ import json
 import os
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from store.models import Product
+from django.core import serializers
+from store.models import Product, StoreSettings, Category
 
 
 def decode_media(media_files):
@@ -20,17 +21,16 @@ def decode_media(media_files):
             print(f'  Erreur média {file_path}: {e}')
 
 
+always_models = {'store.storesettings', 'store.category'}
+
+
 class Command(BaseCommand):
-    help = "Synchronise toutes les données depuis fixtures/full_data.json"
+    help = "Synchronise les données depuis fixtures/full_data.json"
 
     def add_arguments(self, parser):
-        parser.add_argument('--force', action='store_true', help='Forcer l\'import même si des données existent')
+        parser.add_argument('--force', action='store_true', help='Forcer l\'import complet')
 
     def handle(self, *args, **options):
-        if Product.objects.count() > 0 and not options['force']:
-            self.stdout.write('Des données existent déjà. Utilise --force pour réimporter.')
-            return
-
         json_path = os.path.join(settings.BASE_DIR, 'fixtures', 'full_data.json')
         if not os.path.exists(json_path):
             self.stdout.write(self.style.ERROR(f'Fichier introuvable : {json_path}'))
@@ -45,8 +45,16 @@ class Command(BaseCommand):
         self.stdout.write(f'Restauration de {len(media_files)} fichiers média...')
         decode_media(media_files)
 
+        if Product.objects.count() > 0 and not options.get('force'):
+            always = [d for d in data if d.get('model') in always_models]
+            if always:
+                self.stdout.write(f'Import des paramètres et catégories ({len(always)})...')
+                for obj in serializers.deserialize('json', json.dumps(always)):
+                    obj.save()
+            self.stdout.write('Produits existants, import ignoré (utilise --force pour réimporter tout)')
+            return
+
         self.stdout.write(f'Import de {len(data)} enregistrements...')
-        from django.core import serializers
         try:
             for obj in serializers.deserialize('json', json.dumps(data)):
                 obj.save()
