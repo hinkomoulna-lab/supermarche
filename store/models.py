@@ -93,14 +93,18 @@ class Sale(models.Model):
 class SaleItem(models.Model):
     SALE_MODE_CHOICES = [
         ('detail', 'Détail'),
+        ('piece', 'Pièce'),
         ('paquet', 'Paquet'),
+        ('carton', 'Carton'),
+        ('kg', 'Kg'),
+        ('l', 'L'),
     ]
 
     sale = models.ForeignKey(Sale, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    sale_mode = models.CharField('Mode de vente', max_length=10, choices=SALE_MODE_CHOICES, default='detail')
+    sale_mode = models.CharField('Mode de vente', max_length=10, choices=SALE_MODE_CHOICES, default='piece')
 
     class Meta:
         verbose_name = 'Ligne de vente'
@@ -307,3 +311,31 @@ class AppFeature(models.Model):
     def __str__(self):
         return self.title
 
+
+class StockLoss(models.Model):
+    REASON_CHOICES = [
+        ('expired', 'Périmé'),
+        ('damaged', 'Endommagé'),
+        ('stolen', 'Vol'),
+        ('other', 'Autre'),
+    ]
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Produit')
+    quantity = models.DecimalField('Quantité perdue', max_digits=10, decimal_places=2)
+    loss_amount = models.DecimalField('Montant de la perte (FCFA)', max_digits=10, decimal_places=2, default=0)
+    date = models.DateField('Date', default=date.today)
+    reason = models.CharField('Raison', max_length=20, choices=REASON_CHOICES, default='expired')
+    notes = models.TextField('Notes', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date', '-created_at']
+        verbose_name = 'Perte de stock'
+        verbose_name_plural = 'Pertes de stock'
+
+    def __str__(self):
+        return f'{self.product.name} - {self.quantity} ({self.get_reason_display()})'
+
+    def save(self, *args, **kwargs):
+        if not self.loss_amount:
+            self.loss_amount = self.quantity * (self.product.cost_price or 0)
+        super().save(*args, **kwargs)

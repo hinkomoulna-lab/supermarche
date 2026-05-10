@@ -104,8 +104,11 @@ document.getElementById('enableClient').addEventListener('change', function() {
                     <td class="line-unit text-secondary">-</td>
                     <td>
                         <select name="sale_mode" class="form-select mode-select">
-                            <option value="detail">Détail</option>
+                            <option value="piece">Pièce</option>
                             <option value="paquet">Paquet</option>
+                            <option value="carton">Carton</option>
+                            <option value="kg">Kg</option>
+                            <option value="l">Litre</option>
                         </select>
                     </td>
                     <td><button type="button" class="btn btn-outline-danger icon-btn remove-row" title="Retirer la ligne"><i class="bi bi-x-lg"></i></button></td>
@@ -140,8 +143,11 @@ document.getElementById('enableClient').addEventListener('change', function() {
         <td class="line-unit text-secondary">-</td>
         <td>
             <select name="sale_mode" class="form-select mode-select">
-                <option value="detail">Détail</option>
+                <option value="piece">Pièce</option>
                 <option value="paquet">Paquet</option>
+                <option value="carton">Carton</option>
+                <option value="kg">Kg</option>
+                <option value="l">Litre</option>
             </select>
         </td>
         <td><button type="button" class="btn btn-outline-danger icon-btn remove-row" title="Retirer la ligne"><i class="bi bi-x-lg"></i></button></td>
@@ -159,7 +165,9 @@ document.getElementById('enableClient').addEventListener('change', function() {
             const pack = select.selectedOptions[0]?.dataset.pack || '1';
             const mode = row.querySelector('.mode-select');
             if (mode) {
-                mode.querySelector('option[value="paquet"]').hidden = !pack || pack <= 1;
+                const showPack = pack && pack > 1;
+                mode.querySelector('option[value="paquet"]').hidden = !showPack;
+                mode.querySelector('option[value="carton"]').hidden = !showPack;
             }
             row.querySelector('.line-unit').textContent = unit;
         });

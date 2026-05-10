@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from .models import (
     Category, Debt, Expense,
     PhoneCredit, PhoneCreditPurchase,
-    Product, StoreSettings, AppFeature
+    Product, StoreSettings, AppFeature,
+    StockLoss
 )
 
 # ======================
@@ -304,3 +305,17 @@ class AccountCreationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields['password1'].widget.attrs.update({'class': 'form-control form-control-sm'})
         self.fields['password2'].widget.attrs.update({'class': 'form-control form-control-sm'})
+
+
+class StockLossForm(forms.ModelForm):
+    class Meta:
+        model = StockLoss
+        fields = ['product', 'quantity', 'loss_amount', 'date', 'reason', 'notes']
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-select'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'loss_amount': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'readonly': 'readonly'}),
+            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'reason': forms.Select(attrs={'class': 'form-select'}),
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }

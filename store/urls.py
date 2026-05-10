@@ -68,4 +68,9 @@ urlpatterns = [
     path('achats-credits/nouveau/', views.phone_credit_purchase_create, name='phone_credit_purchase_create'),
     path('achats-credits/<int:pk>/modifier/', views.phone_credit_purchase_update, name='phone_credit_purchase_update'),
     path('achats-credits/<int:pk>/supprimer/', views.phone_credit_purchase_delete, name='phone_credit_purchase_delete'),
+
+    # PERTES DE STOCK
+    path('pertes/', views.stock_loss_list, name='stock_loss_list'),
+    path('pertes/perimes/', views.stock_loss_expired, name='stock_loss_expired'),
+    path('pertes/nouveau/', views.stock_loss_create, name='stock_loss_create'),
 ]

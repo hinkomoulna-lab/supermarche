@@ -28,7 +28,7 @@ from .models import (
     Product, Sale, SaleItem,
     Expense, Debt,
     PhoneCredit, PhoneCreditPurchase, StoreSettings,
-    AppFeature
+    AppFeature, StockLoss
 )
 
 from .forms import (
@@ -37,7 +37,7 @@ from .forms import (
     PhoneCreditForm, PhoneCreditPurchaseForm,
     StoreSettingsForm, AppFeatureForm,
     AccountCreationForm, AIFeatureInstructionForm,
-    DataImportForm
+    DataImportForm, StockLossForm
 )
 
 
@@ -404,12 +404,12 @@ def product_delete(request, pk):
 
 
 def create_sale(request):
-    products = Product.objects.select_related('category').filter(stock__gt=0)
+    products = Product.objects.select_related('category').all()
     quick_products = (
-        products.filter(name__icontains='pain')
-        | products.filter(name__icontains='glace')
-        | products.filter(category__name__icontains='pain')
-        | products.filter(category__name__icontains='glace')
+        Product.objects.filter(name__icontains='pain')
+        | Product.objects.filter(name__icontains='glace')
+        | Product.objects.filter(category__name__icontains='pain')
+        | Product.objects.filter(category__name__icontains='glace')
     ).distinct()[:8]
 
     if request.method == 'POST':
@@ -422,7 +422,6 @@ def create_sale(request):
         customer_phone = request.POST.get('customer_phone', '').strip()
         rows = []
         errors = []
-        requested_quantities = {}
 
         try:
             sale_date = date.fromisoformat(sale_date_str) if sale_date_str else date.today()
@@ -431,7 +430,7 @@ def create_sale(request):
 
         for index, product_id in enumerate(product_ids):
             quantity_value = quantities[index] if index < len(quantities) else ''
-            mode = sale_modes[index] if index < len(sale_modes) else 'detail'
+            mode = sale_modes[index] if index < len(sale_modes) else 'piece'
             if not product_id and not quantity_value:
                 continue
             try:
@@ -443,16 +442,15 @@ def create_sale(request):
                 errors.append('Une ligne de vente est invalide.')
                 continue
 
-            if mode == 'paquet' and product.pack_size > 1:
-                effective_qty = quantity * product.pack_size
+            if mode in ('paquet', 'carton') and product.pack_size > 1:
+                multiplier = 12 if mode == 'carton' else 1
+                effective_qty = quantity * product.pack_size * multiplier
             else:
                 effective_qty = quantity
-                mode = 'detail'
+                if mode not in ('kg', 'l'):
+                    mode = 'piece'
 
-            requested_quantities[product.id] = requested_quantities.get(product.id, Decimal('0')) + effective_qty
-            if product.stock < requested_quantities[product.id]:
-                errors.append(f'Stock insuffisant pour {product.name}. Disponible : {product.stock} {product.get_unit_display()}.')
-            rows.append((product, quantity, mode))
+            rows.append((product, quantity, mode, effective_qty))
 
         if not rows:
             errors.append('Ajoute au moins un produit à la vente.')
@@ -467,22 +465,21 @@ def create_sale(request):
                     notes=sale_notes, customer_name=customer_name,
                     customer_phone=customer_phone,
                 )
-                for product, quantity, mode in rows:
-                    if mode == 'paquet' and product.pack_size > 1:
-                        price = product.pack_price or (product.price * product.pack_size)
-                        stock_qty = quantity * product.pack_size
+                for product, quantity, mode, effective_qty in rows:
+                    if mode in ('paquet', 'carton') and product.pack_size > 1:
+                        multiplier = 12 if mode == 'carton' else 1
+                        price = (product.pack_price or (product.price * product.pack_size)) * multiplier
                     else:
                         price = product.price
-                        stock_qty = quantity
                     SaleItem.objects.create(
                         sale=sale, product=product,
                         quantity=quantity, price=price,
                         sale_mode=mode
                     )
-                    product.stock -= stock_qty
+                    product.stock -= effective_qty
                     product.save(update_fields=['stock'])
                 sale.update_total()
-            messages.success(request, 'Vente multiple enregistrée avec succès.')
+            messages.success(request, 'Vente enregistrée avec succès.')
             return redirect('store:sale_detail', sale_id=sale.id)
 
     return render(request, 'store/create_sale.html', {
@@ -535,7 +532,11 @@ def _restore_stock_and_delete_sales(sales):
     with transaction.atomic():
         for sale in sales.prefetch_related('items__product'):
             for item in sale.items.all():
-                item.product.stock += item.quantity
+                qty = item.quantity
+                if item.sale_mode in ('paquet', 'carton') and item.product.pack_size > 1:
+                    mult = 12 if item.sale_mode == 'carton' else 1
+                    qty = item.quantity * item.product.pack_size * mult
+                item.product.stock += qty
                 item.product.save(update_fields=['stock'])
             sale.delete()
 
@@ -551,7 +552,13 @@ def sale_update(request, sale_id):
 
     original_quantities = {}
     for item in sale.items.all():
-        original_quantities[item.product_id] = original_quantities.get(item.product_id, Decimal('0')) + item.quantity
+        original_qtys = Decimal('0')
+        if item.sale_mode in ('paquet', 'carton') and item.product.pack_size > 1:
+            mult = 12 if item.sale_mode == 'carton' else 1
+            original_qtys = item.quantity * item.product.pack_size * mult
+        else:
+            original_qtys = item.quantity
+        original_quantities[item.product_id] = original_quantities.get(item.product_id, Decimal('0')) + original_qtys
 
     if request.method == 'POST':
         product_ids = request.POST.getlist('product')
@@ -563,7 +570,6 @@ def sale_update(request, sale_id):
         customer_phone = request.POST.get('customer_phone', '').strip()
         rows = []
         errors = []
-        requested_quantities = {}
 
         try:
             sale.sale_date = date.fromisoformat(sale_date_str) if sale_date_str else date.today()
@@ -575,7 +581,7 @@ def sale_update(request, sale_id):
 
         for index, product_id in enumerate(product_ids):
             quantity_value = quantities[index] if index < len(quantities) else ''
-            mode = sale_modes[index] if index < len(sale_modes) else 'detail'
+            mode = sale_modes[index] if index < len(sale_modes) else 'piece'
             if not product_id and not quantity_value:
                 continue
             try:
@@ -587,20 +593,15 @@ def sale_update(request, sale_id):
                 errors.append('Une ligne de vente est invalide.')
                 continue
 
-            if mode == 'paquet' and product.pack_size > 1:
-                effective_qty = quantity * product.pack_size
+            if mode in ('paquet', 'carton') and product.pack_size > 1:
+                multiplier = 12 if mode == 'carton' else 1
+                effective_qty = quantity * product.pack_size * multiplier
             else:
                 effective_qty = quantity
-                mode = 'detail'
+                if mode not in ('kg', 'l'):
+                    mode = 'piece'
 
-            requested_quantities[product.id] = requested_quantities.get(product.id, Decimal('0')) + effective_qty
-            available_quantity = product.stock + original_quantities.get(product.id, Decimal('0'))
-            if available_quantity < requested_quantities[product.id]:
-                errors.append(
-                    f'Stock insuffisant pour {product.name}. Disponible : '
-                    f'{available_quantity} {product.get_unit_display()}.'
-                )
-            rows.append((product, quantity, mode))
+            rows.append((product, quantity, mode, effective_qty))
 
         if not rows:
             errors.append('Ajoute au moins un produit à la vente.')
@@ -611,27 +612,27 @@ def sale_update(request, sale_id):
         else:
             with transaction.atomic():
                 for item in sale.items.select_related('product'):
-                    if item.sale_mode == 'paquet' and item.product.pack_size > 1:
-                        item.product.stock += item.quantity * item.product.pack_size
+                    if item.sale_mode in ('paquet', 'carton') and item.product.pack_size > 1:
+                        mult = 12 if item.sale_mode == 'carton' else 1
+                        item.product.stock += item.quantity * item.product.pack_size * mult
                     else:
                         item.product.stock += item.quantity
                     item.product.save(update_fields=['stock'])
 
                 sale.items.all().delete()
 
-                for product, quantity, mode in rows:
-                    if mode == 'paquet' and product.pack_size > 1:
-                        price = product.pack_price or (product.price * product.pack_size)
-                        stock_qty = quantity * product.pack_size
+                for product, quantity, mode, effective_qty in rows:
+                    if mode in ('paquet', 'carton') and product.pack_size > 1:
+                        multiplier = 12 if mode == 'carton' else 1
+                        price = (product.pack_price or (product.price * product.pack_size)) * multiplier
                     else:
                         price = product.price
-                        stock_qty = quantity
                     SaleItem.objects.create(
                         sale=sale, product=product,
                         quantity=quantity, price=price,
                         sale_mode=mode
                     )
-                    product.stock -= stock_qty
+                    product.stock -= effective_qty
                     product.save(update_fields=['stock'])
 
                 sale.save(update_fields=['sale_date', 'notes'])
@@ -901,12 +902,6 @@ def cart_checkout(request):
         return redirect('store:cart')
 
     products = {str(product.id): product for product in Product.objects.filter(id__in=cart.keys())}
-    for product_id, quantity in cart.items():
-        product = products.get(product_id)
-        quantity = Decimal(quantity)
-        if product is None or product.stock < quantity:
-            messages.error(request, 'Stock insuffisant pour valider le panier.')
-            return redirect('store:cart')
 
     with transaction.atomic():
         sale = Sale.objects.create()
@@ -1145,3 +1140,61 @@ def phone_credit_purchase_delete(request, pk):
         messages.success(request, 'Achat de crédit supprimé avec succès.')
         return redirect('store:phone_credit_purchase_list')
     return render(request, 'store/phone_credit_purchase_confirm_delete.html', {'purchase': purchase})
+
+
+# =========================
+# PERTES DE STOCK
+# =========================
+def stock_loss_list(request):
+    losses = StockLoss.objects.select_related('product').all()
+    total_loss = losses.aggregate(total=Sum('loss_amount'))['total'] or 0
+    return render(request, 'store/stock_loss_list.html', {
+        'losses': losses,
+        'total_loss': total_loss,
+    })
+
+
+def stock_loss_create(request):
+    form = StockLossForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        loss = form.save()
+        product = loss.product
+        if product.stock >= loss.quantity:
+            product.stock -= loss.quantity
+            product.save()
+        messages.success(request, 'Perte enregistrée avec succès.')
+        return redirect('store:stock_loss_list')
+    return render(request, 'store/stock_loss_form.html', {
+        'form': form,
+        'title': 'Nouvelle perte',
+    })
+
+
+def stock_loss_expired(request):
+    today = date.today()
+    expired_products = Product.objects.filter(
+        expiry_date__lt=today,
+        stock__gt=0
+    ).order_by('expiry_date')
+
+    if request.method == 'POST':
+        product_ids = request.POST.getlist('products')
+        for pid in product_ids:
+            product = get_object_or_404(Product, pk=pid)
+            if product.stock > 0:
+                StockLoss.objects.create(
+                    product=product,
+                    quantity=product.stock,
+                    loss_amount=product.stock * (product.cost_price or 0),
+                    reason='expired',
+                    notes=f'Périmé le {product.expiry_date}'
+                )
+                product.stock = 0
+                product.save()
+        messages.success(request, f'{len(product_ids)} produit(s) périmé(s) marqué(s) comme perte.')
+        return redirect('store:stock_loss_list')
+
+    return render(request, 'store/stock_loss_expired.html', {
+        'expired_products': expired_products,
+        'today': today,
+    })
