@@ -13,6 +13,7 @@ urlpatterns = [
     path('order/<int:order_id>/status/', views.order_status_json, name='order_status_json'),
     path('staff/dashboard/', views.dashboard, name='dashboard'),
     path('staff/order/<int:order_id>/status/', views.update_order_status, name='update_order_status'),
+    path('staff/order/<int:order_id>/convert/', views.convert_to_sale, name='convert_to_sale'),
     path('staff/item/<int:item_id>/toggle/', views.toggle_item_available, name='toggle_item_available'),
     path('staff/qr/', qr_views.qr_display, name='qr_display'),
     path('staff/qr/download/', qr_views.qr_download, name='qr_download'),

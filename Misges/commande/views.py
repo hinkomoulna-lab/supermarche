@@ -3,8 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
+from datetime import date
 from django.utils import timezone
-from store.models import Product, Category
+from store.models import Product, Category, Sale, SaleItem
 from .models import Order, OrderItem, OrderClient
 
 
@@ -165,6 +166,46 @@ def dashboard(request):
     })
 
 
+def create_sale_from_order(order, confirmed_by=''):
+    """Create a Sale + SaleItems from a delivered Order with stock deduction."""
+    if order.sale is not None:
+        return order.sale
+
+    client_name = order.client.phone or f'Client QR #{order.client.token}'
+
+    sale = Sale.objects.create(
+        sale_date=date.today(),
+        sale_time=timezone.localtime().time(),
+        customer_name=client_name,
+        customer_phone=order.client.phone,
+        notes=f'Commande QR #{order.id} — {confirmed_by}',
+        amount_paid=0,
+    )
+
+    for item in order.items.filter(available=True, product__isnull=False).select_related('product'):
+        SaleItem.objects.create(
+            sale=sale,
+            product=item.product,
+            quantity=item.quantity,
+            price=item.unit_price,
+            sale_mode='piece',
+        )
+        qty = float(item.quantity)
+        item.product.stock -= qty
+        item.product.save(update_fields=['stock'])
+
+    sale.update_total()
+    sale.amount_paid = sale.total
+    sale.sync_payment_status()
+    sale.save(update_fields=['amount_paid', 'payment_status'])
+
+    order.sale = sale
+    order.save(update_fields=['sale'])
+
+    return sale
+
+
+@transaction.atomic
 def update_order_status(request, order_id):
     if request.method != 'POST':
         return JsonResponse({'error': 'POST required'}, status=405)
@@ -176,6 +217,22 @@ def update_order_status(request, order_id):
     order.status = new_status
     order.confirmed_by = request.user.get_full_name() or request.user.username
     order.save()
+
+    if new_status == 'delivered':
+        create_sale_from_order(order, confirmed_by=order.confirmed_by)
+
+    return redirect('commande:dashboard')
+
+
+@transaction.atomic
+def convert_to_sale(request, order_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST required'}, status=405)
+    order = get_object_or_404(Order, id=order_id)
+    if order.status not in ('delivered', 'ready'):
+        return JsonResponse({'error': 'Seules les commandes prêtes ou livrées peuvent être converties'}, status=400)
+    confirmed_by = request.user.get_full_name() or request.user.username
+    create_sale_from_order(order, confirmed_by=confirmed_by)
     return redirect('commande:dashboard')
 
 

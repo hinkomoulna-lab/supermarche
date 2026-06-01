@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.db import models
 from django.db.models import Sum
 from django.utils import timezone
-from store.models import Product
+from store.models import Product, Sale
 
 
 def generate_client_token():
@@ -41,6 +41,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     confirmed_by = models.CharField('Confirmé par', max_length=100, blank=True)
+    sale = models.ForeignKey(Sale, null=True, blank=True, on_delete=models.SET_NULL, related_name='commande_orders', verbose_name='Vente liée')
 
     class Meta:
         ordering = ['-created_at']
