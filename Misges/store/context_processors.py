@@ -89,7 +89,12 @@ def store_settings(request):
 
     CURRENCY_SYMBOLS = {'XOF': 'FCFA', 'EUR': '€', 'USD': '$'}
     cart = request.session.get('cart', {})
-    cart_count = sum(max(int(v or 0), 0) for v in cart.values())
+    cart_count = 0
+    for v in cart.values():
+        if isinstance(v, dict):
+            cart_count += int(v.get('quantity', 0))
+        else:
+            cart_count += max(int(v or 0), 0)
     return {
         'store_settings': settings,
         'global_alerts': alerts,
