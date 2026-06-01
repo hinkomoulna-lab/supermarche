@@ -22,8 +22,8 @@ def _get_or_create_client(request):
 
 def catalog(request):
     client = _get_or_create_client(request)
-    categories = Category.objects.filter(visible=True)
-    products = Product.objects.filter(visible=True)
+    categories = Category.objects.all()
+    products = Product.objects.all()
     cat_id = request.GET.get('category')
     if cat_id:
         products = products.filter(category_id=cat_id)
@@ -40,7 +40,7 @@ def add_to_cart(request):
     product_id = request.POST.get('product_id')
     quantity = float(request.POST.get('quantity', 1))
     try:
-        product = Product.objects.get(id=product_id, visible=True)
+        product = Product.objects.get(id=product_id)
     except Product.DoesNotExist:
         return JsonResponse({'error': 'Produit introuvable'}, status=404)
 
