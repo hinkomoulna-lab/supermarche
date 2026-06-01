@@ -8,13 +8,13 @@
     <link href="/static/css/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #16a34a;
-            --primary-dark: #15803d;
-            --primary-light: #dcfce7;
+            --primary: #8b1a2b;
+            --primary-dark: #5c0e1a;
+            --primary-light: #fce4e8;
             --warning: #f59e0b;
             --danger: #dc2626;
             --surface: #ffffff;
-            --bg: #f0fdf4;
+            --bg: #fdf2f4;
         }
         * { box-sizing: border-box; }
         body {
@@ -22,10 +22,10 @@
             background: var(--bg); margin: 0; padding: 0; color: #1a1a2e;
         }
         .app-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(135deg, #8b1a2b, #5c0e1a);
             color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 100;
             display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 2px 12px rgba(22, 163, 74, .25);
+            box-shadow: 0 2px 12px rgba(139, 26, 43, .25);
         }
         .app-header h1 { font-size: 18px; margin: 0; font-weight: 700; flex: 1; }
         .app-header a { color: #fff; text-decoration: none; font-size: 20px; }
@@ -54,7 +54,7 @@
         .btn-cart {
             position: fixed; bottom: 16px;left: 50%;transform:translateX(-50%);z-index:99;
             background: var(--primary); color: #fff; padding: 14px 32px; border-radius: 50px;
-            font-size: 16px; font-weight: 700; border: none; box-shadow: 0 4px 20px rgba(22,163,74,.4);
+            font-size: 16px; font-weight: 700; border: none; box-shadow: 0 4px 20px rgba(139,26,43,.4);
             display: flex; align-items: center; gap: 8px; text-decoration: none;
         }
         .btn-cart:hover { background: var(--primary-dark); color: #fff; }
@@ -90,8 +90,8 @@
 </head>
 <body>
     <header class="app-header">
-        <a href="{% url 'commande:catalog' %}"><i class="bi bi-shop"></i></a>
-        <h1>{% block header %}Supermarché{% endblock %}</h1>
+        <a href="{% url 'commande:catalog' %}"><span style="font-weight:900;font-size:22px;letter-spacing:1px;">M</span></a>
+        <h1 style="font-weight:900;letter-spacing:.5px;">{% block header %}MISGES{% endblock %}</h1>
         <a href="{% url 'commande:cart' %}" style="position:relative;">
             <i class="bi bi-cart3"></i>
             {% with cart_count=request.session.cart.values|length %}
