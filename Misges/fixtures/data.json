@@ -1,0 +1,8942 @@
+[
+{
+  "model": "store.category",
+  "pk": 1,
+  "fields": {
+    "name": "alimentation"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 2,
+  "fields": {
+    "name": "Boisson"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 3,
+  "fields": {
+    "name": "eau"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 4,
+  "fields": {
+    "name": "Biscuit"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 5,
+  "fields": {
+    "name": "Chips"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 6,
+  "fields": {
+    "name": "Lait"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 7,
+  "fields": {
+    "name": "Pain"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 8,
+  "fields": {
+    "name": "Glaces"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 9,
+  "fields": {
+    "name": "Boulangerie"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 10,
+  "fields": {
+    "name": "Test Catégorie"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 11,
+  "fields": {
+    "name": "TestCat"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 12,
+  "fields": {
+    "name": "TestCancel_ddd84542"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 13,
+  "fields": {
+    "name": "TestInvoice_3439c75a"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 14,
+  "fields": {
+    "name": "TestInvoice_052b0f0d"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 15,
+  "fields": {
+    "name": "TestCat_87067bdd"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 16,
+  "fields": {
+    "name": "Cat_d989e8c1"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 17,
+  "fields": {
+    "name": "Cat2_4230a176"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 18,
+  "fields": {
+    "name": "Test"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 19,
+  "fields": {
+    "name": "hygiene"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 20,
+  "fields": {
+    "name": "Electronique"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 1,
+  "fields": {
+    "code": "ART-00001",
+    "barcode": null,
+    "name": "biscuit",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "20.00",
+    "stock": "36.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "4.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 2,
+  "fields": {
+    "code": "ART-00002",
+    "barcode": null,
+    "name": "Fanta",
+    "image": "products/planet-orange-new.png",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "154.00",
+    "stock": "13.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "4.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 4,
+  "fields": {
+    "code": "ART-00004",
+    "barcode": null,
+    "name": "Cheni",
+    "image": "products/images_16.jfif",
+    "category": null,
+    "unit": "pièce",
+    "price": "33.30",
+    "cost_price": "27.00",
+    "stock": "30.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 5,
+  "fields": {
+    "code": "ART-00005",
+    "barcode": null,
+    "name": "Liberte",
+    "image": "products/images_18.jfif",
+    "category": null,
+    "unit": "pièce",
+    "price": "32.50",
+    "cost_price": "22.50",
+    "stock": "214.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 6,
+  "fields": {
+    "code": "ART-00006",
+    "barcode": null,
+    "name": "Cheba",
+    "image": "products/images_17.jfif",
+    "category": null,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "0.00",
+    "stock": "90.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 7,
+  "fields": {
+    "code": "ART-00007",
+    "barcode": null,
+    "name": "Sprite_200F",
+    "image": "products/images_14.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "26.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 8,
+  "fields": {
+    "code": "ART-00008",
+    "barcode": null,
+    "name": "Pomme_planet",
+    "image": "products/images_12.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "45.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "3.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 9,
+  "fields": {
+    "code": "ART-00009",
+    "barcode": null,
+    "name": "Coca_Planet",
+    "image": "products/jus_gazeux_-_american_cola_-_planet_-_35cl_x12_-_bouteille_plastique.jpg",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "22.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 10,
+  "fields": {
+    "code": "ART-00010",
+    "barcode": null,
+    "name": "Coktail_Planet",
+    "image": "products/images_8.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "37.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 11,
+  "fields": {
+    "code": "ART-00011",
+    "barcode": null,
+    "name": "Ananas_Planet",
+    "image": "products/images_9.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "44.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 12,
+  "fields": {
+    "code": "ART-00012",
+    "barcode": null,
+    "name": "Coco_cannette",
+    "image": "products/Coca-cola.fw-copy-2048x2048-1-1024x1024.webp",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "4.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 13,
+  "fields": {
+    "code": "ART-00013",
+    "barcode": null,
+    "name": "Ira_grand",
+    "image": "products/images_7.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "458.53",
+    "stock": "24.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 14,
+  "fields": {
+    "code": "ART-00014",
+    "barcode": null,
+    "name": "Ira_Petit",
+    "image": "products/file_1.jpg",
+    "category": 2,
+    "unit": "pièce",
+    "price": "350.00",
+    "cost_price": "0.00",
+    "stock": "2.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 15,
+  "fields": {
+    "code": "ART-00015",
+    "barcode": null,
+    "name": "Fanta_Can",
+    "image": "products/orange.webp",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 16,
+  "fields": {
+    "code": "ART-00016",
+    "barcode": null,
+    "name": "3X",
+    "image": "products/ITM029400_Jeremy_ee5b8a73-b474-490d-9377-edb014f91431_1024x1024.webp",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "416.66",
+    "stock": "12.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 17,
+  "fields": {
+    "code": "ART-00017",
+    "barcode": null,
+    "name": "Double77_petit",
+    "image": "products/ljkk.webp",
+    "category": 2,
+    "unit": "pièce",
+    "price": "300.00",
+    "cost_price": "281.25",
+    "stock": "21.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "3.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 18,
+  "fields": {
+    "code": "ART-00018",
+    "barcode": null,
+    "name": "Double77_Grd",
+    "image": "products/77energydrink.jpg",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 19,
+  "fields": {
+    "code": "ART-00019",
+    "barcode": null,
+    "name": "Vendame",
+    "image": "products/images_10.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "300.00",
+    "cost_price": "0.00",
+    "stock": "11.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 20,
+  "fields": {
+    "code": "ART-00020",
+    "barcode": null,
+    "name": "3Cheveaux",
+    "image": "products/images_3.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "450.00",
+    "stock": "9.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "11.11",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 21,
+  "fields": {
+    "code": "ART-00021",
+    "barcode": null,
+    "name": "Xplus",
+    "image": "products/images_6.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "300.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 22,
+  "fields": {
+    "code": "ART-00022",
+    "barcode": null,
+    "name": "pressia_Can",
+    "image": "products/631244.webp",
+    "category": 2,
+    "unit": "pièce",
+    "price": "300.00",
+    "cost_price": "0.00",
+    "stock": "1.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 23,
+  "fields": {
+    "code": "ART-00023",
+    "barcode": null,
+    "name": "Ami",
+    "image": "products/images_4.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "0.00",
+    "stock": "8.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 24,
+  "fields": {
+    "code": "ART-00024",
+    "barcode": null,
+    "name": "paps_petit",
+    "image": "products/images_5.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 25,
+  "fields": {
+    "code": "ART-00025",
+    "barcode": null,
+    "name": "Paps_Grd",
+    "image": "products/images_5_CkjmEcU.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 26,
+  "fields": {
+    "code": "ART-00026",
+    "barcode": null,
+    "name": "Pressia_Grd",
+    "image": "products/illustration-pressea-1L-moushenco-scaled.webp",
+    "category": 2,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "2.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 27,
+  "fields": {
+    "code": "ART-00027",
+    "barcode": null,
+    "name": "Sprit_Can",
+    "image": "products/en_sprite_prod_12oz-can_750x750_v1.webp",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "1.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 28,
+  "fields": {
+    "code": "ART-00028",
+    "barcode": null,
+    "name": "promax",
+    "image": "products/hero.png",
+    "category": 2,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "0.00",
+    "stock": "15.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 29,
+  "fields": {
+    "code": "ART-00029",
+    "barcode": null,
+    "name": "Dudu",
+    "image": "products/file.jpg",
+    "category": 2,
+    "unit": "pièce",
+    "price": "600.00",
+    "cost_price": "0.00",
+    "stock": "2.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 30,
+  "fields": {
+    "code": "ART-00030",
+    "barcode": null,
+    "name": "Jus_pp_Grd",
+    "image": "products/images_11.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 31,
+  "fields": {
+    "code": "ART-00031",
+    "barcode": null,
+    "name": "Jus_pp_petit(50)",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "55.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 32,
+  "fields": {
+    "code": "ART-00032",
+    "barcode": null,
+    "name": "Tampico",
+    "image": "products/images_15.jfif",
+    "category": 2,
+    "unit": "pièce",
+    "price": "850.00",
+    "cost_price": "0.00",
+    "stock": "5.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 33,
+  "fields": {
+    "code": "ART-00033",
+    "barcode": null,
+    "name": "Diago",
+    "image": "products/images_13.jfif",
+    "category": 3,
+    "unit": "pièce",
+    "price": "400.00",
+    "cost_price": "0.00",
+    "stock": "5.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "12.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 34,
+  "fields": {
+    "code": "ART-00034",
+    "barcode": null,
+    "name": "Jus_pp_100f",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "21.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 35,
+  "fields": {
+    "code": "ART-00035",
+    "barcode": null,
+    "name": "Sardine",
+    "image": "products/images_36.jfif",
+    "category": 1,
+    "unit": "boîte",
+    "price": "350.00",
+    "cost_price": "0.00",
+    "stock": "5.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 36,
+  "fields": {
+    "code": "ART-00036",
+    "barcode": null,
+    "name": "maccaroni",
+    "image": "products/images_22.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "550.00",
+    "cost_price": "0.00",
+    "stock": "15.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 37,
+  "fields": {
+    "code": "ART-00037",
+    "barcode": null,
+    "name": "spaghetty",
+    "image": "products/images_25.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "550.00",
+    "cost_price": "525.00",
+    "stock": "17.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "3.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 38,
+  "fields": {
+    "code": "ART-00038",
+    "barcode": null,
+    "name": "empire",
+    "image": "products/images_21.jfif",
+    "category": 4,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "20.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 39,
+  "fields": {
+    "code": "ART-00039",
+    "barcode": null,
+    "name": "perki",
+    "image": "products/images_20.jfif",
+    "category": 4,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "23.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "4.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 40,
+  "fields": {
+    "code": "ART-00040",
+    "barcode": null,
+    "name": "Chocobien",
+    "image": "products/Wafers-Choco-Bien-32G-239.99-319.99.jpg",
+    "category": 4,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 41,
+  "fields": {
+    "code": "ART-00041",
+    "barcode": null,
+    "name": "coconu",
+    "image": "products/coconut-cookies-1024x1024.jpg",
+    "category": 4,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "7.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 43,
+  "fields": {
+    "code": "ART-00043",
+    "barcode": null,
+    "name": "chip_50",
+    "image": "products/images_50.jfif",
+    "category": 5,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 44,
+  "fields": {
+    "code": "ART-00044",
+    "barcode": null,
+    "name": "firiti djalani",
+    "image": "products/FIESTA_-_Chips_potato_stick_8g_-_lot_de_2PCS_1.webp",
+    "category": 5,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 46,
+  "fields": {
+    "code": "ART-00046",
+    "barcode": null,
+    "name": "biscuit_50",
+    "image": "",
+    "category": 4,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "28.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 47,
+  "fields": {
+    "code": "ART-00047",
+    "barcode": null,
+    "name": "cous_cous arabe",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "1.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 48,
+  "fields": {
+    "code": "ART-00048",
+    "barcode": null,
+    "name": "corne flex",
+    "image": "products/images_29.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1750.00",
+    "cost_price": "0.00",
+    "stock": "2.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 49,
+  "fields": {
+    "code": "ART-00049",
+    "barcode": null,
+    "name": "corned bef_petit",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "416.67",
+    "stock": "12.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 50,
+  "fields": {
+    "code": "ART-00050",
+    "barcode": null,
+    "name": "corned bef_grand",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "750.00",
+    "cost_price": "0.00",
+    "stock": "8.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 51,
+  "fields": {
+    "code": "ART-00051",
+    "barcode": null,
+    "name": "citronel",
+    "image": "products/images_30.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1750.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 52,
+  "fields": {
+    "code": "ART-00052",
+    "barcode": null,
+    "name": "Chocola_Delia",
+    "image": "products/images_47.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 53,
+  "fields": {
+    "code": "ART-00053",
+    "barcode": null,
+    "name": "Sel_baleine",
+    "image": "products/images_23.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 54,
+  "fields": {
+    "code": "ART-00054",
+    "barcode": null,
+    "name": "café_boite",
+    "image": "",
+    "category": null,
+    "unit": "boîte",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "8.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 55,
+  "fields": {
+    "code": "ART-00055",
+    "barcode": null,
+    "name": "nescafé_sachet",
+    "image": "products/images_45.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "43.33",
+    "stock": "144.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 56,
+  "fields": {
+    "code": "ART-00056",
+    "barcode": null,
+    "name": "Vinaigre_Jardinier",
+    "image": "products/images_27.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "0.00",
+    "stock": "20.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 57,
+  "fields": {
+    "code": "ART-00057",
+    "barcode": null,
+    "name": "Ketchup",
+    "image": "products/images_44.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "8.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 58,
+  "fields": {
+    "code": "ART-00058",
+    "barcode": null,
+    "name": "mayonnaise_Bama",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "2500.00",
+    "cost_price": "0.00",
+    "stock": "7.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 59,
+  "fields": {
+    "code": "ART-00059",
+    "barcode": null,
+    "name": "Mayonnaise_MIA",
+    "image": "products/images_38.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "600.00",
+    "cost_price": "0.00",
+    "stock": "9.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 60,
+  "fields": {
+    "code": "ART-00060",
+    "barcode": null,
+    "name": "Mayonnaise_petit matin",
+    "image": "products/images_37.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1500.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 61,
+  "fields": {
+    "code": "ART-00061",
+    "barcode": null,
+    "name": "Mayonnaise_calvé",
+    "image": "products/images_33.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1500.00",
+    "cost_price": "0.00",
+    "stock": "3.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 62,
+  "fields": {
+    "code": "ART-00062",
+    "barcode": null,
+    "name": "Olive",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "4.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 63,
+  "fields": {
+    "code": "ART-00063",
+    "barcode": null,
+    "name": "Lait_concentré_Roch",
+    "image": "products/images_48.jfif",
+    "category": 6,
+    "unit": "pièce",
+    "price": "1250.00",
+    "cost_price": "0.00",
+    "stock": "9.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 64,
+  "fields": {
+    "code": "ART-00064",
+    "barcode": null,
+    "name": "Lait_Candia",
+    "image": "products/images_42.jfif",
+    "category": 6,
+    "unit": "pièce",
+    "price": "750.00",
+    "cost_price": "0.00",
+    "stock": "2.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 65,
+  "fields": {
+    "code": "ART-00065",
+    "barcode": null,
+    "name": "Lait_300f",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "300.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 66,
+  "fields": {
+    "code": "ART-00066",
+    "barcode": null,
+    "name": "Mixwell_100f",
+    "image": "products/images_39.jfif",
+    "category": 6,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "44.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 67,
+  "fields": {
+    "code": "ART-00067",
+    "barcode": null,
+    "name": "Lait_barkama_50f",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 68,
+  "fields": {
+    "code": "ART-00068",
+    "barcode": null,
+    "name": "Yaourt_300",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 69,
+  "fields": {
+    "code": "ART-00069",
+    "barcode": null,
+    "name": "yoplait_200f",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "26.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "3.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 70,
+  "fields": {
+    "code": "ART-00070",
+    "barcode": null,
+    "name": "yoplait_100f",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "38.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 71,
+  "fields": {
+    "code": "ART-00071",
+    "barcode": null,
+    "name": "malilait_100",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "3.00",
+    "stock": "34.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "3.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 72,
+  "fields": {
+    "code": "ART-00072",
+    "barcode": null,
+    "name": "Dégé_250",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "200.00",
+    "stock": "10.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 73,
+  "fields": {
+    "code": "ART-00073",
+    "barcode": null,
+    "name": "lipton _Chaya",
+    "image": "products/images_35.jfif",
+    "category": null,
+    "unit": "pièce",
+    "price": "16.67",
+    "cost_price": "0.00",
+    "stock": "298.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 74,
+  "fields": {
+    "code": "ART-00074",
+    "barcode": null,
+    "name": "Lipton_1er",
+    "image": "products/61mnztup2pL._AC_UF10001000_QL80_.jpg",
+    "category": 1,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 75,
+  "fields": {
+    "code": "ART-00075",
+    "barcode": null,
+    "name": "Moutard_moy",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 76,
+  "fields": {
+    "code": "ART-00076",
+    "barcode": null,
+    "name": "moutarde_Grd",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "1500.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 77,
+  "fields": {
+    "code": "ART-00077",
+    "barcode": null,
+    "name": "Moutard_sachet",
+    "image": "products/moutarde-sonia-sachets-12-25g.webp",
+    "category": 1,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "39.37",
+    "stock": "232.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "12.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 78,
+  "fields": {
+    "code": "ART-00078",
+    "barcode": null,
+    "name": "mayonnaise_sachet",
+    "image": "products/images_46.jfif",
+    "category": 1,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "93.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 79,
+  "fields": {
+    "code": "ART-00079",
+    "barcode": null,
+    "name": "Farine_50Kg",
+    "image": "products/images_41.jfif",
+    "category": 1,
+    "unit": "kg",
+    "price": "550.00",
+    "cost_price": "475.00",
+    "stock": "25.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 80,
+  "fields": {
+    "code": "ART-00080",
+    "barcode": null,
+    "name": "Riz",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "0.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 81,
+  "fields": {
+    "code": "ART-00081",
+    "barcode": null,
+    "name": "Lait",
+    "image": "",
+    "category": null,
+    "unit": "l",
+    "price": "1200.00",
+    "cost_price": "800.00",
+    "stock": "14.42",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 85,
+  "fields": {
+    "code": "ART-00085",
+    "barcode": null,
+    "name": "Miel",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "2500.00",
+    "cost_price": "2300.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "12.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 86,
+  "fields": {
+    "code": "ART-00086",
+    "barcode": null,
+    "name": "Miel",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "2500.00",
+    "cost_price": "2300.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "12.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 87,
+  "fields": {
+    "code": "T1",
+    "barcode": null,
+    "name": "Test",
+    "image": "",
+    "category": 11,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "10.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 88,
+  "fields": {
+    "code": "TC1",
+    "barcode": null,
+    "name": "TestCancel",
+    "image": "",
+    "category": 12,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "10.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 89,
+  "fields": {
+    "code": "TI1",
+    "barcode": null,
+    "name": "TestInv",
+    "image": "",
+    "category": 13,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "10.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 90,
+  "fields": {
+    "code": "TI_87067bdd",
+    "barcode": null,
+    "name": "TestInv_87067bdd",
+    "image": "",
+    "category": 15,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "10.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 91,
+  "fields": {
+    "code": "P_d989e8c1",
+    "barcode": null,
+    "name": "Prod_d989e8c1",
+    "image": "",
+    "category": 16,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "50.00",
+    "stock": "10.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 92,
+  "fields": {
+    "code": "P2_4230a176",
+    "barcode": null,
+    "name": "Prod2_4230a176",
+    "image": "",
+    "category": 17,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "50.00",
+    "stock": "12.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 93,
+  "fields": {
+    "code": "ART-00093",
+    "barcode": null,
+    "name": "Test",
+    "image": "",
+    "category": 18,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "100.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 94,
+  "fields": {
+    "code": "ART-00094",
+    "barcode": null,
+    "name": "Produit Test",
+    "image": "",
+    "category": 18,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "100.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 95,
+  "fields": {
+    "code": "ART-00095",
+    "barcode": null,
+    "name": "pémia",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "0.00",
+    "stock": "22.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 96,
+  "fields": {
+    "code": "ART-00096",
+    "barcode": null,
+    "name": "vimto_Planet",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "23.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 97,
+  "fields": {
+    "code": "ART-00097",
+    "barcode": null,
+    "name": "vimto_Can",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 98,
+  "fields": {
+    "code": "ART-00098",
+    "barcode": null,
+    "name": "vache qui rie",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "31.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "4.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 99,
+  "fields": {
+    "code": "ART-00099",
+    "barcode": null,
+    "name": "sprit_GRD",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "750.00",
+    "cost_price": "0.00",
+    "stock": "4.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 100,
+  "fields": {
+    "code": "ART-00100",
+    "barcode": null,
+    "name": "fanta-grd",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "750.00",
+    "cost_price": "0.00",
+    "stock": "2.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 101,
+  "fields": {
+    "code": "ART-00101",
+    "barcode": null,
+    "name": "Dolima_100f",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "18.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "4.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 102,
+  "fields": {
+    "code": "ART-00102",
+    "barcode": null,
+    "name": "niak",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "0.00",
+    "stock": "4.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 103,
+  "fields": {
+    "code": "ART-00103",
+    "barcode": null,
+    "name": "fatala",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "209.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "30.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 104,
+  "fields": {
+    "code": "ART-00104",
+    "barcode": null,
+    "name": "lotuse",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "1000.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 105,
+  "fields": {
+    "code": "ART-00105",
+    "barcode": null,
+    "name": "Sucre_vanille_alisia",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "0.00",
+    "stock": "145.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "10.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 106,
+  "fields": {
+    "code": "ART-00106",
+    "barcode": null,
+    "name": "vinaigre_25",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "0.00",
+    "stock": "150.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "10.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 107,
+  "fields": {
+    "code": "ART-00107",
+    "barcode": null,
+    "name": "huile 5l",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "6000.00",
+    "cost_price": "5500.00",
+    "stock": "4.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 108,
+  "fields": {
+    "code": "ART-00108",
+    "barcode": null,
+    "name": "Lyna",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "600.00",
+    "cost_price": "0.00",
+    "stock": "9.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 109,
+  "fields": {
+    "code": "ART-00109",
+    "barcode": null,
+    "name": "biscuit_mex",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "17.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 110,
+  "fields": {
+    "code": "ART-00110",
+    "barcode": null,
+    "name": "beurre_Amanda",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "7.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 111,
+  "fields": {
+    "code": "ART-00111",
+    "barcode": null,
+    "name": "jus_en_poudre50f",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "69.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "10.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 112,
+  "fields": {
+    "code": "ART-00112",
+    "barcode": null,
+    "name": "vitablé",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "700.00",
+    "cost_price": "650.00",
+    "stock": "12.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 113,
+  "fields": {
+    "code": "ART-00113",
+    "barcode": null,
+    "name": "cerelac_boite",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "2750.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 114,
+  "fields": {
+    "code": "ART-00114",
+    "barcode": null,
+    "name": "arome",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "3.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 115,
+  "fields": {
+    "code": "ART-00115",
+    "barcode": null,
+    "name": "carte",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "3.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 116,
+  "fields": {
+    "code": "ART-00116",
+    "barcode": null,
+    "name": "gari",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "33.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "3.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 117,
+  "fields": {
+    "code": "ART-00117",
+    "barcode": null,
+    "name": "kung_fu",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 118,
+  "fields": {
+    "code": "ART-00118",
+    "barcode": null,
+    "name": "tomat_sachet",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "80.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 119,
+  "fields": {
+    "code": "ART-00119",
+    "barcode": null,
+    "name": "Savon_100F",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "16.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 120,
+  "fields": {
+    "code": "ART-00120",
+    "barcode": null,
+    "name": "Savon_ECO",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "450.00",
+    "cost_price": "0.00",
+    "stock": "20.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 121,
+  "fields": {
+    "code": "ART-00121",
+    "barcode": null,
+    "name": "savon_200f",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "0.00",
+    "stock": "18.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 122,
+  "fields": {
+    "code": "ART-00122",
+    "barcode": null,
+    "name": "Savon_350",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "350.00",
+    "cost_price": "0.00",
+    "stock": "15.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "4.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 123,
+  "fields": {
+    "code": "ART-00123",
+    "barcode": null,
+    "name": "chargeur_3tete",
+    "image": "",
+    "category": 20,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "250.00",
+    "stock": "10.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 124,
+  "fields": {
+    "code": "ART-00124",
+    "barcode": null,
+    "name": "Tiara",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "27.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 125,
+  "fields": {
+    "code": "ART-00125",
+    "barcode": null,
+    "name": "piment_sonia",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "750.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 126,
+  "fields": {
+    "code": "ART-00126",
+    "barcode": null,
+    "name": "Petit_poid_Pt",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "600.00",
+    "cost_price": "500.00",
+    "stock": "5.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "1.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 127,
+  "fields": {
+    "code": "ART-00127",
+    "barcode": null,
+    "name": "Petit poid",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "0.00",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 128,
+  "fields": {
+    "code": "ART-00128",
+    "barcode": null,
+    "name": "Lait_50f",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "63.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 129,
+  "fields": {
+    "code": "ART-00129",
+    "barcode": null,
+    "name": "eau_javel_sachet",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "24.00",
+    "stock": "121.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 130,
+  "fields": {
+    "code": "ART-00130",
+    "barcode": null,
+    "name": "Chewingum_2(25)",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "12.50",
+    "cost_price": "10.00",
+    "stock": "192.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "10.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 131,
+  "fields": {
+    "code": "ART-00131",
+    "barcode": null,
+    "name": "Dolima_250",
+    "image": "",
+    "category": 6,
+    "unit": "pièce",
+    "price": "250.00",
+    "cost_price": "233.33",
+    "stock": "1.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 132,
+  "fields": {
+    "code": "ART-00132",
+    "barcode": null,
+    "name": "sachet_kg",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "125.00",
+    "cost_price": "88.89",
+    "stock": "45.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "3.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 133,
+  "fields": {
+    "code": "ART-00133",
+    "barcode": null,
+    "name": "biscuit (copie)",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "20.00",
+    "stock": "36.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "4.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 134,
+  "fields": {
+    "code": "ART-00134",
+    "barcode": null,
+    "name": "Omo_sachet",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "22.00",
+    "cost_price": "20.03",
+    "stock": "265.18",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "10.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 135,
+  "fields": {
+    "code": "ART-00135",
+    "barcode": null,
+    "name": "Sucre_50kg",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "600.00",
+    "cost_price": "440.00",
+    "stock": "58.83",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 136,
+  "fields": {
+    "code": "ART-00136",
+    "barcode": null,
+    "name": "riz",
+    "image": "",
+    "category": 1,
+    "unit": "kg",
+    "price": "500.00",
+    "cost_price": "400.00",
+    "stock": "48.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 137,
+  "fields": {
+    "code": "ART-00137",
+    "barcode": null,
+    "name": "epice_25",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "20.00",
+    "stock": "191.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "10.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 138,
+  "fields": {
+    "code": "ART-00138",
+    "barcode": null,
+    "name": "Glace",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "0.00",
+    "stock": "262.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 139,
+  "fields": {
+    "code": "ART-00139",
+    "barcode": null,
+    "name": "eau",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "15.00",
+    "stock": "296.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 140,
+  "fields": {
+    "code": "ART-00140",
+    "barcode": null,
+    "name": "chewingum_supermenth",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "30.00",
+    "stock": "15.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 141,
+  "fields": {
+    "code": "ART-00141",
+    "barcode": null,
+    "name": "Dunhile",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "36.25",
+    "stock": "197.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 142,
+  "fields": {
+    "code": "ART-00142",
+    "barcode": null,
+    "name": "bonbon_kalamani",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "18.00",
+    "stock": "18.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "2.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 143,
+  "fields": {
+    "code": "ART-00143",
+    "barcode": null,
+    "name": "huile",
+    "image": "",
+    "category": null,
+    "unit": "l",
+    "price": "1200.00",
+    "cost_price": "1000.00",
+    "stock": "19.11",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 144,
+  "fields": {
+    "code": "ART-00144",
+    "barcode": null,
+    "name": "lame",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "18.00",
+    "stock": "497.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "5.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 145,
+  "fields": {
+    "code": "ART-00145",
+    "barcode": null,
+    "name": "the",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "90.00",
+    "stock": "321.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 146,
+  "fields": {
+    "code": "ART-00146",
+    "barcode": null,
+    "name": "pomm_de_terre",
+    "image": "",
+    "category": null,
+    "unit": "kg",
+    "price": "600.00",
+    "cost_price": "450.00",
+    "stock": "98.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 147,
+  "fields": {
+    "code": "ART-00147",
+    "barcode": null,
+    "name": "oignon",
+    "image": "",
+    "category": null,
+    "unit": "kg",
+    "price": "600.00",
+    "cost_price": "450.00",
+    "stock": "99.34",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 148,
+  "fields": {
+    "code": "ART-00148",
+    "barcode": null,
+    "name": "lai_en_poudre",
+    "image": "",
+    "category": null,
+    "unit": "kg",
+    "price": "3000.00",
+    "cost_price": "0.00",
+    "stock": "15.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 149,
+  "fields": {
+    "code": "ART-00149",
+    "barcode": null,
+    "name": "pain",
+    "image": "",
+    "category": null,
+    "unit": "kg",
+    "price": "300.00",
+    "cost_price": "250.00",
+    "stock": "191.17",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 150,
+  "fields": {
+    "code": "ART-00150",
+    "barcode": null,
+    "name": "original_boisson",
+    "image": "",
+    "category": 2,
+    "unit": "pièce",
+    "price": "300.00",
+    "cost_price": "270.83",
+    "stock": "24.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 151,
+  "fields": {
+    "code": "ART-00151",
+    "barcode": null,
+    "name": "levure_chimique_50f",
+    "image": "",
+    "category": 1,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "45.00",
+    "stock": "100.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 152,
+  "fields": {
+    "code": "ART-00152",
+    "barcode": null,
+    "name": "pate_doctor",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "500.00",
+    "cost_price": "266.67",
+    "stock": "6.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 153,
+  "fields": {
+    "code": "ART-00153",
+    "barcode": null,
+    "name": "café_viet",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "200.00",
+    "cost_price": "150.00",
+    "stock": "8.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 154,
+  "fields": {
+    "code": "ART-00154",
+    "barcode": null,
+    "name": "klinex",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "85.00",
+    "stock": "18.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 155,
+  "fields": {
+    "code": "ART-00155",
+    "barcode": null,
+    "name": "sosofagalan_25f",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "25.00",
+    "cost_price": "18.00",
+    "stock": "150.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 156,
+  "fields": {
+    "code": "ART-00156",
+    "barcode": null,
+    "name": "couche_softcaire",
+    "image": "",
+    "category": 19,
+    "unit": "pièce",
+    "price": "100.00",
+    "cost_price": "87.00",
+    "stock": "85.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 157,
+  "fields": {
+    "code": "ART-00157",
+    "barcode": null,
+    "name": "Marlboro",
+    "image": "",
+    "category": null,
+    "unit": "pièce",
+    "price": "50.00",
+    "cost_price": "44.00",
+    "stock": "174.00",
+    "expiry_date": null,
+    "pack_size": "1.00",
+    "pack_price": null,
+    "carton_size": "1.00",
+    "target_margin_percent": "0.00",
+    "tax_rate": "0.00",
+    "price_eur": null,
+    "price_usd": null,
+    "is_composite": false,
+    "min_stock": "0.00"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 1,
+  "fields": {
+    "product": 77,
+    "old_price": "0.00",
+    "new_price": "39.37",
+    "source": "manual",
+    "changed_at": "2026-05-19T19:57:41.609Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 2,
+  "fields": {
+    "product": 49,
+    "old_price": "0.00",
+    "new_price": "416.67",
+    "source": "manual",
+    "changed_at": "2026-05-20T20:44:18.768Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 3,
+  "fields": {
+    "product": 112,
+    "old_price": "0.00",
+    "new_price": "650.00",
+    "source": "manual",
+    "changed_at": "2026-05-20T20:46:13.053Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 4,
+  "fields": {
+    "product": 55,
+    "old_price": "0.00",
+    "new_price": "43.33",
+    "source": "manual",
+    "changed_at": "2026-05-23T17:42:50.583Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 5,
+  "fields": {
+    "product": 5,
+    "old_price": "0.00",
+    "new_price": "22.50",
+    "source": "manual",
+    "changed_at": "2026-05-23T17:51:34.361Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 6,
+  "fields": {
+    "product": 126,
+    "old_price": "0.00",
+    "new_price": "500.00",
+    "source": "manual",
+    "changed_at": "2026-05-23T17:53:16.300Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 7,
+  "fields": {
+    "product": 13,
+    "old_price": "0.00",
+    "new_price": "458.53",
+    "source": "manual",
+    "changed_at": "2026-05-23T17:55:00.362Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 8,
+  "fields": {
+    "product": 17,
+    "old_price": "0.00",
+    "new_price": "281.25",
+    "source": "manual",
+    "changed_at": "2026-05-23T18:04:16.701Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 9,
+  "fields": {
+    "product": 37,
+    "old_price": "0.00",
+    "new_price": "525.00",
+    "source": "manual",
+    "changed_at": "2026-05-23T21:49:19.505Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 10,
+  "fields": {
+    "product": 79,
+    "old_price": "0.00",
+    "new_price": "475.00",
+    "source": "manual",
+    "changed_at": "2026-05-29T16:34:15.021Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 11,
+  "fields": {
+    "product": 141,
+    "old_price": "30.00",
+    "new_price": "36.25",
+    "source": "manual",
+    "changed_at": "2026-05-29T18:24:26.856Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 12,
+  "fields": {
+    "product": 145,
+    "old_price": "0.00",
+    "new_price": "90.00",
+    "source": "manual",
+    "changed_at": "2026-05-29T19:07:10.930Z"
+  }
+},
+{
+  "model": "store.purchasepricehistory",
+  "pk": 13,
+  "fields": {
+    "product": 72,
+    "old_price": "0.00",
+    "new_price": "200.00",
+    "source": "manual",
+    "changed_at": "2026-05-29T22:25:01.384Z"
+  }
+},
+{
+  "model": "store.stocksupply",
+  "pk": 1,
+  "fields": {
+    "product": 20,
+    "supplier": null,
+    "quantity": "8.00",
+    "supply_mode": "piece",
+    "units_per_package": "1.00",
+    "packages_per_carton": "1.00",
+    "total_units": "8.00",
+    "unit_cost_price": "450.00",
+    "unit_sale_price": "500.00",
+    "total_cost": "3600.00",
+    "date": "2026-05-15",
+    "notes": "",
+    "created_at": "2026-05-15T13:39:08.109Z"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 18,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-19T21:50:37.403Z",
+    "total": "2200.00",
+    "amount_paid": "2200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-19",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 19,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-20T08:59:48.004Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-20",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 20,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-20T17:15:29.993Z",
+    "total": "300.00",
+    "amount_paid": "500.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-20",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 21,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-20T20:41:40.953Z",
+    "total": "2000.00",
+    "amount_paid": "2000.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-20",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 22,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-20T21:26:38.157Z",
+    "total": "50.00",
+    "amount_paid": "50.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-20",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 24,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-20T21:56:12.008Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-20",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 25,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-21T21:44:23.314Z",
+    "total": "6100.00",
+    "amount_paid": "6100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-21",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 26,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-21T22:09:18.029Z",
+    "total": "500.00",
+    "amount_paid": "500.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-21",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 27,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-21T22:18:35.033Z",
+    "total": "800.00",
+    "amount_paid": "800.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-21",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 28,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-22T13:49:27.574Z",
+    "total": "1300.00",
+    "amount_paid": "1300.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-22",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 29,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-22T14:09:54.847Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-22",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 30,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-22T14:44:39.318Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-22",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 31,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-22T21:44:18.868Z",
+    "total": "1000.00",
+    "amount_paid": "1000.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-22",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 32,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T08:42:18.817Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": "08:42:18.816",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 33,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T11:14:02.238Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 34,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T11:17:03.063Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 35,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T11:30:09.472Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 36,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T12:58:31.157Z",
+    "total": "350.00",
+    "amount_paid": "350.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 37,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T21:41:52.354Z",
+    "total": "2900.00",
+    "amount_paid": "2900.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 38,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T21:49:50.168Z",
+    "total": "550.00",
+    "amount_paid": "550.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 39,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-23T21:50:51.590Z",
+    "total": "500.00",
+    "amount_paid": "500.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-23",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 40,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T16:37:32.966Z",
+    "total": "938.00",
+    "amount_paid": "938.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 41,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T16:40:45.595Z",
+    "total": "260.00",
+    "amount_paid": "260.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 42,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T16:43:27.513Z",
+    "total": "1850.00",
+    "amount_paid": "1850.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 43,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T16:45:05.667Z",
+    "total": "220.00",
+    "amount_paid": "220.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 46,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T20:33:41.958Z",
+    "total": "438.00",
+    "amount_paid": "438.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 47,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T20:41:24.842Z",
+    "total": "25.00",
+    "amount_paid": "25.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 48,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T20:43:59.606Z",
+    "total": "75.00",
+    "amount_paid": "75.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 49,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T20:47:25.295Z",
+    "total": "50.00",
+    "amount_paid": "50.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 50,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T20:49:49.721Z",
+    "total": "50.00",
+    "amount_paid": "50.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 51,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T20:53:29.365Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 52,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T20:55:44.115Z",
+    "total": "125.00",
+    "amount_paid": "125.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 53,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T21:01:15.094Z",
+    "total": "433.00",
+    "amount_paid": "433.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 54,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T21:11:23.518Z",
+    "total": "485.00",
+    "amount_paid": "485.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "pp",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 55,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T21:13:41.049Z",
+    "total": "1825.00",
+    "amount_paid": "1825.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 56,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T21:17:05.724Z",
+    "total": "1170.00",
+    "amount_paid": "1170.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 57,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T21:34:01.579Z",
+    "total": "3760.00",
+    "amount_paid": "3760.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 61,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T21:53:35.899Z",
+    "total": "450.00",
+    "amount_paid": "450.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 62,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-26T23:15:58.682Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-26",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 65,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T06:53:35.420Z",
+    "total": "2000.00",
+    "amount_paid": "2000.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 66,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T06:55:37.997Z",
+    "total": "350.00",
+    "amount_paid": "350.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 70,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T07:27:53.852Z",
+    "total": "872.00",
+    "amount_paid": "872.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 71,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T07:31:49.519Z",
+    "total": "88.00",
+    "amount_paid": "88.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 72,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T07:34:47.733Z",
+    "total": "300.00",
+    "amount_paid": "300.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 73,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T07:38:48.441Z",
+    "total": "500.00",
+    "amount_paid": "500.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 74,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T07:49:11.210Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 75,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T07:54:18.539Z",
+    "total": "22.00",
+    "amount_paid": "22.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 76,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T09:02:29.924Z",
+    "total": "2600.00",
+    "amount_paid": "2600.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 80,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T09:17:56.676Z",
+    "total": "1100.00",
+    "amount_paid": "1100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 81,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T09:19:40.739Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 82,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T09:53:11.753Z",
+    "total": "500.00",
+    "amount_paid": "500.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 83,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T09:54:10.050Z",
+    "total": "50.00",
+    "amount_paid": "50.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 84,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-27T10:23:27.953Z",
+    "total": "300.00",
+    "amount_paid": "300.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-27",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 106,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T11:48:36.195Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "11:48:35.478",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 107,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T12:29:58.309Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "12:29:58.296",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 108,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T12:48:18.294Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "12:48:18.277",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 109,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T13:03:04.335Z",
+    "total": "500.00",
+    "amount_paid": "500.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "13:03:04.321",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 111,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:31:58.217Z",
+    "total": "204.00",
+    "amount_paid": "204.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:31:58.200",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 112,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:42:25.194Z",
+    "total": "1100.00",
+    "amount_paid": "1100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:42:25.194",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 113,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:43:27.395Z",
+    "total": "25.00",
+    "amount_paid": "25.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:43:27.395",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 114,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:43:55.137Z",
+    "total": "75.00",
+    "amount_paid": "75.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:43:55.137",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 115,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:44:14.142Z",
+    "total": "50.00",
+    "amount_paid": "50.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:44:14.141",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 116,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:44:52.841Z",
+    "total": "96.00",
+    "amount_paid": "96.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:44:52.841",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 117,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:49:13.737Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:49:13.737",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 118,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:50:45.970Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:50:45.970",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 119,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:51:11.575Z",
+    "total": "2000.00",
+    "amount_paid": "2000.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:51:11.575",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 120,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T14:59:48.541Z",
+    "total": "50.00",
+    "amount_paid": "50.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "14:59:48.541",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 121,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T15:07:17.141Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "15:07:17.141",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 122,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T15:14:23.846Z",
+    "total": "250.00",
+    "amount_paid": "250.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "15:14:23.845",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 123,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T15:47:40.558Z",
+    "total": "1350.00",
+    "amount_paid": "1350.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "15:47:40.542",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 124,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T16:37:05.749Z",
+    "total": "230.00",
+    "amount_paid": "230.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "16:37:05.733",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 125,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T16:38:15.738Z",
+    "total": "2000.00",
+    "amount_paid": "2000.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "16:38:15.738",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 127,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T20:29:19.961Z",
+    "total": "1650.00",
+    "amount_paid": "1650.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "20:29:19.941",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 128,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T20:34:23.353Z",
+    "total": "125.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 129,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T20:38:44.608Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 131,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T21:30:05.491Z",
+    "total": "600.02",
+    "amount_paid": "600.02",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "21:30:05.490",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 132,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T21:54:16.188Z",
+    "total": "550.00",
+    "amount_paid": "550.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "21:54:16.188",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 133,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T21:55:56.297Z",
+    "total": "650.01",
+    "amount_paid": "650.01",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "21:55:56.296",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 135,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T22:35:31.985Z",
+    "total": "1400.00",
+    "amount_paid": "1400.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "22:35:31.985",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 136,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T22:43:52.885Z",
+    "total": "300.00",
+    "amount_paid": "300.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "22:43:52.885",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 137,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T23:39:31.990Z",
+    "total": "1446.01",
+    "amount_paid": "1446.01",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "23:39:31.830",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 138,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T23:48:48.618Z",
+    "total": "0.00",
+    "amount_paid": "0.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "23:48:48.617",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 139,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-29T23:49:45.763Z",
+    "total": "644.00",
+    "amount_paid": "644.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-29",
+    "sale_time": "23:49:45.763",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 140,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T09:35:24.600Z",
+    "total": "166.00",
+    "amount_paid": "166.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 141,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T10:01:34.257Z",
+    "total": "88.00",
+    "amount_paid": "88.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 142,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T10:03:13.482Z",
+    "total": "100.00",
+    "amount_paid": "100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": null,
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 143,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T10:15:27.464Z",
+    "total": "3100.00",
+    "amount_paid": "3100.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": "10:15:27.450",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 144,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T12:15:54.551Z",
+    "total": "200.00",
+    "amount_paid": "200.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": "12:15:54.550",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 145,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T12:36:53.700Z",
+    "total": "202.00",
+    "amount_paid": "202.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": "12:36:53.699",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 146,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T12:42:54.984Z",
+    "total": "847.04",
+    "amount_paid": "847.04",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": "12:42:54.984",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.sale",
+  "pk": 148,
+  "fields": {
+    "customer": null,
+    "created_at": "2026-05-30T14:39:37.088Z",
+    "total": "48.00",
+    "amount_paid": "48.00",
+    "payment_status": "paid",
+    "payment_method": "cash",
+    "payment_phone": "",
+    "sale_date": "2026-05-30",
+    "sale_time": "14:39:37.082",
+    "customer_name": "",
+    "customer_phone": "",
+    "notes": "",
+    "currency": "XOF",
+    "total_ht": "0.00",
+    "total_tva": "0.00"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 69,
+  "fields": {
+    "sale": 18,
+    "product": 17,
+    "quantity": "1.00",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 70,
+  "fields": {
+    "sale": 18,
+    "product": 35,
+    "quantity": "2.00",
+    "price": "350.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 71,
+  "fields": {
+    "sale": 18,
+    "product": 7,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 72,
+  "fields": {
+    "sale": 18,
+    "product": 11,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 73,
+  "fields": {
+    "sale": 18,
+    "product": 101,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 74,
+  "fields": {
+    "sale": 18,
+    "product": 71,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 75,
+  "fields": {
+    "sale": 18,
+    "product": 30,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 76,
+  "fields": {
+    "sale": 18,
+    "product": 31,
+    "quantity": "6.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 77,
+  "fields": {
+    "sale": 19,
+    "product": 101,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 78,
+  "fields": {
+    "sale": 20,
+    "product": 19,
+    "quantity": "1.00",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 79,
+  "fields": {
+    "sale": 21,
+    "product": 30,
+    "quantity": "2.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 80,
+  "fields": {
+    "sale": 21,
+    "product": 7,
+    "quantity": "2.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 81,
+  "fields": {
+    "sale": 21,
+    "product": 9,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 82,
+  "fields": {
+    "sale": 21,
+    "product": 71,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 83,
+  "fields": {
+    "sale": 21,
+    "product": 96,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 84,
+  "fields": {
+    "sale": 21,
+    "product": 49,
+    "quantity": "1.00",
+    "price": "500.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 85,
+  "fields": {
+    "sale": 21,
+    "product": 69,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 86,
+  "fields": {
+    "sale": 22,
+    "product": 31,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 88,
+  "fields": {
+    "sale": 24,
+    "product": 103,
+    "quantity": "4.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 89,
+  "fields": {
+    "sale": 25,
+    "product": 16,
+    "quantity": "2.00",
+    "price": "500.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 90,
+  "fields": {
+    "sale": 25,
+    "product": 71,
+    "quantity": "27.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 91,
+  "fields": {
+    "sale": 25,
+    "product": 118,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 92,
+  "fields": {
+    "sale": 25,
+    "product": 31,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 93,
+  "fields": {
+    "sale": 25,
+    "product": 122,
+    "quantity": "1.00",
+    "price": "350.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 94,
+  "fields": {
+    "sale": 25,
+    "product": 101,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 95,
+  "fields": {
+    "sale": 25,
+    "product": 55,
+    "quantity": "3.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 96,
+  "fields": {
+    "sale": 25,
+    "product": 39,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 97,
+  "fields": {
+    "sale": 25,
+    "product": 38,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 98,
+  "fields": {
+    "sale": 25,
+    "product": 111,
+    "quantity": "6.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 99,
+  "fields": {
+    "sale": 25,
+    "product": 54,
+    "quantity": "1.00",
+    "price": "500.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 100,
+  "fields": {
+    "sale": 25,
+    "product": 96,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 101,
+  "fields": {
+    "sale": 25,
+    "product": 14,
+    "quantity": "1.00",
+    "price": "350.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 102,
+  "fields": {
+    "sale": 26,
+    "product": 101,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 103,
+  "fields": {
+    "sale": 26,
+    "product": 69,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 104,
+  "fields": {
+    "sale": 26,
+    "product": 124,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 105,
+  "fields": {
+    "sale": 27,
+    "product": 29,
+    "quantity": "1.00",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 106,
+  "fields": {
+    "sale": 27,
+    "product": 96,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 107,
+  "fields": {
+    "sale": 28,
+    "product": 101,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 108,
+  "fields": {
+    "sale": 28,
+    "product": 8,
+    "quantity": "2.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 109,
+  "fields": {
+    "sale": 28,
+    "product": 71,
+    "quantity": "7.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 110,
+  "fields": {
+    "sale": 28,
+    "product": 66,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 111,
+  "fields": {
+    "sale": 29,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 112,
+  "fields": {
+    "sale": 30,
+    "product": 71,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 113,
+  "fields": {
+    "sale": 31,
+    "product": 8,
+    "quantity": "2.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 114,
+  "fields": {
+    "sale": 31,
+    "product": 2,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 115,
+  "fields": {
+    "sale": 31,
+    "product": 71,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 116,
+  "fields": {
+    "sale": 31,
+    "product": 40,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 117,
+  "fields": {
+    "sale": 31,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 118,
+  "fields": {
+    "sale": 32,
+    "product": 38,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 119,
+  "fields": {
+    "sale": 33,
+    "product": 31,
+    "quantity": "4.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 120,
+  "fields": {
+    "sale": 34,
+    "product": 34,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 121,
+  "fields": {
+    "sale": 35,
+    "product": 2,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 122,
+  "fields": {
+    "sale": 36,
+    "product": 14,
+    "quantity": "1.00",
+    "price": "350.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 123,
+  "fields": {
+    "sale": 37,
+    "product": 131,
+    "quantity": "4.00",
+    "price": "250.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 124,
+  "fields": {
+    "sale": 37,
+    "product": 30,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 125,
+  "fields": {
+    "sale": 37,
+    "product": 9,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 126,
+  "fields": {
+    "sale": 37,
+    "product": 103,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 127,
+  "fields": {
+    "sale": 37,
+    "product": 69,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 128,
+  "fields": {
+    "sale": 37,
+    "product": 14,
+    "quantity": "1.00",
+    "price": "350.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 129,
+  "fields": {
+    "sale": 37,
+    "product": 17,
+    "quantity": "2.00",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 130,
+  "fields": {
+    "sale": 37,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 131,
+  "fields": {
+    "sale": 37,
+    "product": 66,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 132,
+  "fields": {
+    "sale": 38,
+    "product": 37,
+    "quantity": "1.00",
+    "price": "550.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 133,
+  "fields": {
+    "sale": 39,
+    "product": 25,
+    "quantity": "1.00",
+    "price": "500.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 134,
+  "fields": {
+    "sale": 40,
+    "product": 134,
+    "quantity": "4.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 135,
+  "fields": {
+    "sale": 40,
+    "product": 135,
+    "quantity": "0.50",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 136,
+  "fields": {
+    "sale": 40,
+    "product": 31,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 137,
+  "fields": {
+    "sale": 40,
+    "product": 34,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 138,
+  "fields": {
+    "sale": 40,
+    "product": 38,
+    "quantity": "4.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 139,
+  "fields": {
+    "sale": 41,
+    "product": 135,
+    "quantity": "0.10",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 140,
+  "fields": {
+    "sale": 41,
+    "product": 34,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 141,
+  "fields": {
+    "sale": 41,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 142,
+  "fields": {
+    "sale": 42,
+    "product": 135,
+    "quantity": "1.00",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 143,
+  "fields": {
+    "sale": 42,
+    "product": 101,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 144,
+  "fields": {
+    "sale": 42,
+    "product": 124,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 145,
+  "fields": {
+    "sale": 42,
+    "product": 131,
+    "quantity": "3.00",
+    "price": "250.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 146,
+  "fields": {
+    "sale": 42,
+    "product": 66,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 147,
+  "fields": {
+    "sale": 43,
+    "product": 135,
+    "quantity": "0.20",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 148,
+  "fields": {
+    "sale": 43,
+    "product": 66,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 151,
+  "fields": {
+    "sale": 46,
+    "product": 134,
+    "quantity": "4.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 152,
+  "fields": {
+    "sale": 46,
+    "product": 135,
+    "quantity": "0.50",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 153,
+  "fields": {
+    "sale": 46,
+    "product": 31,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 154,
+  "fields": {
+    "sale": 47,
+    "product": 139,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 155,
+  "fields": {
+    "sale": 48,
+    "product": 137,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 156,
+  "fields": {
+    "sale": 48,
+    "product": 31,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 157,
+  "fields": {
+    "sale": 49,
+    "product": 78,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 158,
+  "fields": {
+    "sale": 50,
+    "product": 140,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 159,
+  "fields": {
+    "sale": 51,
+    "product": 141,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 160,
+  "fields": {
+    "sale": 51,
+    "product": 78,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 161,
+  "fields": {
+    "sale": 52,
+    "product": 46,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 162,
+  "fields": {
+    "sale": 52,
+    "product": 130,
+    "quantity": "6.00",
+    "price": "12.50",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 163,
+  "fields": {
+    "sale": 53,
+    "product": 142,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 164,
+  "fields": {
+    "sale": 53,
+    "product": 143,
+    "quantity": "0.09",
+    "price": "1200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 165,
+  "fields": {
+    "sale": 53,
+    "product": 71,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 166,
+  "fields": {
+    "sale": 53,
+    "product": 38,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 167,
+  "fields": {
+    "sale": 54,
+    "product": 144,
+    "quantity": "3.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 168,
+  "fields": {
+    "sale": 54,
+    "product": 135,
+    "quantity": "0.10",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 169,
+  "fields": {
+    "sale": 54,
+    "product": 142,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 170,
+  "fields": {
+    "sale": 54,
+    "product": 140,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 171,
+  "fields": {
+    "sale": 54,
+    "product": 46,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 172,
+  "fields": {
+    "sale": 54,
+    "product": 139,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 173,
+  "fields": {
+    "sale": 54,
+    "product": 34,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 174,
+  "fields": {
+    "sale": 54,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 175,
+  "fields": {
+    "sale": 55,
+    "product": 135,
+    "quantity": "1.00",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 176,
+  "fields": {
+    "sale": 55,
+    "product": 131,
+    "quantity": "4.00",
+    "price": "250.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 177,
+  "fields": {
+    "sale": 55,
+    "product": 98,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 178,
+  "fields": {
+    "sale": 55,
+    "product": 124,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 179,
+  "fields": {
+    "sale": 55,
+    "product": 137,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 180,
+  "fields": {
+    "sale": 56,
+    "product": 66,
+    "quantity": "3.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 181,
+  "fields": {
+    "sale": 56,
+    "product": 129,
+    "quantity": "2.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 182,
+  "fields": {
+    "sale": 56,
+    "product": 135,
+    "quantity": "1.20",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 183,
+  "fields": {
+    "sale": 56,
+    "product": 71,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 184,
+  "fields": {
+    "sale": 57,
+    "product": 141,
+    "quantity": "7.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 185,
+  "fields": {
+    "sale": 57,
+    "product": 138,
+    "quantity": "7.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 186,
+  "fields": {
+    "sale": 57,
+    "product": 130,
+    "quantity": "2.00",
+    "price": "12.50",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 187,
+  "fields": {
+    "sale": 57,
+    "product": 137,
+    "quantity": "3.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 188,
+  "fields": {
+    "sale": 57,
+    "product": 140,
+    "quantity": "2.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 189,
+  "fields": {
+    "sale": 57,
+    "product": 5,
+    "quantity": "10.00",
+    "price": "30.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 190,
+  "fields": {
+    "sale": 57,
+    "product": 143,
+    "quantity": "0.30",
+    "price": "1200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 191,
+  "fields": {
+    "sale": 57,
+    "product": 37,
+    "quantity": "2.00",
+    "price": "550.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 192,
+  "fields": {
+    "sale": 57,
+    "product": 39,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 193,
+  "fields": {
+    "sale": 57,
+    "product": 109,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 194,
+  "fields": {
+    "sale": 57,
+    "product": 34,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 195,
+  "fields": {
+    "sale": 57,
+    "product": 69,
+    "quantity": "2.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 196,
+  "fields": {
+    "sale": 57,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 197,
+  "fields": {
+    "sale": 57,
+    "product": 71,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 210,
+  "fields": {
+    "sale": 61,
+    "product": 40,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 211,
+  "fields": {
+    "sale": 61,
+    "product": 137,
+    "quantity": "2.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 212,
+  "fields": {
+    "sale": 61,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 213,
+  "fields": {
+    "sale": 61,
+    "product": 141,
+    "quantity": "4.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 214,
+  "fields": {
+    "sale": 62,
+    "product": 39,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 221,
+  "fields": {
+    "sale": 65,
+    "product": 47,
+    "quantity": "2.00",
+    "price": "1000.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 222,
+  "fields": {
+    "sale": 66,
+    "product": 35,
+    "quantity": "1.00",
+    "price": "350.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 232,
+  "fields": {
+    "sale": 70,
+    "product": 66,
+    "quantity": "5.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 233,
+  "fields": {
+    "sale": 70,
+    "product": 55,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 234,
+  "fields": {
+    "sale": 70,
+    "product": 5,
+    "quantity": "10.00",
+    "price": "30.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 235,
+  "fields": {
+    "sale": 70,
+    "product": 134,
+    "quantity": "1.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 236,
+  "fields": {
+    "sale": 71,
+    "product": 134,
+    "quantity": "4.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 237,
+  "fields": {
+    "sale": 72,
+    "product": 135,
+    "quantity": "0.50",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 238,
+  "fields": {
+    "sale": 73,
+    "product": 66,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 239,
+  "fields": {
+    "sale": 73,
+    "product": 55,
+    "quantity": "2.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 240,
+  "fields": {
+    "sale": 73,
+    "product": 121,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 241,
+  "fields": {
+    "sale": 74,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 242,
+  "fields": {
+    "sale": 75,
+    "product": 134,
+    "quantity": "1.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 243,
+  "fields": {
+    "sale": 76,
+    "product": 127,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 244,
+  "fields": {
+    "sale": 76,
+    "product": 64,
+    "quantity": "1.00",
+    "price": "750.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 245,
+  "fields": {
+    "sale": 76,
+    "product": 54,
+    "quantity": "1.00",
+    "price": "500.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 246,
+  "fields": {
+    "sale": 76,
+    "product": 63,
+    "quantity": "1.00",
+    "price": "1250.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 247,
+  "fields": {
+    "sale": 80,
+    "product": 77,
+    "quantity": "5.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 248,
+  "fields": {
+    "sale": 80,
+    "product": 135,
+    "quantity": "1.00",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 249,
+  "fields": {
+    "sale": 80,
+    "product": 138,
+    "quantity": "5.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 250,
+  "fields": {
+    "sale": 81,
+    "product": 39,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 251,
+  "fields": {
+    "sale": 81,
+    "product": 34,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 252,
+  "fields": {
+    "sale": 82,
+    "product": 143,
+    "quantity": "0.25",
+    "price": "1200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 253,
+  "fields": {
+    "sale": 82,
+    "product": 34,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 254,
+  "fields": {
+    "sale": 83,
+    "product": 140,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 255,
+  "fields": {
+    "sale": 84,
+    "product": 138,
+    "quantity": "6.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 267,
+  "fields": {
+    "sale": 106,
+    "product": 40,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 268,
+  "fields": {
+    "sale": 107,
+    "product": 66,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 269,
+  "fields": {
+    "sale": 108,
+    "product": 9,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 270,
+  "fields": {
+    "sale": 109,
+    "product": 102,
+    "quantity": "1.00",
+    "price": "500.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 272,
+  "fields": {
+    "sale": 111,
+    "product": 143,
+    "quantity": "0.17",
+    "price": "1200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 273,
+  "fields": {
+    "sale": 112,
+    "product": 36,
+    "quantity": "2.00",
+    "price": "550.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 274,
+  "fields": {
+    "sale": 113,
+    "product": 6,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 275,
+  "fields": {
+    "sale": 114,
+    "product": 6,
+    "quantity": "3.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 276,
+  "fields": {
+    "sale": 115,
+    "product": 55,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 277,
+  "fields": {
+    "sale": 116,
+    "product": 143,
+    "quantity": "0.08",
+    "price": "1200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 278,
+  "fields": {
+    "sale": 117,
+    "product": 145,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 279,
+  "fields": {
+    "sale": 118,
+    "product": 2,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 280,
+  "fields": {
+    "sale": 119,
+    "product": 2,
+    "quantity": "10.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 281,
+  "fields": {
+    "sale": 120,
+    "product": 138,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 282,
+  "fields": {
+    "sale": 121,
+    "product": 138,
+    "quantity": "4.00",
+    "price": "50.00",
+    "sale_mode": "l"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 283,
+  "fields": {
+    "sale": 122,
+    "product": 138,
+    "quantity": "5.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 284,
+  "fields": {
+    "sale": 123,
+    "product": 118,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 285,
+  "fields": {
+    "sale": 123,
+    "product": 124,
+    "quantity": "4.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 286,
+  "fields": {
+    "sale": 123,
+    "product": 23,
+    "quantity": "2.00",
+    "price": "250.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 287,
+  "fields": {
+    "sale": 123,
+    "product": 34,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 288,
+  "fields": {
+    "sale": 123,
+    "product": 31,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 289,
+  "fields": {
+    "sale": 123,
+    "product": 6,
+    "quantity": "3.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 290,
+  "fields": {
+    "sale": 123,
+    "product": 137,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 291,
+  "fields": {
+    "sale": 124,
+    "product": 138,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 292,
+  "fields": {
+    "sale": 124,
+    "product": 5,
+    "quantity": "6.00",
+    "price": "30.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 293,
+  "fields": {
+    "sale": 125,
+    "product": 31,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 294,
+  "fields": {
+    "sale": 125,
+    "product": 146,
+    "quantity": "2.00",
+    "price": "600.00",
+    "sale_mode": "kg"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 295,
+  "fields": {
+    "sale": 125,
+    "product": 64,
+    "quantity": "1.00",
+    "price": "750.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 316,
+  "fields": {
+    "sale": 127,
+    "product": 14,
+    "quantity": "1.00",
+    "price": "350.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 317,
+  "fields": {
+    "sale": 127,
+    "product": 95,
+    "quantity": "1.00",
+    "price": "250.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 318,
+  "fields": {
+    "sale": 127,
+    "product": 71,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 319,
+  "fields": {
+    "sale": 127,
+    "product": 7,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 320,
+  "fields": {
+    "sale": 127,
+    "product": 96,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 321,
+  "fields": {
+    "sale": 127,
+    "product": 70,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 322,
+  "fields": {
+    "sale": 127,
+    "product": 135,
+    "quantity": "0.50",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 323,
+  "fields": {
+    "sale": 127,
+    "product": 103,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 326,
+  "fields": {
+    "sale": 129,
+    "product": 69,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 327,
+  "fields": {
+    "sale": 128,
+    "product": 78,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 328,
+  "fields": {
+    "sale": 128,
+    "product": 6,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 329,
+  "fields": {
+    "sale": 128,
+    "product": 141,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 333,
+  "fields": {
+    "sale": 131,
+    "product": 69,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 334,
+  "fields": {
+    "sale": 131,
+    "product": 141,
+    "quantity": "2.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 335,
+  "fields": {
+    "sale": 131,
+    "product": 154,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 336,
+  "fields": {
+    "sale": 131,
+    "product": 73,
+    "quantity": "6.00",
+    "price": "16.67",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 337,
+  "fields": {
+    "sale": 131,
+    "product": 71,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 338,
+  "fields": {
+    "sale": 132,
+    "product": 155,
+    "quantity": "1.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 339,
+  "fields": {
+    "sale": 132,
+    "product": 155,
+    "quantity": "9.00",
+    "price": "25.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 340,
+  "fields": {
+    "sale": 132,
+    "product": 19,
+    "quantity": "1.00",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 341,
+  "fields": {
+    "sale": 133,
+    "product": 8,
+    "quantity": "1.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 342,
+  "fields": {
+    "sale": 133,
+    "product": 69,
+    "quantity": "2.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 343,
+  "fields": {
+    "sale": 133,
+    "product": 73,
+    "quantity": "3.00",
+    "price": "16.67",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 347,
+  "fields": {
+    "sale": 135,
+    "product": 145,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 348,
+  "fields": {
+    "sale": 135,
+    "product": 9,
+    "quantity": "2.00",
+    "price": "200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 349,
+  "fields": {
+    "sale": 135,
+    "product": 126,
+    "quantity": "1.00",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 350,
+  "fields": {
+    "sale": 135,
+    "product": 156,
+    "quantity": "3.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 351,
+  "fields": {
+    "sale": 136,
+    "product": 17,
+    "quantity": "1.00",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 352,
+  "fields": {
+    "sale": 137,
+    "product": 135,
+    "quantity": "0.50",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 353,
+  "fields": {
+    "sale": 137,
+    "product": 73,
+    "quantity": "3.00",
+    "price": "16.67",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 354,
+  "fields": {
+    "sale": 137,
+    "product": 55,
+    "quantity": "2.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 355,
+  "fields": {
+    "sale": 137,
+    "product": 135,
+    "quantity": "0.50",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 356,
+  "fields": {
+    "sale": 137,
+    "product": 81,
+    "quantity": "0.58",
+    "price": "1200.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 357,
+  "fields": {
+    "sale": 138,
+    "product": 21,
+    "quantity": "0.00",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 358,
+  "fields": {
+    "sale": 139,
+    "product": 138,
+    "quantity": "6.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 359,
+  "fields": {
+    "sale": 140,
+    "product": 119,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 360,
+  "fields": {
+    "sale": 140,
+    "product": 134,
+    "quantity": "3.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 361,
+  "fields": {
+    "sale": 139,
+    "product": 157,
+    "quantity": "6.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 362,
+  "fields": {
+    "sale": 139,
+    "product": 134,
+    "quantity": "2.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 363,
+  "fields": {
+    "sale": 141,
+    "product": 134,
+    "quantity": "4.00",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 364,
+  "fields": {
+    "sale": 142,
+    "product": 145,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 365,
+  "fields": {
+    "sale": 143,
+    "product": 136,
+    "quantity": "2.00",
+    "price": "500.00",
+    "sale_mode": "kg"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 366,
+  "fields": {
+    "sale": 143,
+    "product": 138,
+    "quantity": "1.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 367,
+  "fields": {
+    "sale": 143,
+    "product": 36,
+    "quantity": "3.00",
+    "price": "550.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 368,
+  "fields": {
+    "sale": 143,
+    "product": 147,
+    "quantity": "0.50",
+    "price": "600.00",
+    "sale_mode": "kg"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 369,
+  "fields": {
+    "sale": 143,
+    "product": 145,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 370,
+  "fields": {
+    "sale": 144,
+    "product": 145,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 371,
+  "fields": {
+    "sale": 145,
+    "product": 135,
+    "quantity": "0.17",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 372,
+  "fields": {
+    "sale": 145,
+    "product": 66,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 373,
+  "fields": {
+    "sale": 146,
+    "product": 149,
+    "quantity": "0.50",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 374,
+  "fields": {
+    "sale": 146,
+    "product": 149,
+    "quantity": "0.33",
+    "price": "300.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 375,
+  "fields": {
+    "sale": 146,
+    "product": 138,
+    "quantity": "2.00",
+    "price": "50.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 376,
+  "fields": {
+    "sale": 146,
+    "product": 119,
+    "quantity": "1.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 377,
+  "fields": {
+    "sale": 146,
+    "product": 145,
+    "quantity": "2.00",
+    "price": "100.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 378,
+  "fields": {
+    "sale": 146,
+    "product": 147,
+    "quantity": "0.08",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 379,
+  "fields": {
+    "sale": 146,
+    "product": 134,
+    "quantity": "6.82",
+    "price": "22.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.saleitem",
+  "pk": 387,
+  "fields": {
+    "sale": 148,
+    "product": 147,
+    "quantity": "0.08",
+    "price": "600.00",
+    "sale_mode": "piece"
+  }
+},
+{
+  "model": "store.expense",
+  "pk": 1,
+  "fields": {
+    "description": "chawarma+ira",
+    "amount": "2000.00",
+    "category": "nourriture",
+    "date": "2026-05-24",
+    "notes": "",
+    "created_at": "2026-05-24T14:46:54.719Z"
+  }
+},
+{
+  "model": "store.expense",
+  "pk": 2,
+  "fields": {
+    "description": "forfait internet",
+    "amount": "2500.00",
+    "category": "credit_telephonique",
+    "date": "2026-05-29",
+    "notes": "",
+    "created_at": "2026-05-29T22:09:52.116Z"
+  }
+},
+{
+  "model": "store.expense",
+  "pk": 3,
+  "fields": {
+    "description": "deplacement_boutique",
+    "amount": "2000.00",
+    "category": "carburant",
+    "date": "2026-05-19",
+    "notes": "",
+    "created_at": "2026-05-29T22:11:10.798Z"
+  }
+},
+{
+  "model": "store.expense",
+  "pk": 4,
+  "fields": {
+    "description": "motivation alpha",
+    "amount": "500.00",
+    "category": "autre",
+    "date": "2026-05-29",
+    "notes": "",
+    "created_at": "2026-05-29T22:14:00.069Z"
+  }
+},
+{
+  "model": "store.expense",
+  "pk": 5,
+  "fields": {
+    "description": "beignet",
+    "amount": "500.00",
+    "category": "nourriture",
+    "date": "2026-05-26",
+    "notes": "",
+    "created_at": "2026-05-29T22:14:43.665Z"
+  }
+},
+{
+  "model": "store.cashsession",
+  "pk": 1,
+  "fields": {
+    "opened_at": "2026-05-11T20:20:36.228Z",
+    "closed_at": "2026-05-29T22:50:42.699Z",
+    "opening_balance": "0.00",
+    "closing_balance": null,
+    "notes": "valider"
+  }
+},
+{
+  "model": "store.cashmovement",
+  "pk": 1,
+  "fields": {
+    "session": 1,
+    "movement_type": "in",
+    "label": "reparation ecran PC",
+    "amount": "5000.00",
+    "sale": null,
+    "created_at": "2026-05-13T22:18:10.482Z"
+  }
+},
+{
+  "model": "store.cashmovement",
+  "pk": 2,
+  "fields": {
+    "session": 1,
+    "movement_type": "in",
+    "label": "maintenenance processeur",
+    "amount": "15000.00",
+    "sale": null,
+    "created_at": "2026-05-13T22:19:29.631Z"
+  }
+},
+{
+  "model": "store.storesettings",
+  "pk": 1,
+  "fields": {
+    "store_name": "La MISERICORDE",
+    "welcome_message": "",
+    "scripture_mode": "none",
+    "language": "fr",
+    "logo": "logos/IMG_3005.png",
+    "background_image": "backgrounds/IMG_3005_xrXVGAa.png",
+    "invoice_watermark": "watermarks/EC757506-C45E-4994-95E4-5E1379224C08.PNG",
+    "theme": "green",
+    "invoice_layout": "classic",
+    "address": "",
+    "phone_number": "",
+    "signature": "",
+    "currency": "XOF",
+    "eur_rate": "655.96",
+    "usd_rate": "600.00",
+    "voice_alerts": false,
+    "monthly_expense_limit": "0.00",
+    "sms_api_url": "",
+    "sms_api_key": "",
+    "sms_from": "",
+    "whatsapp_api_key": "",
+    "whatsapp_phone_number_id": "",
+    "default_bank_account": null,
+    "label_layout": "compact",
+    "label_font_size": "medium",
+    "label_border_style": "dashed",
+    "label_columns_screen": 2,
+    "label_columns_print": 4,
+    "label_logo": "label_logos/EC757506-C45E-4994-95E4-5E1379224C08_z0eWKtf.PNG",
+    "label_show_store_name": true,
+    "label_show_barcode": true,
+    "label_show_code": false
+  }
+},
+{
+  "model": "store.appfeature",
+  "pk": 1,
+  "fields": {
+    "title": "metrre a jour les prix des ventes",
+    "description": "gestion des prix",
+    "code_notes": "",
+    "status": "idea",
+    "created_at": "2026-05-19T16:58:42.125Z",
+    "updated_at": "2026-05-19T16:58:42.125Z"
+  }
+},
+{
+  "model": "store.stockloss",
+  "pk": 1,
+  "fields": {
+    "product": 101,
+    "quantity": "2.00",
+    "loss_amount": "0.00",
+    "date": "2026-05-20",
+    "reason": "other",
+    "notes": "consommé",
+    "created_at": "2026-05-20T22:27:23.385Z"
+  }
+},
+{
+  "model": "store.stockloss",
+  "pk": 2,
+  "fields": {
+    "product": 70,
+    "quantity": "1.00",
+    "loss_amount": "0.00",
+    "date": "2026-05-23",
+    "reason": "expired",
+    "notes": "",
+    "created_at": "2026-05-23T08:45:37.930Z"
+  }
+},
+{
+  "model": "store.loyaltyprogram",
+  "pk": 1,
+  "fields": {
+    "name": "Fidélité",
+    "points_per_purchase": "10.00",
+    "points_value": "1.00",
+    "min_points_to_redeem": "100.00",
+    "active": true
+  }
+},
+{
+  "model": "store.solarcomponent",
+  "pk": 1,
+  "fields": {
+    "name": "panneau 580W",
+    "category": "panneau",
+    "unit_price": "70000.00",
+    "cost_price": "25000.00",
+    "stock": "10.00",
+    "notes": ""
+  }
+},
+{
+  "model": "store.activitylog",
+  "pk": 1,
+  "fields": {
+    "user": "",
+    "action": "deleted",
+    "model_name": "Sale",
+    "object_id": 6,
+    "object_repr": "Vente #6",
+    "details": "Total: 500.00 FCFA",
+    "created_at": "2026-05-15T17:18:56.423Z"
+  }
+},
+{
+  "model": "store.activitylog",
+  "pk": 2,
+  "fields": {
+    "user": "",
+    "action": "deleted",
+    "model_name": "Sale",
+    "object_id": 9,
+    "object_repr": "Vente #9",
+    "details": "Total: 500.00 FCFA",
+    "created_at": "2026-05-15T19:35:38.977Z"
+  }
+},
+{
+  "model": "store.activitylog",
+  "pk": 3,
+  "fields": {
+    "user": "",
+    "action": "deleted",
+    "model_name": "Sale",
+    "object_id": 10,
+    "object_repr": "Vente #10",
+    "details": "Total: 100.00 FCFA",
+    "created_at": "2026-05-15T19:35:45.191Z"
+  }
+},
+{
+  "model": "store.activitylog",
+  "pk": 4,
+  "fields": {
+    "user": "",
+    "action": "deleted",
+    "model_name": "Sale",
+    "object_id": 11,
+    "object_repr": "Vente #11",
+    "details": "Total: 100.00 FCFA",
+    "created_at": "2026-05-15T19:35:50.488Z"
+  }
+},
+{
+  "model": "store.activitylog",
+  "pk": 5,
+  "fields": {
+    "user": "",
+    "action": "deleted",
+    "model_name": "Sale",
+    "object_id": 13,
+    "object_repr": "Vente #13",
+    "details": "Total: 500.00 FCFA",
+    "created_at": "2026-05-15T19:36:01.062Z"
+  }
+},
+{
+  "model": "store.activitylog",
+  "pk": 6,
+  "fields": {
+    "user": "",
+    "action": "deleted",
+    "model_name": "Sale",
+    "object_id": 1,
+    "object_repr": "Vente #1",
+    "details": "Total: 500.00 FCFA",
+    "created_at": "2026-05-16T14:33:24.334Z"
+  }
+},
+{
+  "model": "commande.orderclient",
+  "pk": 2,
+  "fields": {
+    "token": "BCCCAEC3",
+    "phone": "",
+    "created_at": "2026-05-30T22:41:55.333Z"
+  }
+},
+{
+  "model": "commande.orderclient",
+  "pk": 3,
+  "fields": {
+    "token": "A7D25301",
+    "phone": "",
+    "created_at": "2026-05-30T22:42:35.947Z"
+  }
+}
+]
