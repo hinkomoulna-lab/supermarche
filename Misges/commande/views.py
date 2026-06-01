@@ -215,7 +215,7 @@ def update_order_status(request, order_id):
     if new_status not in valid_statuses:
         return JsonResponse({'error': 'Statut invalide'}, status=400)
     order.status = new_status
-    order.confirmed_by = request.user.get_full_name() or request.user.username
+    order.confirmed_by = request.user.get_full_name() or getattr(request.user, 'username', 'Staff') or 'Staff'
     order.save()
 
     if new_status == 'delivered':
@@ -231,7 +231,7 @@ def convert_to_sale(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if order.status not in ('delivered', 'ready'):
         return JsonResponse({'error': 'Seules les commandes prêtes ou livrées peuvent être converties'}, status=400)
-    confirmed_by = request.user.get_full_name() or request.user.username
+    confirmed_by = request.user.get_full_name() or getattr(request.user, 'username', 'Staff') or 'Staff'
     create_sale_from_order(order, confirmed_by=confirmed_by)
     return redirect('commande:dashboard')
 
