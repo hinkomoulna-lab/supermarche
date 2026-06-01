@@ -122,7 +122,13 @@ def place_order(request):
     if not cart:
         return redirect('commande:cart')
 
-    order = Order.objects.create(client=client)
+    lat = request.POST.get('latitude')
+    lng = request.POST.get('longitude')
+    order = Order.objects.create(
+        client=client,
+        latitude=float(lat) if lat else None,
+        longitude=float(lng) if lng else None,
+    )
     for pid, data in cart.items():
         product = Product.objects.filter(id=int(pid)).first()
         OrderItem.objects.create(

@@ -41,7 +41,15 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     confirmed_by = models.CharField('Confirmé par', max_length=100, blank=True)
+    latitude = models.FloatField('Latitude', null=True, blank=True)
+    longitude = models.FloatField('Longitude', null=True, blank=True)
     sale = models.ForeignKey(Sale, null=True, blank=True, on_delete=models.SET_NULL, related_name='commande_orders', verbose_name='Vente liée')
+
+    @property
+    def maps_url(self):
+        if self.latitude and self.longitude:
+            return f'https://www.google.com/maps?q={self.latitude},{self.longitude}'
+        return ''
 
     class Meta:
         ordering = ['-created_at']

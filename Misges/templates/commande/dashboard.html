@@ -60,6 +60,9 @@
             <td>
                 <span class="fw-semibold">{{ order.client.token }}</span>
                 {% if order.client.phone %}<br><small class="text-muted">{{ order.client.phone }}</small>{% endif %}
+                {% if order.maps_url %}
+                <br><a href="{{ order.maps_url }}" target="_blank" class="small text-success"><i class="bi bi-geo-alt"></i> Localisation</a>
+                {% endif %}
             </td>
             <td>
                 {% for item in order.items.all %}
