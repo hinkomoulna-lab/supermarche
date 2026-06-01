@@ -1,0 +1,36 @@
+{% extends 'store/base.html' %}
+{% block title %}Top produits - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1"><i class="bi bi-trophy me-2"></i>Top produits les plus vendus</h1>
+        <p class="text-secondary mb-0">Classement des 20 articles les plus écoulés.</p>
+    </div>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Produit</th>
+                <th>Prix unitaire</th>
+                <th>Quantité vendue</th>
+                <th>Chiffre d'affaires</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in top_products %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.product__name }}</td>
+                    <td>{{ item.product__price }} FCFA</td>
+                    <td><strong>{{ item.total_qty }}</strong></td>
+                    <td>{{ item.total_qty|floatformat:0|add:0 }} FCFA</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-center">Aucune vente pour le moment.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

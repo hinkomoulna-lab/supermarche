@@ -1,0 +1,154 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="ribbon ribbon-purple"><i class="bi bi-box-seam"></i>{{ title }}</div>
+        <form method="post" enctype="multipart/form-data" class="row g-3" id="productForm">
+            {% csrf_token %}
+            <div class="col-md-4">
+                <label class="form-label">Code article</label>
+                {{ form.code }}
+                {{ form.code.errors }}
+                <div class="form-text">Laisse vide pour que le code soit généré automatiquement.</div>
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">Nom du produit</label>
+                <div class="input-group">
+                    {{ form.name }}
+                    <button class="btn btn-outline-primary" type="button" id="googleSearchBtn" title="Rechercher cette image sur Google">
+                        <i class="bi bi-google me-1"></i>Google
+                    </button>
+                </div>
+                {{ form.name.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Photo du produit</label>
+                <div class="d-flex gap-2 align-items-start">
+                    <div class="flex-grow-1">
+                        {{ form.image }}
+                        {{ form.image.errors }}
+                    </div>
+                    <label class="btn btn-outline-primary" style="cursor:pointer;white-space:nowrap;">
+                        <i class="bi bi-camera me-1"></i>Prendre une photo
+                        <input type="file" accept="image/*" capture="environment" style="display:none" onchange="document.getElementById('id_image').files = this.files; this.form.querySelector('button[type=submit]').focus();">
+                    </label>
+                </div>
+                <div class="form-text">Choisis une image depuis ton appareil ou prends une photo.</div>
+                {% if form.instance.image %}
+                    <div class="mt-2">
+                        <img src="{{ form.instance.image.url }}" alt="Aperçu" class="rounded shadow-sm" style="max-height:120px;max-width:100%;object-fit:contain;cursor:zoom-in" onclick="openModal(this.src)">
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Ou colle une URL d'image (Google)</label>
+                <div class="input-group">
+                    {{ form.image_url }}
+                    <button class="btn btn-outline-secondary" type="button" id="previewUrlBtn" title="Aperçu"><i class="bi bi-eye"></i></button>
+                </div>
+                {{ form.image_url.errors }}
+                <div class="form-text">Trouve une image sur Google Images, copie son lien et colle-le ici.</div>
+                <div id="urlPreview" class="mt-2" hidden>
+                    <img src="" alt="Aperçu URL" class="rounded shadow-sm" style="max-height:80px;max-width:100%;object-fit:contain;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Catégorie existante</label>
+                {{ form.category }}
+                {{ form.category.errors }}
+                <div class="form-text">Choisis une catégorie parmi celles déjà créées.</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Ou crée une nouvelle catégorie</label>
+                {{ form.new_category }}
+                {{ form.new_category.errors }}
+                <div class="form-text">Si aucune catégorie existante ne convient, écris-en une nouvelle ici.</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Unité de vente</label>
+                {{ form.unit }}
+                {{ form.unit.errors }}
+                <div class="form-text">En quelle unité vends-tu ce produit ? (pièce, kg, litre, sachet, boîte)</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Prix de vente unitaire (FCFA)</label>
+                {{ form.price }}
+                {{ form.price.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Prix d'achat unitaire (FCFA)</label>
+                {{ form.cost_price }}
+                {{ form.cost_price.errors }}
+                <div class="form-text">Ce que tu as payé pour acheter ce produit.</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Stock initial</label>
+                {{ form.stock }}
+                {{ form.stock.errors }}
+                <div class="form-text">Combien d'unités as-tu en stock pour commencer ?</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Stock minimum (alerte)</label>
+                {{ form.min_stock }}
+                {{ form.min_stock.errors }}
+                <div class="form-text">En dessous de ce stock, une alerte de réapprovisionnement s'affichera.</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Date de péremption</label>
+                {{ form.expiry_date }}
+                {{ form.expiry_date.errors }}
+                <div class="form-text">Laisse vide si le produit n'est pas périssable.</div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary ms-2" href="{% url 'store:product_manage' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const MARGIN_RATE = 1.10;
+    const nameInput = document.getElementById('id_name');
+    const googleBtn = document.getElementById('googleSearchBtn');
+    const imageUrlInput = document.getElementById('id_image_url');
+    const previewBtn = document.getElementById('previewUrlBtn');
+    const urlPreview = document.getElementById('urlPreview');
+    const costInput = document.getElementById('id_cost_price');
+    const priceInput = document.getElementById('id_price');
+    if (costInput && priceInput) {
+        function autoCalcPrice() {
+            const cost = parseFloat(costInput.value);
+            if (cost > 0 && !priceInput.value) {
+                priceInput.value = Math.round(cost * MARGIN_RATE);
+                priceInput.style.borderColor = '#22c55e';
+            } else if (!costInput.value && !priceInput.value) {
+                priceInput.style.borderColor = '';
+            }
+        }
+        costInput.addEventListener('input', autoCalcPrice);
+        priceInput.addEventListener('input', function() {
+            if (this.value) this.style.borderColor = '';
+        });
+    }
+
+    googleBtn.addEventListener('click', () => {
+        const query = encodeURIComponent(nameInput.value.trim() || 'produit');
+        window.open(`https://www.google.com/search?tbm=isch&q=${query}`, '_blank');
+    });
+
+    previewBtn.addEventListener('click', () => {
+        const url = imageUrlInput.value.trim();
+        if (!url) return;
+        const img = urlPreview.querySelector('img');
+        img.src = url;
+        urlPreview.hidden = false;
+    });
+
+    imageUrlInput.addEventListener('change', () => {
+        if (!imageUrlInput.value.trim()) {
+            urlPreview.hidden = true;
+        }
+    });
+</script>
+{% endblock %}

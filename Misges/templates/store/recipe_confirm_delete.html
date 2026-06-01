@@ -1,0 +1,23 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer la recette - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">Supprimer la recette</h1>
+        <p>Es-tu sûr de vouloir supprimer la recette du produit <strong>{{ recipe.product.name }}</strong> ?</p>
+        <ul>
+            {% for ing in recipe.ingredients.all %}
+            <li>{{ ing.quantity }} × {{ ing.product.name }}</li>
+            {% empty %}
+            <li class="text-secondary">Aucun ingrédient</li>
+            {% endfor %}
+        </ul>
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary" href="{% url 'store:recipe_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

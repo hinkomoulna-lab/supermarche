@@ -1,0 +1,143 @@
+{% extends 'store/base.html' %}
+{% block title %}Historique des ventes - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <span class="current">Historique des ventes</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3 mb-4">
+    <div>
+        <h1><i class="bi bi-clock-history me-2"></i>Historique des ventes</h1>
+        <p class="text-muted mb-0">Liste des ventes enregistrées et détails des caisses.</p>
+    </div>
+    <a class="btn btn-outline-success" href="{% url 'store:export_sales_csv' %}">
+        <i class="bi bi-download me-1"></i>Exporter CSV
+    </a>
+</div>
+
+<div class="report-share mb-4">
+    <div>
+        <h2 class="h5 mb-1"><i class="bi bi-send-check me-2"></i>Envoyer le rapport des ventes</h2>
+        <p class="text-secondary mb-0">Vérifie les montants, puis envoie le rapport par WhatsApp ou par mail.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-success" href="{{ whatsapp_report_url }}" target="_blank" rel="noopener">
+            <i class="bi bi-whatsapp me-1"></i>WhatsApp
+        </a>
+        <a class="btn btn-primary" href="{{ email_report_url }}">
+            <i class="bi bi-envelope-at me-1"></i>Mail
+        </a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="metric-card">
+            <i class="bi bi-calendar-day"></i>
+            <span>Aujourd'hui</span>
+            <strong>{{ daily_total }} FCFA</strong>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="metric-card">
+            <i class="bi bi-calendar3"></i>
+            <span>Ce mois</span>
+            <strong>{{ monthly_total }} FCFA</strong>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="metric-card">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Total général</span>
+            <strong>{{ total_amount }} FCFA</strong>
+        </div>
+    </div>
+</div>
+
+<form method="post" action="{% url 'store:sale_bulk_delete' %}" id="salesBulkForm">
+{% csrf_token %}
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <button class="btn btn-outline-danger" type="submit" name="action" value="delete_selected">
+        <i class="bi bi-trash me-1"></i>Supprimer la sélection
+    </button>
+    <button class="btn btn-danger" type="submit" name="action" value="delete_all" data-confirm="Supprimer toutes les ventes et restaurer le stock ?">
+        <i class="bi bi-arrow-counterclockwise me-1"></i>Réinitialiser toutes les ventes
+    </button>
+</div>
+
+<div class="table-shell">
+<table class="table app-table table-striped align-middle mb-0">
+    <thead>
+        <tr>
+            <th style="width:44px;"><input class="form-check-input" type="checkbox" id="selectAllSales" title="Tout sélectionner"></th>
+            <th><a href="?sort=id&order={% if current_sort == 'id' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">ID {% if current_sort == 'id' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?sort=date&order={% if current_sort == 'date' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Date {% if current_sort == 'date' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?sort=total&order={% if current_sort == 'total' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Total {% if current_sort == 'total' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?sort=items&order={% if current_sort == 'items' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Lignes {% if current_sort == 'items' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in page_obj %}
+            <tr>
+                <td><input class="form-check-input sale-check" type="checkbox" name="sale_ids" value="{{ sale.id }}" aria-label="Sélectionner la vente #{{ sale.id }}"></td>
+                <td><span class="badge bg-light text-dark">#{{ sale.id }}</span></td>
+                <td>{{ sale.created_at|date:'d/m/Y H:i' }}</td>
+                <td><strong>{{ sale.total }} FCFA</strong></td>
+                <td>{{ sale.items.count }}</td>
+                <td class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'store:sale_detail' sale.id %}"><i class="bi bi-eye me-1"></i>Détails</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:sale_invoice' sale.id %}"><i class="bi bi-receipt me-1"></i>Facture</a>
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'store:sale_receipt' sale.id %}"><i class="bi bi-printer me-1"></i>Ticket</a>
+                    <a class="btn btn-sm btn-outline-success" href="{% url 'store:sale_invoice_pdf' sale.id %}"><i class="bi bi-filetype-pdf me-1"></i>PDF</a>
+                    <a class="btn btn-sm btn-outline-warning" href="{% url 'store:sale_update' sale.id %}"><i class="bi bi-pencil-square me-1"></i>Modifier</a>
+                    <a class="btn btn-sm btn-outline-danger" href="{% url 'store:sale_delete' sale.id %}"><i class="bi bi-trash me-1"></i>Supprimer</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-4">
+                    <i class="bi bi-receipt text-secondary" style="font-size:1.5rem;display:block;margin-bottom:.35rem;opacity:.4;"></i>
+                    <span class="text-secondary">Aucune vente enregistrée.</span>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</form>
+
+<script>
+    const salesBulkForm = document.getElementById('salesBulkForm');
+    const selectAllSales = document.getElementById('selectAllSales');
+    const saleChecks = document.querySelectorAll('.sale-check');
+
+    selectAllSales?.addEventListener('change', () => {
+        saleChecks.forEach((checkbox) => {
+            checkbox.checked = selectAllSales.checked;
+        });
+    });
+
+    salesBulkForm?.addEventListener('submit', (event) => {
+        const button = event.submitter;
+        const action = button?.value;
+        const checkedCount = document.querySelectorAll('.sale-check:checked').length;
+
+        if (action === 'delete_selected' && checkedCount === 0) {
+            event.preventDefault();
+            alert('Sélectionne au moins une vente.');
+            return;
+        }
+
+        const message = button?.dataset.confirm || 'Supprimer les ventes sélectionnées et restaurer le stock ?';
+        if (!confirm(message)) {
+            event.preventDefault();
+        }
+    });
+</script>
+{% include 'store/_pagination.html' %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer un employé - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">Supprimer un employé</h1>
+        <p>Es-tu sûr de vouloir supprimer <strong>{{ employee.first_name }} {{ employee.last_name }}</strong> ({{ employee.get_role_display }}) ?</p>
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary" href="{% url 'store:employee_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

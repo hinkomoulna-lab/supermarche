@@ -1,0 +1,191 @@
+/* ===== FORMULAIRE ULTRA COMPACT (global) ===== */
+.form-control, .form-select {
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important;
+  font-size: .82rem !important;
+}
+.input-group .btn {
+  padding-top: .2rem !important;
+  padding-bottom: .2rem !important;
+  font-size: .8rem !important;
+}
+
+/* ===== FORMULAIRE ULTRA COMPACT ===== */
+.form-control-xs {
+  padding: .2rem .4rem !important;
+  font-size: .8rem !important;
+  border-radius: 6px !important;
+}
+.form-select-xs {
+  background-position: right .3rem center !important;
+  padding: .2rem 1.6rem .2rem .4rem !important;
+  font-size: .8rem !important;
+  border-radius: 6px !important;
+}
+.form-label {
+  font-size: .78rem !important;
+  margin-bottom: .15rem !important;
+  font-weight: 600;
+}
+.form-text, .text-muted {
+  font-size: .72rem !important;
+}
+
+/* ===== RUBANS (RIBBONS) ===== */
+.ribbon {
+  position: relative;
+  margin: 1.2rem 0 .8rem;
+  padding: .45rem .8rem .35rem;
+  background: linear-gradient(135deg, var(--primary-a), var(--primary-b));
+  color: #fff;
+  font-weight: 700;
+  font-size: .82rem;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,.12);
+}
+.ribbon::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  background: linear-gradient(135deg, var(--nav-a), var(--nav-b));
+  border-radius: 4px 0 0 4px;
+}
+.ribbon::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: linear-gradient(135deg, var(--primary-b), var(--primary-a));
+  border-radius: 0 4px 4px 0;
+  opacity: .5;
+}
+.ribbon i {
+  margin-right: .35rem;
+}
+
+/* Ruban latéral (side ribbon) */
+.ribbon-side {
+  position: relative;
+  padding-left: 1rem;
+  margin: .3rem 0;
+}
+.ribbon-side::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--primary-a), var(--primary-b));
+}
+
+/* Multi-couleurs pour les rubans */
+.ribbon-green { background: linear-gradient(135deg, #16a34a, #0f766e); }
+.ribbon-green::before { background: linear-gradient(135deg, #15803d, #0f766e); }
+.ribbon-green::after { background: linear-gradient(135deg, #0f766e, #16a34a); }
+
+.ribbon-red { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+.ribbon-red::before { background: linear-gradient(135deg, #b91c1c, #991b1b); }
+.ribbon-red::after { background: linear-gradient(135deg, #b91c1c, #dc2626); }
+
+.ribbon-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.ribbon-orange::before { background: linear-gradient(135deg, #d97706, #b45309); }
+.ribbon-orange::after { background: linear-gradient(135deg, #d97706, #f59e0b); }
+
+.ribbon-purple { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+.ribbon-purple::before { background: linear-gradient(135deg, #6d28d9, #5b21b6); }
+.ribbon-purple::after { background: linear-gradient(135deg, #6d28d9, #7c3aed); }
+
+.ribbon-pink { background: linear-gradient(135deg, #ec4899, #db2777); }
+.ribbon-pink::before { background: linear-gradient(135deg, #db2777, #be185d); }
+.ribbon-pink::after { background: linear-gradient(135deg, #db2777, #ec4899); }
+
+.ribbon-teal { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+.ribbon-teal::before { background: linear-gradient(135deg, #0d9488, #0f766e); }
+.ribbon-teal::after { background: linear-gradient(135deg, #0d9488, #14b8a6); }
+
+.ribbon-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.ribbon-blue::before { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+.ribbon-blue::after { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+
+/* ===== CARTES COLORÉES ===== */
+.card-accent {
+  border-left: 4px solid var(--primary-a);
+  border-radius: 8px;
+}
+.card-accent-green { border-left-color: #16a34a; }
+.card-accent-red { border-left-color: #dc2626; }
+.card-accent-orange { border-left-color: #f59e0b; }
+.card-accent-purple { border-left-color: #7c3aed; }
+.card-accent-pink { border-left-color: #ec4899; }
+.card-accent-teal { border-left-color: #14b8a6; }
+.card-accent-blue { border-left-color: #3b82f6; }
+
+/* Fond légèrement coloré selon la bordure */
+.card-accent-green .card-body { background: rgba(22,163,74,.04); }
+.card-accent-red .card-body { background: rgba(220,38,38,.04); }
+.card-accent-orange .card-body { background: rgba(245,158,11,.04); }
+.card-accent-purple .card-body { background: rgba(124,58,237,.04); }
+.card-accent-pink .card-body { background: rgba(236,72,153,.04); }
+.card-accent-teal .card-body { background: rgba(20,184,166,.04); }
+.card-accent-blue .card-body { background: rgba(59,130,246,.04); }
+
+/* ===== BADGES COLORÉS ===== */
+.badge-soft-green {
+  background: rgba(22,163,74,.12);
+  color: #15803d;
+}
+.badge-soft-red {
+  background: rgba(220,38,38,.12);
+  color: #b91c1c;
+}
+.badge-soft-orange {
+  background: rgba(245,158,11,.12);
+  color: #b45309;
+}
+.badge-soft-purple {
+  background: rgba(124,58,237,.12);
+  color: #6d28d9;
+}
+.badge-soft-pink {
+  background: rgba(236,72,153,.12);
+  color: #be185d;
+}
+.badge-soft-teal {
+  background: rgba(20,184,166,.12);
+  color: #0f766e;
+}
+.badge-soft-blue {
+  background: rgba(37,99,235,.12);
+  color: #1d4ed8;
+}
+
+/* ===== PIED DE PAGE ===== */
+.app-footer {
+  border-top: 1px solid var(--surface-border);
+  padding: .5rem .75rem;
+  font-size: .72rem;
+  color: #94a3b8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin-top: 1.5rem;
+}
+.app-footer .update-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  background: rgba(37,99,235,.08);
+  color: #3b82f6;
+  padding: .15rem .5rem;
+  border-radius: 4px;
+  font-size: .68rem;
+}

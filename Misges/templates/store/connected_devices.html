@@ -1,0 +1,55 @@
+{% extends 'store/base.html' %}
+{% block title %}Appareils connectés{% endblock %}
+
+{% block back_button %}
+<a class="btn btn-sm btn-outline-secondary me-1" href="{% url 'store:sections' %}">
+    <i class="bi bi-arrow-left me-1"></i>Applications
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <h4 class="mb-3"><i class="bi bi-phone me-2"></i>Appareils connectés</h4>
+
+    {% if messages %}
+    <div class="mb-3">
+        {% for msg in messages %}
+        <div class="alert alert-{{ msg.tags }} alert-dismissible fade show">{{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if devices %}
+    <div class="table-responsive">
+        <table class="table table-hover table-sm align-middle">
+            <thead>
+                <tr>
+                    <th>Adresse IP</th>
+                    <th>Appareil</th>
+                    <th>Dernière activité</th>
+                    <th>Expire</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in devices %}
+                <tr>
+                    <td><code>{{ d.ip }}</code></td>
+                    <td class="small">{{ d.user_agent|truncatechars:60 }}</td>
+                    <td class="small">{{ d.last_activity|date:'d/m/Y H:i' }}</td>
+                    <td class="small">{{ d.expire_date|date:'d/m/Y H:i' }}</td>
+                    <td>
+                        <a href="{% url 'store:disconnect_device' d.session_key %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Déconnecter cet appareil ?')">
+                            <i class="bi bi-x-circle"></i> Déconnecter
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">Aucun appareil connecté.</div>
+    {% endif %}
+</div>
+{% endblock %}

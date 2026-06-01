@@ -1,0 +1,288 @@
+{% extends 'store/base.html' %}
+{% block title %}Tableau de bord - Supermarché{% endblock %}
+
+{% block content %}
+<style>
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+}
+.stat-card {
+  background: var(--surface-bg, #fff);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 10px;
+  padding: .75rem;
+  display: grid;
+  gap: .15rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.stat-card i { font-size: .9rem; }
+.stat-card .label {
+  font-size: .6875rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--o-text-secondary, #64748b);
+}
+.stat-card .value {
+  font-size: .875rem;
+  font-weight: 700;
+}
+.chart-card {
+  background: var(--surface-bg, #fff);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.chart-title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .75rem;
+  font-size: .6875rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--o-text-secondary, #64748b);
+}
+.chart-box {
+  position: relative;
+  width: 100%;
+  height: 260px;
+}
+.chart-box.chart-box-sm {
+  height: 220px;
+}
+.chart-box canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+.recent-list {
+  display: grid;
+  gap: .35rem;
+}
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .35rem 0;
+  border-bottom: 1px solid var(--surface-border, #e2e8f0);
+  font-size: .8125rem;
+}
+.recent-item:last-child { border-bottom: none; }
+</style>
+
+<div class="page-header mb-3">
+  <h1 class="h3 mb-0"><i class="bi bi-bar-chart-fill me-2" style="color:var(--primary-a)"></i>Tableau de bord</h1>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card"><i class="bi bi-box-seam" style="color:#2563eb"></i><span class="label">Produits</span><span class="value" id="stat-products">{{ total_products }}</span></div>
+  <div class="stat-card"><i class="bi bi-boxes" style="color:#16a34a"></i><span class="label">Stock total</span><span class="value" id="stat-stock">{{ total_stock }}</span></div>
+  <div class="stat-card"><i class="bi bi-graph-up-arrow" style="color:#7c3aed"></i><span class="label">Ventes</span><span class="value" id="stat-sales">{{ total_sales }}</span></div>
+  <div class="stat-card"><i class="bi bi-coin" style="color:#f59e0b"></i><span class="label">CA Total</span><span class="value" id="stat-revenue">{{ total_revenue }} FCFA</span></div>
+  <div class="stat-card"><i class="bi bi-calendar-day" style="color:#14b8a6"></i><span class="label">Aujourd'hui</span><span class="value" id="stat-today">{{ daily_revenue }} FCFA</span></div>
+  <div class="stat-card"><i class="bi bi-receipt" style="color:#0ea5e9"></i><span class="label">Aujourd'hui (ventes)</span><span class="value" id="stat-dailycount">{{ daily_count }}</span></div>
+  <div class="stat-card"><i class="bi bi-calendar-month" style="color:#ec4899"></i><span class="label">Ce mois</span><span class="value" id="stat-monthly">{{ monthly_revenue }} FCFA {% if month_change > 0 %}<small class="text-success">+{{ month_change|floatformat:0 }}%</small>{% elif month_change < 0 %}<small class="text-danger">{{ month_change|floatformat:0 }}%</small>{% endif %}</span></div>
+  <div class="stat-card"><i class="bi bi-piggy-bank" style="color:#16a34a"></i><span class="label">Bénéfice estimé</span><span class="value" id="stat-profit">{{ total_profit }} FCFA</span></div>
+  <div class="stat-card"><i class="bi bi-wallet2" style="color:#dc2626"></i><span class="label">Dépenses</span><span class="value" id="stat-expenses">{{ total_expenses }} FCFA</span></div>
+  <div class="stat-card"><i class="bi bi-pie-chart" style="color:#f59e0b"></i><span class="label">Budget mois</span><span class="value" id="stat-budget">{{ monthly_expense_limit|default:"0" }} FCFA</span></div>
+  <div class="stat-card"><i class="bi bi-exclamation-triangle" style="color:#f59e0b"></i><span class="label">Faible stock</span><span class="value" id="stat-lowstock">{{ low_stock_count }}</span></div>
+  <div class="stat-card"><i class="bi bi-x-circle" style="color:#dc2626"></i><span class="label">En rupture</span><span class="value" id="stat-outstock">{{ out_of_stock }}</span></div>
+  <div class="stat-card"><i class="bi bi-trophy" style="color:#f59e0b"></i><span class="label">Top catégorie</span><span class="value">{% if top_category %}{{ top_category.product__category__name }}{% else %}-{% endif %}</span></div>
+</div>
+<div class="d-flex justify-content-end mb-3">
+  <div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" id="autoRefreshToggle" role="switch">
+    <label class="form-check-label small" for="autoRefreshToggle">Rafraîchissement auto (30s)</label>
+  </div>
+</div>
+
+{% if monthly_expense_limit > 0 %}
+<div class="card p-3 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <span class="small fw-bold">Budget dépenses mensuel</span>
+        <span class="small">{{ total_expenses }} / {{ monthly_expense_limit }} FCFA ({{ budget_pct }}%)</span>
+    </div>
+    <div class="progress" style="height:8px">
+        <div class="progress-bar {% if budget_pct > 90 %}bg-danger{% elif budget_pct > 70 %}bg-warning{% else %}bg-success{% endif %}" style="width:{{ budget_pct }}%"></div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-8">
+    <div class="chart-card">
+      <div class="chart-title">
+        <i class="bi bi-activity" style="color:#2563eb;font-size:.9rem;"></i>
+        Ventes des 7 derniers jours
+      </div>
+      <div class="chart-box">
+        <canvas id="dailyChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="chart-card">
+      <div class="chart-title">
+        <i class="bi bi-bar-chart-fill" style="color:#16a34a;font-size:.9rem;"></i>
+        Ventes annuelles
+      </div>
+      <div class="chart-box chart-box-sm">
+        <canvas id="yearlyChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-4">
+    <div class="chart-card h-100">
+      <div class="chart-title">
+        <i class="bi bi-clock-history" style="color:var(--o-text-secondary,#64748b);font-size:.9rem;"></i>
+        Ventes récentes
+      </div>
+      {% if recent_sales %}
+        <div class="recent-list">
+          {% for sale in recent_sales %}
+            <div class="recent-item">
+              <span>Vente #{{ sale.id }}</span>
+              <span class="badge" style="background:var(--primary-a)">{{ sale.total }} FCFA</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div style="text-align:center;padding:2rem 0;color:var(--o-text-secondary,#64748b);font-size:.8125rem;">
+          <i class="bi bi-inbox" style="font-size:1.5rem;display:block;margin-bottom:.5rem;"></i>
+          Aucune vente récente
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="chart-card">
+      <div class="chart-title">
+        <i class="bi bi-calendar-month" style="color:#ec4899;font-size:.9rem;"></i>
+        Ventes mensuelles
+      </div>
+      <div class="chart-box">
+        <canvas id="monthlyChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/chart.umd.min.js"></script>
+<script>
+Chart.defaults.font.family = "'Inter', system-ui, -apple-system, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#64748b';
+
+function moneyTick(value) {
+  if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+  if (value >= 1000) return (value / 1000).toFixed(0) + 'k';
+  return value;
+}
+
+const dashboardCharts = [];
+
+function makeChart(id, type, labels, values, color) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+
+  const gradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, 260);
+  gradient.addColorStop(0, color.replace('1)', '.35)'));
+  gradient.addColorStop(1, color.replace('1)', '.02)'));
+
+  const chart = new Chart(canvas, {
+    type: type,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Ventes (FCFA)',
+        data: values,
+        borderColor: color,
+        backgroundColor: type === 'line' ? gradient : color.replace('1)', '.75)'),
+        fill: type === 'line',
+        tension: .35,
+        borderWidth: 2,
+        borderRadius: 5,
+        borderSkipped: false,
+        pointRadius: type === 'line' ? 3 : 0,
+        pointBackgroundColor: color
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      resizeDelay: 100,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return Number(context.parsed.y || 0).toLocaleString('fr-FR') + ' FCFA';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(100,116,139,.12)' },
+          ticks: { callback: moneyTick, maxTicksLimit: 6 }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { maxRotation: 0, autoSkip: true }
+        }
+      }
+    }
+  });
+  dashboardCharts.push(chart);
+}
+
+try {
+  makeChart('dailyChart', 'line', {{ daily_labels|safe }}, {{ daily_values|safe }}, 'rgba(37,99,235,1)');
+  makeChart('yearlyChart', 'bar', {{ year_labels|safe }}, {{ year_values|safe }}, 'rgba(22,163,74,1)');
+  makeChart('monthlyChart', 'bar', {{ month_labels|safe }}, {{ month_values|safe }}, 'rgba(236,72,153,1)');
+} catch (error) {
+  console.warn('Erreur graphique dashboard:', error);
+}
+
+window.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'dashboard-resize') {
+    dashboardCharts.forEach(function(chart) { chart.resize(); });
+  }
+});
+
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    dashboardCharts.forEach(function(chart) { chart.resize(); });
+  }, 150);
+  // Auto-refresh toutes les 30s
+  var refreshToggle = document.getElementById('autoRefreshToggle');
+  var refreshTimer = null;
+  function doRefresh() {
+    fetch(window.location.pathname + '?refresh=1', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        document.getElementById('stat-monthly').innerHTML = (d.monthly_revenue || 0) + ' FCFA';
+        document.getElementById('stat-today').innerHTML = (d.today_revenue || 0) + ' FCFA';
+        document.getElementById('stat-profit').innerHTML = (d.total_profit || 0) + ' FCFA';
+        document.getElementById('stat-expenses').innerHTML = (d.total_expenses || 0) + ' FCFA';
+      }).catch(function(e) { console.warn('Refresh dashboard:', e); });
+  }
+  refreshToggle.addEventListener('change', function() {
+    if (this.checked) {
+      doRefresh();
+      refreshTimer = setInterval(doRefresh, 30000);
+    } else {
+      clearInterval(refreshTimer);
+    }
+  });
+});
+</script>
+{% endblock %}

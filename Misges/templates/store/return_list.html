@@ -1,0 +1,48 @@
+{% extends 'store/base.html' %}
+{% block title %}Retours / Échanges - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <a href="{% url 'store:sale_history' %}">Finance</a>
+    <span class="sep">/</span>
+    <span class="current">Retours</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Retours & Échanges</h1>
+        <p class="text-secondary mb-0">Gère les retours produits et les remboursements.</p>
+    </div>
+</div>
+<div class="d-flex justify-content-between mb-3">
+    <span></span>
+    <a class="btn btn-success btn-sm" href="{% url 'store:return_create' %}"><i class="bi bi-plus-circle me-1"></i>Nouveau retour</a>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>#</th><th>Vente</th><th>Date</th><th>Raison</th><th>Remboursé</th><th>Statut</th></tr></thead>
+        <tbody>
+            {% for ret in page_obj %}
+                <tr>
+                    <td>{{ ret.id }}</td>
+                    <td><a href="{% url 'store:sale_detail' ret.sale.id %}">#{{ ret.sale.id }}</a></td>
+                    <td>{{ ret.date|date:'d/m/Y' }}</td>
+                    <td>{{ ret.get_reason_display }}</td>
+                    <td>{{ ret.refund_amount }} FCFA</td>
+                    <td>
+                        {% if ret.status == 'pending' %}<span class="badge bg-warning text-dark">En attente</span>
+                        {% elif ret.status == 'approved' %}<span class="badge bg-success">Approuvé</span>
+                        {% else %}<span class="badge bg-danger">Rejeté</span>{% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-center">Aucun retour.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'store/_pagination.html' %}
+{% endblock %}

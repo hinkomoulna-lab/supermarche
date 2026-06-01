@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Miséricorde — {% if contents.hero_title %}{{ contents.hero_title }}{% else %}Accueil{% endif %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        color: #1e293b; line-height: 1.7;
+        background: #fafaf9; overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; }
+
+    /* ===== NAV ===== */
+    .navbar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+        background: rgba(255,255,255,.75); backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid rgba(226,232,240,.5);
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 2rem; height: 64px;
+        transition: box-shadow .3s;
+    }
+    .navbar.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,.06); }
+    .navbar .brand {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem; font-weight: 700;
+        background: linear-gradient(135deg, #7f1d1d, #be123c, #e11d48);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        display: flex; align-items: center; gap: .6rem;
+    }
+    .navbar .brand i { -webkit-text-fill-color: #be123c; font-size: 1.4rem; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+        font-size: .85rem; font-weight: 500; color: #475569;
+        transition: color .2s; position: relative;
+    }
+    .nav-links a::after {
+        content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+        background: linear-gradient(90deg, #be123c, #e11d48);
+        transition: width .3s; border-radius: 2px;
+    }
+    .nav-links a:hover { color: #be123c; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links .btn-nav {
+        background: linear-gradient(135deg, #7f1d1d, #be123c);
+        color: #fff; padding: .5rem 1.2rem; border-radius: 9999px;
+        font-weight: 600; font-size: .8rem; transition: transform .2s, box-shadow .2s;
+        box-shadow: 0 4px 15px rgba(190,18,60,.25);
+    }
+    .nav-links .btn-nav::after { display: none; }
+    .nav-links .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(190,18,60,.35); color: #fff; }
+    .nav-toggle {
+        display: none; background: none; border: none;
+        font-size: 1.5rem; color: #1e293b; cursor: pointer;
+        width: 40px; height: 40px; border-radius: 8px;
+        transition: background .2s;
+    }
+    .nav-toggle:hover { background: rgba(0,0,0,.05); }
+
+    /* ===== HERO ===== */
+    .hero {
+        min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        text-align: center; padding: 7rem 2rem 5rem;
+        position: relative; overflow: hidden;
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0f172a 60%, #0a0a1a 100%);
+    }
+    .hero::before {
+        content: ''; position: absolute; inset: 0;
+        background:
+            radial-gradient(ellipse at 20% 30%, rgba(190,18,60,.15) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 70%, rgba(126,29,29,.12) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 50%, rgba(147,51,234,.05) 0%, transparent 50%);
+        animation: heroGlow 8s ease-in-out infinite alternate;
+    }
+    @keyframes heroGlow {
+        0% { opacity: .6; transform: scale(1); }
+        100% { opacity: 1; transform: scale(1.05); }
+    }
+    .hero-particles {
+        position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    }
+    .hero-particles span {
+        position: absolute; width: 4px; height: 4px;
+        background: rgba(255,255,255,.15); border-radius: 50%;
+        animation: floatUp linear infinite;
+    }
+    .hero-particles span:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; }
+    .hero-particles span:nth-child(2) { left: 25%; animation-duration: 15s; animation-delay: 2s; width: 6px; height: 6px; }
+    .hero-particles span:nth-child(3) { left: 45%; animation-duration: 10s; animation-delay: 4s; }
+    .hero-particles span:nth-child(4) { left: 65%; animation-duration: 14s; animation-delay: 1s; width: 3px; height: 3px; }
+    .hero-particles span:nth-child(5) { left: 80%; animation-duration: 11s; animation-delay: 3s; }
+    .hero-particles span:nth-child(6) { left: 35%; animation-duration: 13s; animation-delay: 5s; width: 5px; height: 5px; }
+    .hero-particles span:nth-child(7) { left: 55%; animation-duration: 16s; animation-delay: 2.5s; }
+    .hero-particles span:nth-child(8) { left: 90%; animation-duration: 9s; animation-delay: 4.5s; width: 3px; height: 3px; }
+    @keyframes floatUp {
+        0% { transform: translateY(100vh) scale(0); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .hero-badge {
+        display: inline-block;
+        background: rgba(190,18,60,.15); backdrop-filter: blur(10px);
+        border: 1px solid rgba(190,18,60,.25);
+        color: #fca5a5; padding: .35rem 1.2rem; border-radius: 9999px;
+        font-size: .8rem; font-weight: 600; margin-bottom: 1.5rem;
+        letter-spacing: .05em;
+    }
+    .hero-icon {
+        font-size: 3.5rem; margin-bottom: 1.2rem; display: block;
+        animation: pulseCross 3s ease-in-out infinite;
+    }
+    @keyframes pulseCross {
+        0%, 100% { transform: scale(1); opacity: .8; }
+        50% { transform: scale(1.08); opacity: 1; }
+    }
+    .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 900;
+        background: linear-gradient(135deg, #fef2f2 0%, #fca5a5 40%, #fef2f2 70%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem; line-height: 1.1;
+    }
+    .hero p {
+        font-size: clamp(1rem, 1.8vw, 1.15rem);
+        color: rgba(255,255,255,.6); font-weight: 300;
+        margin-bottom: 2.5rem; max-width: 560px; margin-inline: auto;
+        line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary, .btn-secondary {
+        display: inline-flex; align-items: center; gap: .5rem;
+        padding: .8rem 2rem; border-radius: 9999px;
+        font-weight: 600; font-size: .9rem; cursor: pointer;
+        transition: all .25s;
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #be123c, #e11d48);
+        color: #fff; box-shadow: 0 8px 30px rgba(190,18,60,.3);
+        border: none;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(190,18,60,.4); }
+    .btn-secondary {
+        background: rgba(255,255,255,.08); color: rgba(255,255,255,.8);
+        border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(10px);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.15); color: #fff; transform: translateY(-3px); }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 5.5rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+        display: inline-block;
+        background: linear-gradient(135deg, rgba(190,18,60,.08), rgba(225,29,72,.05));
+        color: #be123c; padding: .3rem 1rem; border-radius: 9999px;
+        font-size: .75rem; font-weight: 700; letter-spacing: .08em;
+        text-transform: uppercase; margin-bottom: .75rem;
+    }
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 900;
+        margin-bottom: .75rem; line-height: 1.2;
+    }
+    .section-desc {
+        color: #64748b; max-width: 600px; margin: 0 auto 3rem;
+        font-size: .95rem; line-height: 1.7;
+    }
+
+    /* ===== ABOUT ===== */
+    #about { background: #fff; position: relative; }
+    #about::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(90deg, #7f1d1d, #be123c, #e11d48, #be123c, #7f1d1d);
+        background-size: 200% 100%; animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .about-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .about-text p { font-size: .95rem; color: #475569; margin-bottom: 1rem; }
+    .about-text .about-signature {
+        font-family: 'Playfair Display', serif; font-style: italic;
+        color: #be123c; font-size: 1rem; margin-top: 1.5rem;
+    }
+    .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .about-stat {
+        text-align: center; padding: 2rem 1rem;
+        background: linear-gradient(135deg, #fef2f2, #fff);
+        border-radius: 16px; border: 1px solid rgba(190,18,60,.08);
+        transition: transform .25s, box-shadow .25s;
+    }
+    .about-stat:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(190,18,60,.08); }
+    .about-stat strong {
+        font-size: 2rem; font-weight: 900;
+        background: linear-gradient(135deg, #7f1d1d, #be123c);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        display: block;
+    }
+    .about-stat span { font-size: .8rem; color: #64748b; font-weight: 500; }
+
+    /* ===== SERVICES ===== */
+    #services { background: linear-gradient(180deg, #fafaf9, #fff); }
+    .services-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    .service-card {
+        background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+        padding: 2.5rem 2rem; text-align: center;
+        transition: all .3s; position: relative; overflow: hidden;
+    }
+    .service-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, #7f1d1d, #be123c, #e11d48);
+        transform: scaleX(0); transform-origin: left; transition: transform .3s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.08); border-color: transparent; }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card i {
+        font-size: 1.8rem; color: #be123c;
+        width: 60px; height: 60px; display: inline-flex;
+        align-items: center; justify-content: center;
+        background: linear-gradient(135deg, #fef2f2, #fff);
+        border-radius: 16px; margin-bottom: 1.2rem;
+        border: 1px solid rgba(190,18,60,.08);
+        transition: transform .3s;
+    }
+    .service-card:hover i { transform: scale(1.1) rotate(-5deg); }
+    .service-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .6rem; }
+    .service-card p { font-size: .875rem; color: #64748b; line-height: 1.6; }
+
+    /* ===== SCHEDULE ===== */
+    #horaires { background: #fff; }
+    .schedule-wrapper {
+        max-width: 520px; margin: 0 auto;
+        background: linear-gradient(135deg, #fef2f2, #fff);
+        border-radius: 16px; padding: 2rem; border: 1px solid rgba(190,18,60,.06);
+    }
+    .schedule-table { width: 100%; border-collapse: collapse; }
+    .schedule-table tr { border-bottom: 1px solid rgba(226,232,240,.6); }
+    .schedule-table tr:last-child { border-bottom: none; }
+    .schedule-table td { padding: .85rem .5rem; font-size: .9rem; }
+    .schedule-table .day { font-weight: 600; color: #1e293b; width: 120px; }
+    .schedule-table .closed {
+        color: #ef4444; font-weight: 600;
+        background: rgba(239,68,68,.06); border-radius: 6px;
+        padding: .25rem .75rem; display: inline-block;
+    }
+    .schedule-table .time { color: #475569; }
+
+    /* ===== CONTACT ===== */
+    #contact { background: linear-gradient(180deg, #fff, #fafaf9); }
+    .contact-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+        align-items: start;
+    }
+    .contact-info { display: grid; gap: 1rem; }
+    .contact-item {
+        display: flex; align-items: center; gap: 1rem; padding: 1.25rem;
+        background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;
+        transition: transform .2s, box-shadow .2s;
+    }
+    .contact-item:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.04); }
+    .contact-item i {
+        font-size: 1.2rem; color: #be123c;
+        width: 44px; height: 44px; display: flex;
+        align-items: center; justify-content: center;
+        background: linear-gradient(135deg, #fef2f2, #fff);
+        border-radius: 12px; flex: 0 0 44px;
+        border: 1px solid rgba(190,18,60,.06);
+    }
+    .contact-item .ci-content { display: grid; gap: .1rem; }
+    .contact-item .ci-label { font-size: .75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .contact-item .ci-value { font-size: .9rem; color: #475569; font-weight: 500; }
+    .contact-form {
+        display: grid; gap: 1rem;
+        background: #fff; padding: 2rem; border-radius: 16px;
+        border: 1px solid #e2e8f0;
+    }
+    .contact-form input,
+    .contact-form textarea {
+        padding: .85rem 1rem; border: 1px solid #e2e8f0; border-radius: 10px;
+        font-family: inherit; font-size: .9rem; transition: all .2s;
+        background: #fafaf9;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        outline: none; border-color: #be123c;
+        box-shadow: 0 0 0 4px rgba(190,18,60,.08);
+        background: #fff;
+    }
+    .contact-form textarea { min-height: 130px; resize: vertical; }
+    .contact-form button {
+        background: linear-gradient(135deg, #7f1d1d, #be123c);
+        color: #fff; padding: .85rem 1.5rem; border: none; border-radius: 10px;
+        font-weight: 700; font-size: .9rem; cursor: pointer;
+        transition: all .25s;
+        display: flex; align-items: center; justify-content: center; gap: .5rem;
+        box-shadow: 0 4px 15px rgba(190,18,60,.2);
+    }
+    .contact-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(190,18,60,.3); }
+
+    /* ===== FOOTER ===== */
+    footer {
+        background: #0f172a; color: rgba(255,255,255,.5);
+        text-align: center; padding: 3rem 2rem 2rem;
+    }
+    footer .footer-brand {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.3rem; font-weight: 700; color: #fff;
+        margin-bottom: .5rem;
+    }
+    footer .footer-brand i { color: #be123c; }
+    footer .footer-tagline { font-size: .85rem; margin-bottom: 1.5rem; }
+    footer .socials {
+        display: flex; justify-content: center; gap: .75rem; margin-bottom: 2rem;
+    }
+    footer .socials a {
+        width: 44px; height: 44px; border-radius: 50%;
+        background: rgba(255,255,255,.06); color: rgba(255,255,255,.6);
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 1.1rem; transition: all .2s; border: 1px solid rgba(255,255,255,.06);
+    }
+    footer .socials a:hover { background: #be123c; color: #fff; transform: translateY(-3px); border-color: #be123c; }
+    footer .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,.06); padding-top: 1.5rem;
+        font-size: .8rem;
+    }
+    footer .footer-bottom strong { color: rgba(255,255,255,.8); }
+
+    /* ===== SCROLL REVEAL ===== */
+    .reveal {
+        opacity: 0; transform: translateY(30px);
+        transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none; position: fixed; top: 64px; left: 0; right: 0;
+            background: rgba(255,255,255,.95); backdrop-filter: blur(20px);
+            flex-direction: column; padding: 1rem; gap: .5rem;
+            border-bottom: 1px solid #e2e8f0; box-shadow: 0 10px 30px rgba(0,0,0,.08);
+        }
+        .nav-links.open { display: flex; }
+        .nav-links a { padding: .6rem .5rem; }
+        .nav-toggle { display: flex; align-items: center; justify-content: center; }
+        .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+        .about-stats { grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+        .about-stat { padding: 1.25rem .5rem; }
+        .about-stat strong { font-size: 1.5rem; }
+        section { padding: 3rem 1.25rem; }
+        .hero { padding: 6rem 1.25rem 4rem; }
+        .hero-actions { flex-direction: column; align-items: stretch; }
+        .btn-primary, .btn-secondary { justify-content: center; }
+        .services-grid { grid-template-columns: 1fr; }
+        .contact-form { padding: 1.25rem; }
+    }
+    @media (max-width: 480px) {
+        .about-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ===== MESSAGES ===== */
+    .msg-toast {
+        position: fixed; top: 80px; right: 1rem; z-index: 2000;
+        background: linear-gradient(135deg, #166534, #15803d);
+        color: #fff; padding: 1rem 1.5rem; border-radius: 12px;
+        font-weight: 600; font-size: .875rem;
+        box-shadow: 0 8px 30px rgba(0,0,0,.15);
+        animation: slideInRight .4s ease-out; max-width: 380px;
+        display: flex; align-items: center; gap: .6rem;
+    }
+    .msg-toast i { font-size: 1.2rem; }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(100%) scale(.9); } to { opacity: 1; transform: translateX(0) scale(1); } }
+    </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+    <a href="#" class="brand"><i class="bi bi-cross"></i>La Miséricorde</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><i class="bi bi-list"></i></button>
+    <div class="nav-links">
+        <a href="#about">À propos</a>
+        <a href="#services">Services</a>
+        <a href="#horaires">Horaires</a>
+        <a href="#contact">Contact</a>
+        <a href="{% url 'store:home' %}" class="btn-nav"><i class="bi bi-box"></i> Gestion</a>
+    </div>
+</nav>
+
+<section class="hero" id="accueil">
+    <div class="hero-particles">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="hero-content">
+        <div class="hero-badge"><i class="bi bi-heart-fill me-1"></i> Solidarité &amp; Entraide</div>
+        <i class="bi bi-cross hero-icon"></i>
+        <h1>{{ contents.hero_title|default:'Bienvenue à La Miséricorde' }}</h1>
+        <p>{{ contents.hero_subtitle|default:'Un lieu de partage, d\'entraide et de solidarité ouvert à tous, sans distinction.' }}</p>
+        <div class="hero-actions">
+            <a href="#contact" class="btn-primary"><i class="bi bi-envelope"></i>Nous contacter</a>
+            <a href="#services" class="btn-secondary"><i class="bi bi-arrow-down"></i>Découvrir nos services</a>
+        </div>
+    </div>
+</section>
+
+<section id="about">
+    <div class="section-inner">
+        <div class="reveal">
+            <div class="section-label">Notre histoire</div>
+            <h2 class="section-title">{{ contents.about_title|default:'Qui sommes-nous ?' }}</h2>
+            <p class="section-desc">{{ contents.about_text|default:'La Miséricorde est une organisation dédiée à l\'entraide et au soutien des personnes dans le besoin.' }}</p>
+        </div>
+        <div class="about-grid reveal">
+            <div class="about-text">
+                <p>{{ contents.about_text|default:'Nous croyons en la force de la communauté et en la solidarité. Depuis notre création, nous accompagnons les plus vulnérables à travers des programmes d\'aide alimentaire, d\'écoute et de réinsertion.' }}</p>
+                <p>Notre mission est d'offrir un refuge et un soutien à tous, sans distinction.</p>
+                <div class="about-signature">— Avec foi et dévouement</div>
+            </div>
+            <div class="about-stats">
+                <div class="about-stat"><strong>10+</strong><span>Ans d'expérience</span></div>
+                <div class="about-stat"><strong>500+</strong><span>Personnes aidées</span></div>
+                <div class="about-stat"><strong>50+</strong><span>Bénévoles</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services">
+    <div class="section-inner">
+        <div class="reveal">
+            <div class="section-label">Ce que nous faisons</div>
+            <h2 class="section-title">Nos services</h2>
+            <p class="section-desc">Découvrez comment nous accompagnons notre communauté au quotidien.</p>
+        </div>
+        <div class="services-grid reveal">
+            {% for service in services %}
+            <div class="service-card">
+                <i class="bi {{ service.icon }}"></i>
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.description }}</p>
+            </div>
+            {% empty %}
+            <div class="service-card">
+                <i class="bi bi-heart"></i>
+                <h3>Aide alimentaire</h3>
+                <p>Distribution de repas et de denrées aux personnes dans le besoin.</p>
+            </div>
+            <div class="service-card">
+                <i class="bi bi-people"></i>
+                <h3>Accompagnement social</h3>
+                <p>Écoute, conseil et orientation vers les services adaptés.</p>
+            </div>
+            <div class="service-card">
+                <i class="bi bi-house-door"></i>
+                <h3>Hébergement d'urgence</h3>
+                <p>Mise à l'abri temporaire pour les personnes sans logement.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="horaires">
+    <div class="section-inner">
+        <div class="reveal">
+            <div class="section-label">Nous trouver</div>
+            <h2 class="section-title">Horaires d'ouverture</h2>
+            <p class="section-desc">Nous vous accueillons aux horaires suivants :</p>
+        </div>
+        <div class="schedule-wrapper reveal">
+            <table class="schedule-table">
+                {% for s in schedules %}
+                <tr>
+                    <td class="day">{{ s.get_day_display }}</td>
+                    {% if s.closed %}
+                    <td colspan="2"><span class="closed">Fermé</span></td>
+                    {% else %}
+                    <td class="time">{{ s.morning }}</td>
+                    <td class="time">{{ s.afternoon }}</td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr><td class="day">Lundi</td><td class="time">08:00 – 12:00</td><td class="time">14:00 – 18:00</td></tr>
+                <tr><td class="day">Mardi</td><td class="time">08:00 – 12:00</td><td class="time">14:00 – 18:00</td></tr>
+                <tr><td class="day">Mercredi</td><td class="time">08:00 – 12:00</td><td class="time">14:00 – 18:00</td></tr>
+                <tr><td class="day">Jeudi</td><td class="time">08:00 – 12:00</td><td class="time">14:00 – 18:00</td></tr>
+                <tr><td class="day">Vendredi</td><td class="time">08:00 – 12:00</td><td class="time">14:00 – 17:00</td></tr>
+                <tr><td class="day">Samedi</td><td class="time">09:00 – 12:00</td><td class="time">Fermé</td></tr>
+                <tr><td class="day">Dimanche</td><td colspan="2"><span class="closed">Fermé</span></td></tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="section-inner">
+        <div class="reveal">
+            <div class="section-label">Restons en contact</div>
+            <h2 class="section-title">Contactez-nous</h2>
+            <p class="section-desc">Vous avez besoin d'aide ou vous souhaitez nous soutenir ? Écrivez-nous.</p>
+        </div>
+        <div class="contact-grid reveal">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="bi bi-geo-alt"></i>
+                    <div class="ci-content">
+                        <span class="ci-label">Adresse</span>
+                        <span class="ci-value">{{ contents.contact_address|default:'123 Rue de la Solidarité, Bamako' }}</span>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <div class="ci-content">
+                        <span class="ci-label">Téléphone</span>
+                        <span class="ci-value">{{ contents.contact_phone|default:'+223 00 00 00 00' }}</span>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <div class="ci-content">
+                        <span class="ci-label">Email</span>
+                        <span class="ci-value">{{ contents.contact_email|default:'contact@lamisericorde.org' }}</span>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="bi bi-clock"></i>
+                    <div class="ci-content">
+                        <span class="ci-label">Délai de réponse</span>
+                        <span class="ci-value">Sous 24h — Nous vous répondrons rapidement</span>
+                    </div>
+                </div>
+            </div>
+            <form method="post" action="{% url 'misericorde:contact' %}" class="contact-form">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="Votre nom" required>
+                <input type="email" name="email" placeholder="Votre email" required>
+                <input type="tel" name="phone" placeholder="Votre téléphone (optionnel)">
+                <input type="text" name="subject" placeholder="Sujet" required>
+                <textarea name="message" placeholder="Votre message..." required></textarea>
+                <button type="submit"><i class="bi bi-send"></i>Envoyer le message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-brand"><i class="bi bi-cross me-1"></i>La Miséricorde</div>
+    <div class="footer-tagline">Unis par la solidarité, guidés par la foi.</div>
+    <div class="socials">
+        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 <strong>La Miséricorde</strong> — Tous droits réservés.</p>
+    </div>
+</footer>
+
+{% if messages %}
+{% for msg in messages %}
+<div class="msg-toast"><i class="bi bi-check-circle-fill"></i>{{ msg }}</div>
+<script>setTimeout(() => document.querySelector('.msg-toast')?.remove(), 4000);</script>
+{% endfor %}
+{% endif %}
+
+<script>
+// Scroll shadow on navbar
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Scroll reveal animation
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: .15, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

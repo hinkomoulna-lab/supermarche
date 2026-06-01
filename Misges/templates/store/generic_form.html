@@ -1,0 +1,51 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} — {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h4 mb-0">{{ title }}</h1>
+        <small class="text-secondary">Remplis les informations ci-dessous</small>
+    </div>
+    <div>
+        <a href="{% if cancel_arg %}{% url cancel_url cancel_arg %}{% else %}{% url cancel_url %}{% endif %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Retour</a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row g-3">
+                {% for field in form %}
+                    <div class="col-md-6">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {% if field.field.widget.input_type == 'checkbox' %}
+                            <div class="form-check pt-1">
+                                {{ field }}
+                                <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            </div>
+                        {% elif field.field.widget.input_type == 'select' or field.field.widget.input_type == 'selectmultiple' %}
+                            {{ field }}
+                        {% elif field.field.widget.input_type == 'textarea' or 'Textarea' in field.field.widget|stringformat:'s' %}
+                            <textarea name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control" rows="4" {% if field.field.required %}required{% endif %}>{{ field.value|default:'' }}</textarea>
+                        {% else %}
+                            <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" class="form-control {% if field.errors %}is-invalid{% endif %}" {% if field.field.required %}required{% endif %} {% if field.field.widget.attrs.placeholder %}placeholder="{{ field.field.widget.attrs.placeholder }}"{% endif %} {% if field.field.widget.attrs.step %}step="{{ field.field.widget.attrs.step }}"{% endif %} {% if field.field.widget.attrs.min %}min="{{ field.field.widget.attrs.min }}"{% endif %} data-voice="true">
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="invalid-feedback d-block">{{ field.errors.0 }}</div>
+                        {% endif %}
+                        {% if field.help_text and not field.errors %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="d-flex gap-2 mt-4 pt-3 border-top">
+                <button type="submit" class="btn btn-success px-4"><i class="bi bi-check-lg me-1"></i>Enregistrer</button>
+                <a href="{% if cancel_arg %}{% url cancel_url cancel_arg %}{% else %}{% url cancel_url %}{% endif %}" class="btn btn-outline-secondary px-3"><i class="bi bi-x-lg me-1"></i>Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

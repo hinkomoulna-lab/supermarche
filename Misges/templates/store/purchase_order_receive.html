@@ -1,0 +1,39 @@
+{% extends 'store/base.html' %}
+{% block title %}Réceptionner commande #{{ order.id }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Réceptionner la commande #{{ order.id }}</h1>
+        <p class="text-secondary mb-0">
+            Fournisseur: <strong>{% if order.supplier %}{{ order.supplier.name }}{% else %}N/A{% endif %}</strong>
+        </p>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="table-shell mb-3">
+        <table class="table app-table align-middle mb-0">
+            <thead><tr><th>Produit</th><th>Commandé</th><th>Déjà reçu</th><th>Reste à recevoir</th><th>Quantité reçue aujourd'hui</th></tr></thead>
+            <tbody>
+                {% for item in order.items.all %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity_ordered }}</td>
+                        <td>{{ item.quantity_received }}</td>
+                        <td>{{ item.remaining }}</td>
+                        <td>
+                            <input type="number" name="received_{{ item.pk }}" value="{{ item.remaining }}" min="0" step="0.01" class="form-control form-control-sm" style="width:120px;">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle me-1"></i>Valider la réception</button>
+        <a class="btn btn-secondary" href="{% url 'store:purchase_order_detail' order.pk %}">Annuler</a>
+    </div>
+</form>
+{% endblock %}

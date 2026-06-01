@@ -1,0 +1,38 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">{{ title }}</h1>
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label class="form-label">Numéro de téléphone</label>
+                {{ form.phone_number }}
+                {{ form.phone_number.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Opérateur</label>
+                {{ form.operator }}
+                {{ form.operator.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Montant payé (FCFA)</label>
+                {{ form.amount }}
+                {{ form.amount.errors }}
+                <div class="form-text">Prix d'achat : 10 000 FCFA, Bénéfice : 500 FCFA, Minimum : 10 500 FCFA</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Date</label>
+                {{ form.date }}
+                {{ form.date.errors }}
+            </div>
+            <div class="col-md-12 d-flex gap-2">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary" href="{% url 'store:phone_credit_list' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

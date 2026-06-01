@@ -1,0 +1,389 @@
+{% extends 'store/base.html' %}
+{% block title %}Gestion des produits - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <span class="current">Gestion stock</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Gestion des produits</h1>
+            <p class="text-secondary mb-0">Ajoute, modifie ou supprime les produits de ton magasin.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary" href="{% url 'store:product_create' %}"><i class="bi bi-plus-circle me-1"></i>Nouveau produit</a>
+            <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#bulkPriceModal"><i class="bi bi-pencil-square"></i> Prix en lot</button>
+            <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal"><i class="bi bi-upload"></i> Importer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Import modal -->
+<div class="modal fade" id="importModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <form method="post" action="{% url 'store:product_import_bulk' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h6 class="mb-3"><i class="bi bi-upload me-1"></i>Importation de produits</h6>
+                <p class="small text-secondary mb-2">Fichier CSV ou Excel avec colonnes : Nom, Prix vente, Prix d'achat, Stock, Catégorie, Code-barres, Unité. <a href="data:text/csv;charset=utf-8,Nom,Prix%20vente,Prix%20d'achat,Stock,Cat%C3%A9gorie,Code-barres,Unit%C3%A9%0A" download="template_import.csv" class="text-decoration-underline small">Télécharger le modèle</a></p>
+                <input type="file" name="file" class="form-control mb-2" accept=".csv,.xlsx,.xls" required>
+                <div class="d-flex gap-2 justify-content-end">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-upload me-1"></i>Importer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk price modal -->
+<div class="modal fade" id="bulkPriceModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content p-3">
+            <form method="post" action="{% url 'store:bulk_price_update' %}">
+                {% csrf_token %}
+                <h6 class="mb-3"><i class="bi bi-pencil-square me-1"></i>Mise à jour des prix en lot</h6>
+                <div class="mb-2">
+                    <label class="form-label small">Prix fixe <small class="text-secondary">ou % (ex: +10, -15)</small></label>
+                    <input type="text" name="new_price" class="form-control" placeholder="Ex: 500 ou +10% ou -15%" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Type de prix</label>
+                    <select name="price_type" class="form-select">
+                        <option value="price">Prix de vente</option>
+                        <option value="cost_price">Prix d'achat</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small">Appliquer à</label>
+                    <select id="bulkPriceScope" class="form-select" onchange="document.getElementById('bulkPriceIds').value = this.value === 'all' ? 'all' : ''">
+                        <option value="all">Tous les produits</option>
+                        <option value="page">Produits de cette page</option>
+                    </select>
+                    <input type="hidden" name="product_ids" id="bulkPriceIds" value="all">
+                </div>
+                <button type="submit" class="btn btn-warning w-100">Appliquer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Batch price modal -->
+<div class="modal fade" id="batchPriceModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content p-3">
+            <h6 class="mb-3"><i class="bi bi-pencil me-1"></i>Prix en lot (sélection)</h6>
+            <form id="batchPriceForm" method="post" action="{% url 'store:product_batch_action' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="price">
+                <div id="batchPriceIds"></div>
+                <div class="mb-2">
+                    <label class="form-label small">Nouveau prix</label>
+                    <input type="number" name="new_price" class="form-control" step="0.01" min="0" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Type</label>
+                    <select name="price_type" class="form-select">
+                        <option value="price">Prix vente</option>
+                        <option value="cost_price">Prix achat</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning w-100">Appliquer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<form method="get" class="row g-2 mb-3 filter-card align-items-end">
+    <div class="col-md-4">
+        <label class="form-label small text-secondary mb-1">Recherche</label>
+        <input type="search" name="q" value="{{ query }}" class="form-control" placeholder="Nom, code, catégorie..." data-voice="true">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label small text-secondary mb-1">Prix min</label>
+        <input type="number" name="min_price" value="{{ min_price }}" class="form-control" placeholder="Min" step="0.01" min="0">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label small text-secondary mb-1">Prix max</label>
+        <input type="number" name="max_price" value="{{ max_price }}" class="form-control" placeholder="Max" step="0.01" min="0">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label small text-secondary mb-1">&nbsp;</label>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-grow-1"><i class="bi bi-search me-1"></i>Filtrer</button>
+            <a href="{% url 'store:product_manage' %}" class="btn btn-outline-secondary"><i class="bi bi-x-lg"></i></a>
+        </div>
+    </div>
+</form>
+<div class="table-shell" id="productTableShell">
+<div id="batchBar" style="display:none;background:var(--surface-bg);border:1px solid var(--surface-border);border-radius:8px;padding:8px 12px;margin-bottom:8px;display:none;align-items:center;gap:8px;flex-wrap:wrap;">
+    <span class="small fw-bold" id="batchCount">0 sélectionné(s)</span>
+    <button type="button" class="btn btn-sm btn-outline-danger" onclick="batchAction('delete')"><i class="bi bi-trash"></i> Supprimer</button>
+    <button type="button" class="btn btn-sm btn-outline-warning" onclick="var ids=Array.from(document.querySelectorAll('.batch-check:checked')).map(function(c){return c.value});var container=document.getElementById('batchPriceIds');container.innerHTML='';ids.forEach(function(id){var inp=document.createElement('input');inp.type='hidden';inp.name='ids[]';inp.value=id;container.appendChild(inp)});if(!ids.length)return;var modal=new bootstrap.Modal(document.getElementById('batchPriceModal'));modal.show()"><i class="bi bi-pencil"></i> Prix</button>
+    <select class="form-select form-select-sm" style="width:auto;display:inline-block;" onchange="if(this.value) batchAction('category', this.value);this.value=''">
+        <option value="">Catégorie…</option>
+        {% for cat in categories %}
+        <option value="{{ cat.pk }}">{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+<table class="table app-table table-striped align-middle mb-0">
+    <thead>
+        <tr>
+            <th style="width:36px"><input type="checkbox" id="selectAll" onchange="document.querySelectorAll('.batch-check').forEach(function(c){c.checked=this.checked});toggleBatchBar();" ></th>
+            <th>Image</th>
+            <th><a href="?{{ search_params }}&sort=name&order={% if current_sort == 'name' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Nom {% if current_sort == 'name' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?{{ search_params }}&sort=category&order={% if current_sort == 'category' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Catégorie {% if current_sort == 'category' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?{{ search_params }}&sort=price&order={% if current_sort == 'price' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Prix vente {% if current_sort == 'price' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?{{ search_params }}&sort=cost_price&order={% if current_sort == 'cost_price' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Prix achat {% if current_sort == 'cost_price' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th>Marge</th>
+            <th><a href="?{{ search_params }}&sort=stock&order={% if current_sort == 'stock' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Stock {% if current_sort == 'stock' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?{{ search_params }}&sort=expiry&order={% if current_sort == 'expiry' and current_order == 'asc' %}desc{% else %}asc{% endif %}" class="text-decoration-none text-reset">Expiration {% if current_sort == 'expiry' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="productTableContent">
+        {% include 'store/_product_table.html' %}
+    </tbody>
+</table>
+</div>
+<div id="productPagination">
+    {% include 'store/_pagination.html' %}
+</div>
+<!-- Quick Stock Modal -->
+<div class="modal fade" id="quickStockModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <form method="post" id="quickStockForm">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-box-arrow-in-down me-2"></i><span id="qsModalTitle">Approvisionner</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-secondary small mb-3" id="qsCurrentStock">Stock actuel : —</p>
+                    <div class="mb-3">
+                        <label class="form-label">Quantité à ajouter</label>
+                        <input type="number" name="qty" min="0.01" step="0.01" class="form-control form-control-lg" placeholder="Ex: 10" required autofocus>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Prix d'achat unitaire <span class="text-secondary">(optionnel)</span></label>
+                        <input type="number" name="cost_price" min="0" step="1" class="form-control" placeholder="Ex: 500">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle me-1"></i>Ajouter au stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Quick stock modal
+function initQuickStock() {
+    var modal = document.getElementById('quickStockModal');
+    var form = document.getElementById('quickStockForm');
+    var title = document.getElementById('qsModalTitle');
+    var currentStock = document.getElementById('qsCurrentStock');
+
+    document.querySelectorAll('.quick-stock-btn').forEach(function(btn) {
+        // Remove old listener to avoid duplicates
+        var clone = btn.cloneNode(true);
+        btn.parentNode.replaceChild(clone, btn);
+        clone.addEventListener('click', function() {
+            var pk = this.dataset.pk;
+            var name = this.dataset.name;
+            var stock = this.dataset.stock;
+            var unit = this.dataset.unit;
+            title.textContent = 'Approvisionner ' + name;
+            currentStock.textContent = 'Stock actuel : ' + stock + ' ' + unit;
+            form.action = "{% url 'store:product_quick_stock' 0 %}".replace('/0/', '/' + pk + '/');
+            form.querySelector('input[name="qty"]').value = '';
+            form.querySelector('input[name="cost_price"]').value = '';
+            var bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            setTimeout(function() {
+                form.querySelector('input[name="qty"]').focus();
+            }, 300);
+        });
+    });
+}
+initQuickStock();
+
+// Recherche automatique en temps réel (AJAX, sans perte de focus)
+(function() {
+  var searchInput = document.querySelector('input[name="q"]');
+  var minPriceInput = document.querySelector('input[name="min_price"]');
+  var maxPriceInput = document.querySelector('input[name="max_price"]');
+  var form = searchInput && searchInput.closest('form');
+  if (!searchInput || !form) return;
+  function ajaxSearch(url) {
+    if (!url) {
+      var params = new URLSearchParams();
+      var q = searchInput.value.trim();
+      var min = minPriceInput ? minPriceInput.value.trim() : '';
+      var max = maxPriceInput ? maxPriceInput.value.trim() : '';
+      if (q) params.set('q', q);
+      if (min) params.set('min_price', min);
+      if (max) params.set('max_price', max);
+      params.set('ajax', '1');
+      url = window.location.pathname + '?' + params.toString();
+    }
+    // Save URL without ajax param for clean history
+    var cleanUrl = url.replace('ajax=1&', '').replace('&ajax=1', '').replace('?ajax=1', '');
+    history.replaceState(null, '', cleanUrl);
+    fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        var newTbody = doc.getElementById('productTableContent');
+        var newPagination = doc.getElementById('productPagination');
+        if (newTbody) {
+          document.getElementById('productTableContent').innerHTML = newTbody.innerHTML;
+        }
+        if (newPagination) {
+          document.getElementById('productPagination').innerHTML = newPagination.innerHTML;
+        }
+        // Re-bind quick-stock buttons
+        initQuickStock();
+      })
+      .catch(function() {});
+  }
+  var timer = null;
+  function debounce() {
+    clearTimeout(timer);
+    timer = setTimeout(ajaxSearch, 350);
+  }
+  searchInput.addEventListener('input', debounce);
+  if (minPriceInput) minPriceInput.addEventListener('input', debounce);
+  if (maxPriceInput) maxPriceInput.addEventListener('input', debounce);
+  // Pagination links via AJAX
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('#productPagination a');
+    if (!link) return;
+    e.preventDefault();
+    var url = new URL(link.href);
+    url.searchParams.set('ajax', '1');
+    ajaxSearch(url.toString());
+  });
+  // Handle browser back/forward
+  window.addEventListener('popstate', function() {
+    var url = window.location.href;
+    var u = new URL(url);
+    u.searchParams.set('ajax', '1');
+    fetch(u.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        var newTbody = doc.getElementById('productTableContent');
+        var newPagination = doc.getElementById('productPagination');
+        if (newTbody) document.getElementById('productTableContent').innerHTML = newTbody.innerHTML;
+        if (newPagination) document.getElementById('productPagination').innerHTML = newPagination.innerHTML;
+        initQuickStock();
+      });
+  });
+})();
+
+// Batch actions
+function toggleBatchBar() {
+  var checks = document.querySelectorAll('.batch-check:checked');
+  var bar = document.getElementById('batchBar');
+  var count = document.getElementById('batchCount');
+  if (checks.length) {
+    bar.style.display = 'flex';
+    count.textContent = checks.length + ' sélectionné(s)';
+  } else {
+    bar.style.display = 'none';
+  }
+}
+function batchAction(action, value) {
+  var checks = document.querySelectorAll('.batch-check:checked');
+  var ids = Array.from(checks).map(function(c) { return c.value; });
+  if (!ids.length) return;
+  var form = document.createElement('form');
+  form.method = 'post';
+  form.action = '{% url 'store:product_batch_action' %}';
+  var csrf = document.createElement('input');
+  csrf.type = 'hidden';
+  csrf.name = 'csrfmiddlewaretoken';
+  csrf.value = '{{ csrf_token }}';
+  form.appendChild(csrf);
+  ids.forEach(function(id) {
+    var inp = document.createElement('input');
+    inp.type = 'hidden';
+    inp.name = 'ids[]';
+    inp.value = id;
+    form.appendChild(inp);
+  });
+  var act = document.createElement('input');
+  act.type = 'hidden';
+  act.name = 'action';
+  act.value = action;
+  form.appendChild(act);
+  if (action === 'category') {
+    var c = document.createElement('input');
+    c.type = 'hidden';
+    c.name = 'category_id';
+    c.value = value;
+    form.appendChild(c);
+  }
+  if (action === 'delete' && !confirm('Supprimer ' + ids.length + ' produit(s) ?')) return;
+  document.body.appendChild(form);
+  form.submit();
+}
+
+// Quick product preview on hover
+(function() {
+  var tip = document.createElement('div');
+  tip.id = 'productTip';
+  tip.style.cssText = 'display:none;position:fixed;z-index:9999;background:var(--surface-bg);border:1px solid var(--surface-border);border-radius:12px;padding:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);max-width:280px;pointer-events:none;';
+  document.body.appendChild(tip);
+  document.addEventListener('mouseover', function(e) {
+    var img = e.target.closest('.product-thumb');
+    if (!img || img.classList.contains('product-thumb-empty')) { tip.style.display = 'none'; return; }
+    var td = img.closest('td');
+    if (!td) { tip.style.display = 'none'; return; }
+    var tr = td.closest('tr');
+    if (!tr) { tip.style.display = 'none'; return; }
+    var cells = tr.querySelectorAll('td');
+    if (cells.length < 7) { tip.style.display = 'none'; return; }
+    var name = (cells[2] ? cells[2].textContent.trim() : '');
+    var price = (cells[4] ? cells[4].textContent.trim() : '');
+    var cost = (cells[5] ? cells[5].textContent.trim() : '');
+    var stock = (cells[7] ? cells[7].textContent.trim() : '');
+    var expiry = (cells[8] ? cells[8].textContent.trim() : '-');
+    var src = img.src || '';
+    var codeSpan = cells[1] && cells[1].querySelector('small');
+    var barcode = codeSpan ? codeSpan.textContent.trim() : '';
+    tip.innerHTML = (src ? '<img src="' + src + '" style="width:100%;height:auto;border-radius:8px;margin-bottom:8px;max-height:140px;object-fit:cover">' : '')
+      + '<div style="font-weight:700;font-size:.9rem;margin-bottom:4px">' + name + '</div>'
+      + '<div style="font-size:.75rem;color:var(--muted-text);line-height:1.6">'
+      + '<b>Prix:</b> ' + price + ' | <b>Achat:</b> ' + cost + '<br>'
+      + '<b>Stock:</b> ' + stock + ' | <b>Expire:</b> ' + expiry
+      + (barcode ? '<br><b>Code-barres:</b> ' + barcode : '')
+      + '</div>';
+    var rect = img.getBoundingClientRect();
+    var left = rect.right + 10;
+    var top = rect.top - 10;
+    if (left + 280 > window.innerWidth) left = rect.left - 290;
+    if (top + 200 > window.innerHeight) top = window.innerHeight - 210;
+    if (top < 5) top = 5;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+    tip.style.display = 'block';
+  });
+  document.addEventListener('mouseout', function(e) {
+    if (!e.target.closest('.product-thumb')) tip.style.display = 'none';
+  });
+})();
+</script>
+{% endblock %}

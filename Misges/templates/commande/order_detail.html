@@ -1,0 +1,105 @@
+{% extends 'commande/base_client.html' %}
+{% block title %}Commande #{{ order.id }}{% endblock %}
+{% block header %}Commande #{{ order.id }}{% endblock %}
+
+{% block extra_style %}
+.order-timeline { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; }
+.tl-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+.tl-item:last-child { border-bottom: none; }
+.tl-icon { font-size: 20px; width: 32px; text-align: center; }
+.tl-text { font-size: 15px; }
+.tl-text.active { font-weight: 700; color: var(--primary); }
+.auto-refresh {
+    background: #f0fdf4; border-radius: 8px; padding: 8px 12px;
+    font-size: 12px; color: #16a34a; text-align: center; margin-top: 8px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-title">Statut</div>
+    <div class="text-center mb-2">
+        <span class="status-indicator status-{{ order.status }}">
+            {{ order.get_status_display }}
+        </span>
+    </div>
+
+    <div class="order-timeline">
+        <div class="tl-item">
+            <span class="tl-icon">🟡</span>
+            <span class="tl-text {% if order.status != 'cancelled' %}active{% endif %}">Commande envoyée</span>
+        </div>
+        <div class="tl-item">
+            <span class="tl-icon">🔵</span>
+            <span class="tl-text {% if order.status == 'preparing' or order.status == 'ready' or order.status == 'delivered' %}active{% endif %}">En cours de préparation</span>
+        </div>
+        <div class="tl-item">
+            <span class="tl-icon">✅</span>
+            <span class="tl-text {% if order.status == 'ready' %}active{% endif %}">Disponible</span>
+        </div>
+        <div class="tl-item">
+            <span class="tl-icon">🎉</span>
+            <span class="tl-text {% if order.status == 'delivered' %}active{% endif %}">Livrée</span>
+        </div>
+    </div>
+
+    {% if order.status == 'ready' %}
+    <div class="alert alert-success text-center">
+        <strong>✅ Votre commande est prête.</strong><br>
+        Montant : <strong>{{ order.total }} FCFA</strong><br>
+        <small>Veuillez vous présenter à la caisse avec ce code :</small><br>
+        <span style="font-size:24px;font-weight:700;letter-spacing:4px;color:var(--primary);">{{ order.pickup_code }}</span>
+    </div>
+    {% elif order.status == 'unavailable' %}
+    <div class="alert alert-danger text-center">
+        <strong>❌ Désolé, certains articles ne sont pas disponibles.</strong><br>
+        <small>Le magasin vous contactera si nécessaire.</small>
+    </div>
+    {% elif order.status == 'delivered' %}
+    <div class="alert alert-success text-center">
+        <strong>🎉 Commande livrée !</strong><br>
+        <small>Merci de votre confiance.</small>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-title">Détail ({{ order.items.count }} article(s))</div>
+    {% for item in order.items.all %}
+    <div class="d-flex justify-content-between py-1 border-bottom">
+        <span>{{ item.product_name }} × {{ item.quantity }}</span>
+        <span class="fw-semibold">{{ item.subtotal }} FCFA</span>
+    </div>
+    {% endfor %}
+    <div class="d-flex justify-content-between pt-2">
+        <strong>Total</strong>
+        <strong class="text-primary">{{ order.total }} FCFA</strong>
+    </div>
+</div>
+
+<div class="card text-center">
+    <a href="{% url 'commande:catalog' %}" class="btn btn-primary">
+        <i class="bi bi-shop"></i> Nouvelle commande
+    </a>
+</div>
+
+<div class="auto-refresh">
+    <i class="bi bi-arrow-repeat"></i> Mise à jour automatique toutes les 10 secondes
+</div>
+
+<script>
+function refreshStatus() {
+    fetch('/commande/order/{{ order.id }}/status/')
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (d.error) return;
+            var badge = document.querySelector('.status-indicator');
+            if (badge && badge.textContent.trim() !== d.status_display) {
+                location.reload();
+            }
+        })
+        .catch(function() {});
+}
+setInterval(refreshStatus, 10000);
+</script>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'store/base.html' %}
+{% block title %}Journal de caisse - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Journal de caisse</h1>
+        <p class="text-secondary mb-0">Ouverture, sorties, entrées, clôture et écart de caisse.</p>
+    </div>
+</div>
+
+{% if active_session %}
+<div class="row g-3 mb-4">
+    <div class="col-lg-4"><div class="card p-4"><h5>Attendu</h5><p class="display-6 mb-0">{{ active_session.expected_balance }} FCFA</p></div></div>
+    <div class="col-lg-4">
+        <div class="card p-4">
+            <h5>Ajouter un mouvement</h5>
+            <form method="post" action="{% url 'store:cash_movement_create' %}" class="row g-2">
+                {% csrf_token %}
+                {% for field in movement_form %}<div class="col-12">{{ field }}</div>{% endfor %}
+                <div class="col-12"><button class="btn btn-primary btn-sm">Ajouter</button></div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card p-4">
+            <h5>Clôturer</h5>
+            <form method="post" action="{% url 'store:cash_session_close' active_session.pk %}" class="row g-2">
+                {% csrf_token %}
+                {{ close_form.closing_balance }}
+                {{ close_form.notes }}
+                <button class="btn btn-success btn-sm">Clôturer la caisse</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card p-4 mb-4">
+    <h5>Ouvrir la caisse</h5>
+    <form method="post" action="{% url 'store:cash_session_open' %}" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-4">{{ open_form.opening_balance }}</div>
+        <div class="col-md-6">{{ open_form.notes }}</div>
+        <div class="col-md-2"><button class="btn btn-success">Ouvrir</button></div>
+    </form>
+</div>
+{% endif %}
+
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>Ouverture</th><th>Fermeture</th><th>Fond</th><th>Attendu</th><th>Réel</th><th>Écart</th><th>Actions</th></tr></thead>
+        <tbody>
+            {% for session in sessions %}
+                <tr>
+                    <td>{{ session.opened_at|date:'d/m/Y H:i' }}</td>
+                    <td>{% if session.closed_at %}{{ session.closed_at|date:'d/m/Y H:i' }}{% else %}Ouverte{% endif %}</td>
+                    <td>{{ session.opening_balance }} FCFA</td>
+                    <td>{{ session.expected_balance }} FCFA</td>
+                    <td>{{ session.closing_balance|default:'-' }}</td>
+                    <td class="{% if session.cash_gap != 0 %}text-danger fw-bold{% endif %}">{{ session.cash_gap }} FCFA</td>
+                    <td>
+                        {% if session.closed_at %}
+                        <form method="post" action="{% url 'store:cash_session_restore' session.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Restaurer cette session caisse #{{ session.id }} ?')"><i class="bi bi-arrow-counterclockwise me-1"></i>Restaurer</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="7" class="text-center">Aucune session de caisse.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

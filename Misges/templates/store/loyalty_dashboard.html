@@ -1,0 +1,90 @@
+{% extends 'store/base.html' %}
+{% block title %}Programme de fidélité - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-1">Programme de fidélité</h1>
+            <p class="text-secondary mb-0">Gestion des points et récompenses clients.</p>
+        </div>
+        <a class="btn btn-primary btn-sm" href="{% url 'store:loyalty_settings' %}"><i class="bi bi-gear me-1"></i>Paramètres</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card p-3 text-center h-100">
+            <div class="text-secondary small text-uppercase">Taux d'attribution</div>
+            <div class="display-6 mb-0" style="color:var(--primary-a)">{{ settings.points_per_amount }} pts / {{ currency_symbol }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card p-3 text-center h-100">
+            <div class="text-secondary small text-uppercase">Seuil de conversion</div>
+            <div class="display-6 mb-0" style="color:#16a34a">{{ settings.redemption_threshold }} pts</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card p-3 text-center h-100">
+            <div class="text-secondary small text-uppercase">Valeur du bon</div>
+            <div class="display-6 mb-0" style="color:#dc2626">{{ settings.voucher_value }} {{ currency_symbol }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card p-3 text-center h-100">
+            <div class="text-secondary small text-uppercase">Clients actifs</div>
+            <div class="display-6 mb-0" style="color:var(--primary-b)">{{ active_customers }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="metric-card">
+            <i class="bi bi-trophy"></i>
+            <span>Total points attribués</span>
+            <strong>{{ total_points_earned }}</strong>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="metric-card">
+            <i class="bi bi-gift"></i>
+            <span>Bons générés</span>
+            <strong>{{ total_vouchers }}</strong>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="metric-card">
+            <i class="bi bi-people"></i>
+            <span>Clients inscrits</span>
+            <strong>{{ total_customers }}</strong>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="metric-card">
+            <i class="bi bi-star"></i>
+            <span>Points en attente</span>
+            <strong>{{ pending_points }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="table-shell">
+    <table class="table app-table align-middle mb-0">
+        <thead><tr><th>Client</th><th>Téléphone</th><th>Points</th><th>Bons actifs</th></tr></thead>
+        <tbody>
+            {% for c in customers %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.phone }}</td>
+                    <td>{{ c.loyalty_points }}</td>
+                    <td>{{ c.active_vouchers }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4" class="text-center">Aucun client inscrit.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'store/_pagination.html' %}
+{% endblock %}

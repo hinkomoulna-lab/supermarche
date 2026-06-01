@@ -1,0 +1,96 @@
+{% extends 'store/base.html' %}
+{% block title %}Dashboard RH - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <span class="current">RH</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Dashboard RH</h1>
+            <p class="text-secondary mb-0">{{ today|date:'l d F Y' }}</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary" href="{% url 'store:employee_create' %}"><i class="bi bi-person-plus me-1"></i>Nouvel employé</a>
+            <a class="btn btn-outline-secondary" href="{% url 'store:attendance_list' %}"><i class="bi bi-clock me-1"></i>Pointage</a>
+            <a class="btn btn-outline-success" href="{% url 'store:payroll_report' %}"><i class="bi bi-calculator me-1"></i>Paie</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card shadow-sm p-3 text-center">
+            <h6 class="text-secondary">Employés</h6>
+            <p class="h3 mb-0">{{ total_employees }}</p>
+            <small class="text-muted">{{ active_employees }} actifs</small>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card shadow-sm p-3 text-center">
+            <h6 class="text-secondary">En service</h6>
+            <p class="h3 mb-0 text-success">{{ clocked_in }}</p>
+            <small class="text-muted">{{ clocked_out }} partis aujourd'hui</small>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card shadow-sm p-3 text-center">
+            <h6 class="text-secondary">Heures mois</h6>
+            <p class="h3 mb-0">{{ total_work_hours }}h</p>
+            <small class="text-muted">{{ working_days }} jours travaillés</small>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card shadow-sm p-3 text-center">
+            <h6 class="text-secondary">Masse salariale</h6>
+            <p class="h3 mb-0">{{ total_payroll|floatformat:0 }} FCFA</p>
+            <small class="text-muted">Taux présence {{ attendance_rate }}%</small>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-people me-1"></i>Activité aujourd'hui</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table app-table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Employé</th>
+                    <th>Poste</th>
+                    <th>Arrivée</th>
+                    <th>Départ</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for att in today_attendance %}
+                <tr>
+                    <td>{{ att.employee.first_name }} {{ att.employee.last_name }}</td>
+                    <td>{{ att.employee.get_role_display }}</td>
+                    <td>{{ att.clock_in|date:'H:i' }}</td>
+                    <td>{{ att.clock_out|date:'H:i'|default:'—' }}</td>
+                    <td>
+                        {% if att.clock_out %}
+                            <span class="badge bg-secondary">Parti</span>
+                        {% else %}
+                            <span class="badge bg-success">En service</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4"><i class="bi bi-clock" style="font-size:1.5rem;display:block;margin-bottom:.35rem;opacity:.3;"></i><span class="text-secondary">Aucun pointage aujourd'hui.</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

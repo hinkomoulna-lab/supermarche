@@ -1,0 +1,45 @@
+{% extends 'store/base.html' %}
+{% block title %}Vendre une carte cadeau - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Vendre une carte cadeau</h1>
+        <p class="text-secondary mb-0">Le code sera généré automatiquement.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Montant (FCFA)</label>
+                    <input type="number" name="amount" min="100" step="100" class="form-control" required placeholder="5000">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Client existant (optionnel)</label>
+                    <select name="customer" class="form-select">
+                        <option value="">— Aucun —</option>
+                        {% for c in customers %}
+                            <option value="{{ c.id }}">{{ c.name }} {% if c.phone %}({{ c.phone }}){% endif %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date d'expiration (optionnelle)</label>
+                    <input type="date" name="expires_at" class="form-control">
+                </div>
+                <div class="col-12">
+                    <p class="text-secondary small mb-0"><i class="bi bi-info-circle me-1"></i>Une vente sera automatiquement créée pour enregistrer la transaction.</p>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle me-1"></i>Vendre la carte</button>
+                    <a class="btn btn-secondary ms-2" href="{% url 'store:giftcard_list' %}">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

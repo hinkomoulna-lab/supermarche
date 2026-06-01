@@ -1,0 +1,114 @@
+{% extends 'store/base.html' %}
+{% block title %}Produits - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <span class="current">Produits</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="ribbon ribbon-blue"><i class="bi bi-box-seam"></i>Liste des produits</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <small class="text-secondary">Cherche un produit par nom et ajoutes-le au panier.</small>
+    <div class="d-flex gap-2">
+        <a class="btn btn-sm btn-primary" href="{% url 'store:create_sale' %}"><i class="bi bi-cash-stack me-1"></i>Caisse</a>
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'store:product_manage' %}"><i class="bi bi-gear me-1"></i>Gestion</a>
+    </div>
+</div>
+<form method="get" class="row g-2 mb-3 filter-card align-items-end">
+    <div class="col-md-4">
+        <input type="search" name="q" value="{{ query }}" class="form-control" placeholder="Rechercher un produit..." data-voice="true">
+    </div>
+    <div class="col-md-2">
+        <input type="text" name="min_price" value="{{ min_price }}" class="form-control" placeholder="Prix min">
+    </div>
+    <div class="col-md-2">
+        <input type="text" name="max_price" value="{{ max_price }}" class="form-control" placeholder="Prix max">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-secondary w-100">Filtrer</button>
+    </div>
+    <div class="col-md-2">
+        <a href="{% url 'store:product_list' %}" class="btn btn-outline-danger w-100">Réinitialiser</a>
+    </div>
+</form>
+<div class="table-shell">
+<table class="table app-table table-striped align-middle mb-0">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Code</th>
+            <th><a href="?sort=name&order={% if current_sort == 'name' and current_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}&min_price={{ min_price }}&max_price={{ max_price }}" class="text-decoration-none text-reset">Nom {% if current_sort == 'name' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th><a href="?sort=category&order={% if current_sort == 'category' and current_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}&min_price={{ min_price }}&max_price={{ max_price }}" class="text-decoration-none text-reset">Catégorie {% if current_sort == 'category' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th>Unité</th>
+            <th><a href="?sort=price&order={% if current_sort == 'price' and current_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}&min_price={{ min_price }}&max_price={{ max_price }}" class="text-decoration-none text-reset">Prix vente {% if current_sort == 'price' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th>Prix achat</th>
+            <th><a href="?sort=stock&order={% if current_sort == 'stock' and current_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}&min_price={{ min_price }}&max_price={{ max_price }}" class="text-decoration-none text-reset">Stock {% if current_sort == 'stock' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th>Réappro.</th>
+            <th><a href="?sort=expiry&order={% if current_sort == 'expiry' and current_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}&min_price={{ min_price }}&max_price={{ max_price }}" class="text-decoration-none text-reset">Expiration {% if current_sort == 'expiry' %}<i class="bi bi-arrow-{% if current_order == 'asc' %}up{% else %}down{% endif %}"></i>{% endif %}</a></th>
+            <th>Disponibilité</th>
+            <th>Panier</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in page_obj %}
+            <tr>
+                <td>
+                    {% if product.image %}
+                        <img class="product-thumb" src="{{ product.image.url }}" alt="{{ product.name }}" style="cursor:zoom-in" onclick="openModal(this.src)">
+                    {% else %}
+                        <div class="product-thumb product-thumb-empty"><i class="bi bi-image"></i></div>
+                    {% endif %}
+                </td>
+                <td>{{ product.code|default:'-' }}</td>
+                <td>{{ product.name }}</td>
+                <td>
+                    {% if product.category %}
+                        {{ product.category.name }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ product.get_unit_display }}</td>
+                <td>{{ product.price }} FCFA</td>
+                <td>{{ product.cost_price }} FCFA</td>
+                <td>{{ product.stock }} {{ product.get_unit_display }}</td>
+                <td>
+                    {% if product.needs_restock %}
+                        <span class="badge bg-warning">Réappro.</span>
+                    {% else %}
+                        <span class="badge bg-success">OK</span>
+                    {% endif %}
+                </td>
+                <td>{% if product.expiry_date %}{{ product.expiry_date|date:'d/m/Y' }}{% else %}-{% endif %}</td>
+                <td>
+                    {% if product.is_available %}
+                        <span class="badge bg-success">En stock</span>
+                    {% else %}
+                        <span class="badge bg-danger">Rupture</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="post" action="{% url 'store:add_to_cart' product.id %}" class="d-flex gap-2">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" min="0.01" step="0.01" value="1" class="form-control form-control-sm" style="width:90px;">
+                        <span class="small text-muted align-self-center">{{ product.get_unit_display }}</span>
+                        <button class="btn btn-sm btn-outline-primary" type="submit">Ajouter</button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="12" class="text-center py-4">
+                    <i class="bi bi-inbox text-secondary" style="font-size:1.5rem;display:block;margin-bottom:.35rem;opacity:.4;"></i>
+                    <span class="text-secondary">Aucun produit disponible.</span>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% include 'store/_pagination.html' %}
+{% endblock %}

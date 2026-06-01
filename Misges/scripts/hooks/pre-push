@@ -1,0 +1,12 @@
+#!/bin/sh
+# pre-push hook : exporte automatiquement les donnees avant chaque push
+cd "$(dirname "$0")/../.." || exit 1
+echo "=== Export auto des donnees avant push ==="
+python manage.py export_full_data
+if [ $? -ne 0 ]; then
+    echo "ERREUR : l export a echoue. Push annule."
+    exit 1
+fi
+git add fixtures/full_data.json
+echo "Donnees exportees et stagees."
+exit 0

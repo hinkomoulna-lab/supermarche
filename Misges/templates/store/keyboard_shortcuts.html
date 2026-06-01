@@ -1,0 +1,20 @@
+{% extends 'store/base.html' %}
+{% block title %}Raccourcis clavier{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1"><i class="bi bi-keyboard me-2"></i>Raccourcis clavier</h1>
+        <p class="text-secondary mb-0">Appuie sur <kbd>?</kbd> à tout moment pour afficher cette aide.</p>
+    </div>
+</div>
+<div class="row g-3">
+    {% for key, desc in shortcuts %}
+    <div class="col-md-4 col-6">
+        <div class="card p-3 d-flex flex-row align-items-center gap-3">
+            <kbd style="font-size:1.1rem;padding:6px 12px;border-radius:6px;background:var(--surface-border);border:1px solid var(--app-text);">{{ key }}</kbd>
+            <span>{{ desc }}</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

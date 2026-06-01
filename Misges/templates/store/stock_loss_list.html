@@ -1,0 +1,76 @@
+{% extends 'store/base.html' %}
+{% block title %}Pertes de stock - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <a href="{% url 'store:sale_history' %}">Finance</a>
+    <span class="sep">/</span>
+    <span class="current">Pertes</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Pertes de stock</h1>
+            <p class="text-secondary mb-0">Suis les produits périmés, endommagés ou volés.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-warning" href="{% url 'store:stock_loss_expired' %}"><i class="bi bi-exclamation-triangle me-1"></i>Périmés</a>
+            <a class="btn btn-primary" href="{% url 'store:stock_loss_create' %}"><i class="bi bi-plus-circle me-1"></i>Nouvelle perte</a>
+            <a class="btn btn-outline-secondary" href="{% url 'store:home' %}"><i class="bi bi-arrow-left-circle me-1"></i>Retour</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm p-4">
+            <h5 class="card-title">Total des pertes</h5>
+            <p class="display-6 mb-0 text-danger">{{ total_loss }} FCFA</p>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow-sm p-4">
+            <h5 class="card-title">Nombre de pertes</h5>
+            <p class="display-6 mb-0">{{ page_obj.paginator.count }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm overflow-hidden">
+    <div class="table-responsive">
+        <table class="table app-table table-striped align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Montant (FCFA)</th>
+                    <th>Raison</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loss in page_obj %}
+                    <tr>
+                        <td>{{ loss.product.name }}</td>
+                        <td>{{ loss.quantity }}</td>
+                        <td>{{ loss.loss_amount }}</td>
+                        <td><span class="badge bg-{% if loss.reason == 'expired' %}danger{% elif loss.reason == 'damaged' %}warning{% elif loss.reason == 'stolen' %}dark{% else %}secondary{% endif %}">{{ loss.get_reason_display }}</span></td>
+                        <td>{{ loss.date|date:'d/m/Y' }}</td>
+                        <td>{{ loss.notes|default:'—' }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4"><i class="bi bi-trash" style="font-size:1.5rem;display:block;margin-bottom:.35rem;opacity:.3;"></i><span class="text-secondary">Aucune perte enregistrée.</span></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% include 'store/_pagination.html' %}
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">{{ title }}</h1>
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="col-md-6">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                    {% if field.name == 'component' %}
+                    <div class="form-text">Sélectionnez un composant du catalogue pour remplir automatiquement les champs.</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary" href="{% url cancel_url cancel_arg %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var compSelect = document.getElementById('id_component');
+    if (compSelect) {
+        compSelect.addEventListener('change', function() {
+            var compId = this.value;
+            if (compId) {
+                fetch('/solaire/composants/' + compId + '/json/')
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (data.name) {
+                            var desInput = document.getElementById('id_designation');
+                            var priceInput = document.getElementById('id_unit_price');
+                            var costInput = document.getElementById('id_cost_price');
+                            if (desInput && !desInput.value) desInput.value = data.name;
+                            if (priceInput && !priceInput.value) priceInput.value = data.unit_price;
+                            if (costInput && !costInput.value) costInput.value = data.cost_price;
+                        }
+                    });
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

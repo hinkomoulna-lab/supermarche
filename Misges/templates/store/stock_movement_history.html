@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %}
+{% block title %}Mouvements de stock - {{ settings.store_name }}{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1"><i class="bi bi-arrow-left-right me-2"></i>Mouvements de stock</h1>
+        <p class="text-secondary mb-0">Historique des entrées/sorties/ajustements.</p>
+    </div>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>Date</th><th>Modèle</th><th>Action</th><th>Détails</th></tr></thead>
+        <tbody>
+            {% for m in movements %}
+            <tr>
+                <td>{{ m.created_at|date:'d/m/Y H:i' }}</td>
+                <td><span class="badge bg-info">{{ m.model_name }}</span></td>
+                <td><span class="badge bg-{% if m.action == 'created' %}success{% elif m.action == 'deleted' %}danger{% else %}warning{% endif %}">{{ m.action }}</span></td>
+                <td>{{ m.object_repr|default:m.details|truncatechars:60 }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center">Aucun mouvement enregistré.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

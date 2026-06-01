@@ -1,0 +1,34 @@
+{% extends 'store/base.html' %}
+{% block title %}Inventaire - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body"><h1 class="h3 mb-1">Inventaire physique</h1><p class="text-secondary mb-0">Compte le stock réel et corrige automatiquement l'écart.</p></div>
+</div>
+<div class="card p-4 mb-4">
+    <form method="post" class="row g-3">
+        {% csrf_token %}
+        {% for field in form %}<div class="col-md-3"><label class="form-label">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}
+        <div class="col-md-12"><button class="btn btn-success">Valider l'inventaire</button></div>
+    </form>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>Date</th><th>Produit</th><th>Système</th><th>Compté</th><th>Écart</th><th>Notes</th></tr></thead>
+        <tbody>
+            {% for adjustment in adjustments %}
+                <tr>
+                    <td>{{ adjustment.date|date:'d/m/Y' }}</td>
+                    <td>{{ adjustment.product.name }}</td>
+                    <td>{{ adjustment.system_stock }}</td>
+                    <td>{{ adjustment.counted_stock }}</td>
+                    <td class="{% if adjustment.difference < 0 %}text-danger{% elif adjustment.difference > 0 %}text-success{% endif %}">{{ adjustment.difference }}</td>
+                    <td>{{ adjustment.notes|default:'-' }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-center">Aucun inventaire enregistré.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

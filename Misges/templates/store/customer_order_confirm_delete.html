@@ -1,0 +1,15 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer la commande - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Supprimer la commande client</h1>
+        <p>Supprimer la commande #{{ order.id }} de <strong>{{ order.customer_name }}</strong> ?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary ms-2" href="{% url 'store:customer_order_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

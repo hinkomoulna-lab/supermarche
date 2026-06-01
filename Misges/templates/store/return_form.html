@@ -1,0 +1,82 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">{{ title }}</h1>
+        <form method="post" id="returnForm">
+            {% csrf_token %}
+            <div class="row g-3 mb-4">
+                {% for field in form %}
+                    <div class="col-md-4">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div id="returnItemsSection" style="display:none;">
+                <h5 class="mb-3">Articles retournés</h5>
+                <div class="table-shell mb-3">
+                    <table class="table app-table align-middle mb-0">
+                        <thead><tr><th>Produit</th><th>Quantité vendue</th><th>Quantité retournée</th><th>Prix unitaire</th><th>Remboursement</th></tr></thead>
+                        <tbody id="returnItemsBody"></tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>Total remboursement: <span id="refundTotal">0</span> FCFA</strong>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">Enregistrer le retour</button>
+                        <a class="btn btn-secondary" href="{% url 'store:return_list' %}">Annuler</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('id_sale').addEventListener('change', function() {
+    const saleId = this.value;
+    const section = document.getElementById('returnItemsSection');
+    const tbody = document.getElementById('returnItemsBody');
+    if (!saleId) { section.style.display = 'none'; return; }
+    fetch(`/retours/api/vente/${saleId}/`)
+        .then(r => r.json())
+        .then(data => {
+            tbody.innerHTML = '';
+            data.items.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${item.product_name}</td>
+                    <td>${item.quantity}</td>
+                    <td><input type="number" name="return_product" value="${item.product_id}" hidden>
+                        <input type="number" name="return_quantity" value="0" min="0" max="${item.quantity}" step="0.01" class="form-control form-control-sm qty-input" style="width:100px;"></td>
+                    <td>${item.price} FCFA<input type="hidden" name="return_refund" value="0" class="refund-input"></td>
+                    <td class="refund-display">0 FCFA</td>`;
+                tbody.appendChild(tr);
+            });
+            section.style.display = 'block';
+            calcRefunds();
+        });
+});
+
+function calcRefunds() {
+    let total = 0;
+    document.querySelectorAll('#returnItemsBody tr').forEach(row => {
+        const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
+        const priceTxt = row.querySelector('td:nth-child(4)').textContent.trim();
+        const price = parseFloat(priceTxt.replace(' FCFA', '')) || 0;
+        const refund = qty * price;
+        row.querySelector('.refund-input').value = refund.toFixed(0);
+        row.querySelector('.refund-display').textContent = refund.toFixed(0) + ' FCFA';
+        total += refund;
+    });
+    document.getElementById('refundTotal').textContent = total.toFixed(0);
+    document.getElementById('id_refund_amount').value = total.toFixed(0);
+}
+
+document.getElementById('returnItemsBody').addEventListener('input', calcRefunds);
+</script>
+{% endblock %}

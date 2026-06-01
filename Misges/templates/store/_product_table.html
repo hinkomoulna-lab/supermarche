@@ -1,0 +1,62 @@
+    {% for product in page_obj %}
+        <tr>
+            <td><input type="checkbox" class="batch-check" value="{{ product.pk }}" onchange="toggleBatchBar()"></td>
+            <td>
+                {% if product.image %}
+                    <img class="product-thumb" src="{{ product.image.url }}" alt="{{ product.name }}" onclick="openModal(this.src)">
+                {% else %}
+                    <div class="product-thumb product-thumb-empty"><i class="bi bi-image"></i></div>
+                {% endif %}
+            </td>
+            <td>{{ product.name }}</td>
+            <td>
+                {% if product.category %}
+                    {{ product.category.name }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>{{ product.price }} FCFA</td>
+            <td>{{ product.cost_price }} FCFA</td>
+            <td>
+                {% if product.cost_price and product.price %}
+                    <span class="fw-bold {% if product.price > product.cost_price %}text-success{% else %}text-danger{% endif %}">
+                        {{ product.price|floatformat:0 }} - {{ product.cost_price|floatformat:0 }}
+                    </span>
+                {% else %}-{% endif %}
+            </td>
+            <td>
+                <strong>{{ product.stock }}</strong>
+                {% if product.stock <= 0 %}
+                    <span class="badge bg-danger ms-1">Rupture</span>
+                {% elif product.min_stock and product.stock <= product.min_stock %}
+                    <span class="badge bg-warning text-dark ms-1">Faible</span>
+                {% else %}
+                    <span class="badge bg-success ms-1">OK</span>
+                {% endif %}
+                <button type="button" class="btn btn-sm btn-success ms-2 quick-stock-btn"
+                        data-pk="{{ product.pk }}" data-name="{{ product.name }}"
+                        data-stock="{{ product.stock }}" data-unit="{{ product.get_unit_display }}"
+                        title="Ajouter au stock">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+            </td>
+            <td>{% if product.expiry_date %}{{ product.expiry_date|date:'d/m/Y' }}{% else %}-{% endif %}</td>
+            <td>
+                <a class="btn btn-sm btn-outline-secondary me-1" href="{% url 'store:product_update' product.pk %}" title="Modifier"><i class="bi bi-pencil"></i></a>
+                <a class="btn btn-sm btn-outline-info me-1" href="{% url 'store:price_history' product.pk %}" title="Historique des prix"><i class="bi bi-graph-up"></i></a>
+                <button type="button" class="btn btn-sm btn-outline-success me-1 quick-stock-btn"
+                        data-pk="{{ product.pk }}" data-name="{{ product.name }}"
+                        data-stock="{{ product.stock }}" data-unit="{{ product.get_unit_display }}"
+                        title="Approvisionner">
+                    <i class="bi bi-box-seam"></i>
+                </button>
+                <a class="btn btn-sm btn-outline-secondary me-1" href="{% url 'store:product_duplicate' product.pk %}" title="Dupliquer"><i class="bi bi-files"></i></a>
+                <a class="btn btn-sm btn-outline-danger" href="{% url 'store:product_delete' product.pk %}" title="Supprimer"><i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="10" class="text-center">Aucun produit enregistré.</td>
+        </tr>
+    {% endfor %}

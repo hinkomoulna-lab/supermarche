@@ -1,0 +1,75 @@
+{% extends 'store/base.html' %}
+{% block title %}Valorisation du stock - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <a href="{% url 'store:home' %}">Rapports</a>
+    <span class="sep">/</span>
+    <span class="current">Valorisation stock</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Valorisation du stock</h1>
+            <p class="text-secondary mb-0">Valeur totale du stock au coût d'achat et au prix de vente.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-outline-secondary" href="{% url 'store:home' %}"><i class="bi bi-arrow-left-circle me-1"></i>Tableau de bord</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6">
+        <div class="card shadow-sm p-4 border-start border-primary border-4">
+            <h5 class="card-title">Valeur au coût (achat)</h5>
+            <p class="display-6 mb-0">{{ total_value|floatformat:0 }} FCFA</p>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card shadow-sm p-4 border-start border-success border-4">
+            <h5 class="card-title">Valeur au prix de vente</h5>
+            <p class="display-6 mb-0">{{ total_sale_value|floatformat:0 }} FCFA</p>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table app-table table-striped align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Catégorie</th>
+                    <th>Stock</th>
+                    <th>Coût unitaire</th>
+                    <th>Prix vente</th>
+                    <th>Valeur au coût</th>
+                    <th>Valeur vente</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.category.name|default:'—' }}</td>
+                    <td>{{ p.stock }}</td>
+                    <td>{{ p.cost_price }} FCFA</td>
+                    <td>{{ p.price }} FCFA</td>
+                    <td>{% widthratio p.stock 1 p.cost_price %} FCFA</td>
+                    <td>{% widthratio p.stock 1 p.price %} FCFA</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-4"><i class="bi bi-box" style="font-size:1.5rem;display:block;margin-bottom:.35rem;opacity:.3;"></i><span class="text-secondary">Aucun produit en stock.</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

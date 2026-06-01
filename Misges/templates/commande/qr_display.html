@@ -1,0 +1,36 @@
+{% extends 'store/base.html' %}
+{% block title %}QR Code Commande{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <a href="{% url 'commande:dashboard' %}">Commandes QR</a>
+    <span class="sep">/</span>
+    <span class="current">QR Code</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="ribbon ribbon-green"><i class="bi bi-qr-code"></i> QR Code - Scan pour commander</div>
+
+<div class="card shadow-sm p-4" style="max-width:500px;margin:0 auto;">
+    <div class="text-center mb-3">
+        <img src="data:image/png;base64,{{ qr_data }}" alt="QR Code" style="max-width:100%;width:280px;">
+    </div>
+    <p class="text-center mb-3">
+        <a href="{{ order_url }}" class="fw-semibold" target="_blank">{{ order_url }}</a>
+    </p>
+    <div class="text-center">
+        <a href="{% url 'commande:qr_download' %}" class="btn btn-primary">
+            <i class="bi bi-download"></i> Télécharger PNG
+        </a>
+        <button class="btn btn-outline-secondary" onclick="window.print()">
+            <i class="bi bi-printer"></i> Imprimer
+        </button>
+    </div>
+    <hr>
+    <p class="text-muted small mb-0">
+        <i class="bi bi-info-circle"></i>
+        Affichez ce QR Code à l'entrée du magasin. Les clients le scannent pour accéder au catalogue et passer commande sans avoir à se déplacer.
+    </p>
+</div>
+{% endblock %}

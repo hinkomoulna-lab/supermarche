@@ -1,0 +1,85 @@
+{% extends 'store/base.html' %}
+{% block title %}Pointage - Supermarché{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <a href="{% url 'store:employee_list' %}">Employés</a>
+    <span class="sep">/</span>
+    <span class="current">Pointage</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Pointage des employés</h1>
+            <p class="text-secondary mb-0">Arrivées et départs du personnel.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-outline-secondary" href="{% url 'store:employee_list' %}"><i class="bi bi-arrow-left-circle me-1"></i>Employés</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    {% for emp in employees %}
+    <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm p-3 text-center h-100">
+            <h6 class="mb-2">{{ emp.first_name }} {{ emp.last_name }}</h6>
+            <span class="badge bg-info mb-2">{{ emp.get_role_display }}</span>
+            {% with last_att=emp.attendance.all.0 %}
+            {% if last_att and last_att.clock_out is None and last_att.clock_in|date:'d/m/Y' == today|date:'d/m/Y' %}
+                <span class="badge bg-success mb-2">En service depuis {{ last_att.clock_in|date:'H:i' }}</span>
+                <a class="btn btn-sm btn-warning" href="{% url 'store:attendance_clock_out' last_att.pk %}">Pointer départ</a>
+            {% else %}
+                <span class="badge bg-secondary mb-2">Absent</span>
+                <a class="btn btn-sm btn-success" href="{% url 'store:attendance_clock_in' emp.pk %}">Pointer arrivée</a>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><p class="text-secondary text-center py-4">Aucun employé actif.</p></div>
+    {% endfor %}
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-clock-history me-1"></i>Derniers pointages</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table app-table table-striped align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Employé</th>
+                    <th>Arrivée</th>
+                    <th>Départ</th>
+                    <th>Durée (h)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for att in attendances %}
+                <tr>
+                    <td>{{ att.employee.first_name }} {{ att.employee.last_name }}</td>
+                    <td>{{ att.clock_in|date:'d/m/Y H:i' }}</td>
+                    <td>
+                        {% if att.clock_out %}
+                            {{ att.clock_out|date:'H:i' }}
+                        {% else %}
+                            <span class="badge bg-warning text-dark">En cours</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ att.duration|default:'—' }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-4"><i class="bi bi-clock" style="font-size:1.5rem;display:block;margin-bottom:.35rem;opacity:.3;"></i><span class="text-secondary">Aucun pointage aujourd'hui.</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

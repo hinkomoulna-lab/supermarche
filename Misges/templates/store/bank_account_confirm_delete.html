@@ -1,0 +1,19 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer le compte - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Supprimer le compte bancaire</h1>
+        <p>Es-tu sûr de vouloir supprimer le compte <strong>{{ account.account_name }}</strong> ({{ account.bank_name }}) ?</p>
+        <ul>
+            <li><strong>Numéro :</strong> {{ account.account_number }}</li>
+            <li><strong>Solde :</strong> {{ account.balance }} FCFA</li>
+        </ul>
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary" href="{% url 'store:bank_account_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

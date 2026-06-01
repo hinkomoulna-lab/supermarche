@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket #{{ sale.id }} - {{ settings.store_name }}</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { width: 80mm; margin: 0; padding: 0; }
+body {
+    width: 80mm;
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    font-size: 10px;
+    line-height: 1.35;
+    color: #000;
+    padding: 3mm 3mm;
+    background: #fff;
+}
+.receipt-header { text-align: center; margin-bottom: 4px; }
+.receipt-header h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+.receipt-header .info { font-size: 9px; margin-top: 2px; }
+.separator { border-top: 1px dashed #000; margin: 4px 0; }
+.receipt-row { display: flex; justify-content: space-between; font-size: 9px; padding: 1px 0; }
+.receipt-row .left { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.receipt-row .right { white-space: nowrap; margin-left: 4px; }
+.receipt-items { margin: 2px 0; }
+.receipt-item { display: flex; justify-content: space-between; font-size: 9px; padding: 1px 0; }
+.receipt-item .name { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.receipt-item .qty { white-space: nowrap; margin-left: 4px; }
+.receipt-item .price { white-space: nowrap; margin-left: 4px; min-width: 50px; text-align: right; }
+.receipt-total { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; padding: 3px 0; }
+.receipt-total .label { flex: 1; }
+.receipt-total .value { white-space: nowrap; }
+.receipt-payment { font-size: 9px; padding: 2px 0; }
+.receipt-footer { text-align: center; font-size: 8px; margin-top: 4px; color: #555; }
+.amount-words { font-size: 8px; font-style: italic; margin: 3px 0; }
+@media print {
+    .no-print { display: none !important; }
+    @page { margin: 0; }
+    body { width: 80mm; padding: 2mm; }
+}
+</style>
+</head>
+<body>
+<div class="receipt-header">
+    <h2>{{ settings.store_name }}</h2>
+    {% if settings.address %}<div class="info">{{ settings.address }}</div>{% endif %}
+    {% if settings.phone_number %}<div class="info">Tel: {{ settings.phone_number }}</div>{% endif %}
+</div>
+<div class="separator"></div>
+<div class="receipt-row"><span class="left">Ticket #{{ sale.id }}</span><span class="right">{{ sale.sale_date|date:'d/m/Y' }}</span></div>
+{% if sale.sale_time %}<div class="receipt-row"><span class="left">Heure</span><span class="right">{{ sale.sale_time|time:'H\hi' }}</span></div>{% endif %}
+{% if sale.customer_name %}<div class="receipt-row"><span class="left">Client: {{ sale.customer_name }}</span></div>{% endif %}
+{% if sale.customer_phone %}<div class="receipt-row"><span class="left">Tel: {{ sale.customer_phone }}</span></div>{% endif %}
+<div class="separator"></div>
+<div class="receipt-items">
+    <div class="receipt-item" style="font-weight:700;border-bottom:1px solid #000;margin-bottom:2px">
+        <span class="name">Produit</span>
+        <span class="qty">Qté</span>
+        <span class="price">Total</span>
+    </div>
+    {% for item in sale.items.all %}
+    <div class="receipt-item">
+        <span class="name">{{ item.product.name }}</span>
+        <span class="qty">x{{ item.quantity|floatformat:0 }} {{ item.product.get_unit_display }}</span>
+        <span class="price">{{ item.subtotal|floatformat:0 }} {{ currency_symbol }}</span>
+    </div>
+    {% if item.sale_mode != 'piece' %}
+    <div class="receipt-item" style="font-size:8px;color:#666">
+        <span class="name">{{ item.get_sale_mode_display }} ({{ item.price|floatformat:0 }} {{ currency_symbol }}/{{ item.product.get_unit_display }})</span>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<div class="separator"></div>
+{% if sale.total_tva %}
+<div class="receipt-row">
+    <span class="left">Total HT</span>
+    <span class="right">{{ sale.total_ht|floatformat:2 }} {{ currency_symbol }}</span>
+</div>
+<div class="receipt-row">
+    <span class="left">TVA</span>
+    <span class="right">{{ sale.total_tva|floatformat:2 }} {{ currency_symbol }}</span>
+</div>
+{% endif %}
+<div class="receipt-total">
+    <span class="label">TOTAL TTC</span>
+    <span class="value">{{ sale.total|floatformat:0 }} {{ currency_symbol }}</span>
+</div>
+{% if sale.amount_paid != sale.total %}
+<div class="receipt-row">
+    <span class="left">Payé</span>
+    <span class="right">{{ sale.amount_paid|floatformat:0 }} {{ currency_symbol }}</span>
+</div>
+<div class="receipt-row">
+    <span class="left">Reste</span>
+    <span class="right">{{ sale.balance_due|floatformat:0 }} {{ currency_symbol }}</span>
+</div>
+{% endif %}
+<div class="receipt-payment">
+    <div class="receipt-row">
+        <span class="left">Paiement</span>
+        <span class="right">{{ sale.get_payment_method_display }}{% if sale.payment_phone %} ({{ sale.payment_phone }}){% endif %}</span>
+    </div>
+    <div class="receipt-row">
+        <span class="left">Statut</span>
+        <span class="right">{{ sale.get_payment_status_display }}</span>
+    </div>
+</div>
+{% if sale.notes %}
+<div class="receipt-row" style="font-size:8px;font-style:italic">
+    <span class="left">{{ sale.notes }}</span>
+</div>
+{% endif %}
+<div class="amount-words">Arrêtée à la somme de {{ sale.total|floatformat:0 }} {{ currency_symbol }}</div>
+<div class="separator"></div>
+<div class="receipt-footer">
+    <div>Merci de votre visite !</div>
+    <div>A bientot chez {{ settings.store_name }}</div>
+    {% if settings.signature %}
+    <div style="margin-top:3px;font-size:8px">Cachet & signature</div>
+    {% endif %}
+</div>
+<div class="no-print" style="margin-top:6px;text-align:center">
+    <button onclick="window.print()" style="padding:8px 16px;font-size:12px;border-radius:6px;border:1px solid #ccc;background:#f0f0f0;cursor:pointer">Imprimer le ticket</button>
+    <br><br>
+</div>
+</body>
+</html>

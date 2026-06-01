@@ -1,0 +1,35 @@
+{% extends 'store/base.html' %}
+{% block title %}Clients - Supermarché{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="{% url 'store:home' %}"><i class="bi bi-house-door"></i></a>
+    <span class="sep">/</span>
+    <span class="current">Clients</span>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1"><i class="bi bi-people me-2"></i>Clients</h1>
+        <p class="text-secondary mb-0">{{ customers.count }} client(s) enregistré(s).</p>
+    </div>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>Nom</th><th>Téléphone</th><th>Ventes</th><th>Total dépensé</th><th></th></tr></thead>
+        <tbody>
+            {% for c in customers %}
+                <tr>
+                    <td><strong>{{ c.name }}</strong></td>
+                    <td>{{ c.phone|default:'-' }}</td>
+                    <td>{{ c.sale_count }}</td>
+                    <td><strong>{{ c.total_spent|default:'0' }} FCFA</strong></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'store:customer_history' c.pk %}"><i class="bi bi-clock-history"></i> Historique</a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-center py-4"><i class="bi bi-people" style="font-size:1.5rem;display:block;margin-bottom:.35rem;opacity:.3;"></i><span class="text-secondary">Aucun client.</span></td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'store/base.html' %}
+{% block title %}Livrer commande #{{ order.id }} - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Livrer la commande #{{ order.id }}</h1>
+        <p>Client: <strong>{{ order.customer_name }}</strong></p>
+        <p>Total: <strong>{{ order.total }} FCFA</strong></p>
+        <p>Acompte: <strong>{{ order.deposit }} FCFA</strong></p>
+        <p>Reste à payer: <strong>{{ order.balance_due }} FCFA</strong></p>
+        <p class="text-warning">La livraison va créer une vente et déduire les produits du stock.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle me-1"></i>Confirmer la livraison</button>
+            <a class="btn btn-secondary ms-2" href="{% url 'store:customer_order_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

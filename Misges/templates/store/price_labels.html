@@ -1,0 +1,100 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}Étiquettes de prix - {{ store_settings.store_name }}{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Étiquettes de prix</h1>
+        <p class="text-secondary mb-0">Imprime les étiquettes avec prix, code-barres et unités.</p>
+    </div>
+</div>
+<style>
+.label-grid { display: grid; grid-template-columns: repeat({{ store_settings.label_columns_screen|default:2 }}, 1fr); gap: 8px; }
+.label-card {
+    border: 1px {% if store_settings.label_border_style == 'none' %}solid transparent{% else %}{{ store_settings.label_border_style|default:'dashed' }} var(--surface-border){% endif %};
+    border-radius: 6px;
+    padding: 6px 8px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    background: var(--surface-bg);
+    color: var(--app-text);
+}
+{% if store_settings.label_font_size == 'small' %}
+.label-card { font-size: 8px; }
+.label-card .price { font-size: 12px; }
+{% elif store_settings.label_font_size == 'large' %}
+.label-card { font-size: 11px; }
+.label-card .price { font-size: 18px; }
+{% else %}
+.label-card .name { font-size: 9px; }
+.label-card .price { font-size: 14px; }
+{% endif %}
+.label-card .name { font-weight: 700; line-height: 1.2; margin-bottom: 2px; text-transform: uppercase; }
+.label-card .price { font-weight: 900; color: var(--app-text); margin: 2px 0; }
+.label-card .barcode { font-size: 7px; color: var(--app-text); margin-top: 2px; letter-spacing: 1px; }
+.label-card .unit { font-size: 7px; color: var(--app-text); }
+.label-card .code { font-size: 6px; color: var(--app-text); }
+.label-card .label-logo { max-width: 40px; max-height: 20px; margin-bottom: 2px; object-fit: contain; }
+@media print {
+    @page { margin: 5mm; size: A4 landscape; }
+    body { background: #fff; }
+    .no-print { display: none !important; }
+    .label-grid { grid-template-columns: repeat({{ store_settings.label_columns_print|default:4 }}, 1fr); gap: 4px; }
+    .label-card { border: 1px {{ store_settings.label_border_style|default:'dashed' }} #ccc; padding: 4px 6px; }
+}
+@media print and (max-width: 600px) {
+    .label-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+
+
+<form method="get" class="row g-3 mb-4 no-print">
+    <div class="col-md-4">
+        <select name="category" class="form-select form-select-sm">
+            <option value="">Toutes catégories</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:'s' %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-primary btn-sm">Filtrer</button>
+    </div>
+    <div class="col-md-2">
+                    <button type="button" class="btn btn-success btn-sm" onclick="window.print()"><i class="bi bi-printer me-1"></i>Imprimer</button>
+                    <a class="btn btn-outline-primary btn-sm" href="{% url 'store:price_labels_pdf' %}?category={{ selected_category }}"><i class="bi bi-filetype-pdf me-1"></i>PDF</a>
+    </div>
+</form>
+
+<div class="label-grid" id="labelGrid">
+    {% for product in products %}
+        <div class="label-card">
+            {% if store_settings.label_logo %}
+                <img src="{{ store_settings.label_logo.url }}" alt="Logo" class="label-logo">
+            {% elif store_settings.logo %}
+                <img src="{{ store_settings.logo.url }}" alt="Logo" class="label-logo">
+            {% endif %}
+            {% if store_settings.label_show_store_name %}
+                <div class="store-name" style="font-size:7px;font-weight:700;color:var(--app-text);margin-bottom:1px">{{ store_settings.store_name }}</div>
+            {% endif %}
+            <div class="name">{{ product.name }}</div>
+            <div class="price">{{ product.price|floatformat:0 }} FCFA</div>
+            {% if product.barcode and store_settings.label_show_barcode %}
+                <div class="barcode">{{ product.barcode }}</div>
+            {% endif %}
+            <div class="unit">{{ product.get_unit_display }}</div>
+            {% if product.code and store_settings.label_show_code %}
+                <div class="code">{{ product.code }}</div>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p class="text-secondary no-print">Aucun produit trouvé.</p>
+    {% endfor %}
+</div>
+
+<div class="mt-3 no-print">
+    <p class="text-secondary small">{{ products|length }} étiquette(s) générée(s).</p>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'store/base.html' %}
+{% block title %}Rapport journalier - {{ settings.store_name }}{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1"><i class="bi bi-calendar-day me-2"></i>Rapport journalier</h1>
+        <p class="text-secondary mb-0">{{ daily_count }} vente(s) · {{ daily_total }} FCFA · Bénéfice {{ daily_profit }} FCFA</p>
+    </div>
+</div>
+<div class="stat-grid mb-4">
+    <div class="stat-card"><i class="bi bi-coin" style="color:#2563eb"></i><span class="label">Chiffre d'affaires</span><span class="value">{{ daily_total }} FCFA</span></div>
+    <div class="stat-card"><i class="bi bi-cart" style="color:#16a34a"></i><span class="label">Ventes</span><span class="value">{{ daily_count }}</span></div>
+    <div class="stat-card"><i class="bi bi-cash-stack" style="color:#7c3aed"></i><span class="label">Coût total</span><span class="value">{{ daily_cost }} FCFA</span></div>
+    <div class="stat-card"><i class="bi bi-graph-up-arrow" style="color:#f59e0b"></i><span class="label">Bénéfice</span><span class="value">{{ daily_profit }} FCFA</span></div>
+    <div class="stat-card"><i class="bi bi-wallet2" style="color:#dc2626"></i><span class="label">Dépenses</span><span class="value">{{ expenses_today }} FCFA</span></div>
+</div>
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card p-3"><h6>Top produits du jour</h6>
+            <table class="table table-sm mb-0"><thead><tr><th>Produit</th><th>Qté</th><th>Total</th></tr></thead><tbody>
+            {% for p in top_products %}<tr><td>{{ p.product__name }}</td><td>{{ p.total_qty }}</td><td>{{ p.total_rev }} FCFA</td></tr>{% empty %}<tr><td colspan="3" class="text-center small">Aucune vente aujourd'hui</td></tr>{% endfor %}
+            </tbody></table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3"><h6>Répartition paiements</h6>
+            <table class="table table-sm mb-0"><thead><tr><th>Méthode</th><th>Ventes</th><th>Total</th></tr></thead><tbody>
+            {% for p in payment_breakdown %}<tr><td>{{ p.payment_method|default:'-' }}</td><td>{{ p.count }}</td><td>{{ p.total }} FCFA</td></tr>{% empty %}<tr><td colspan="3" class="text-center small">Aucune vente</td></tr>{% endfor %}
+            </tbody></table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends 'store/base.html' %}
+{% block title %}Rapports — {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-md-row justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Rapports</h1>
+            <p class="text-muted mb-0" style="font-size:.82rem;">Analyse des ventes, dépenses et rentabilité</p>
+        </div>
+        <form method="get" class="d-flex flex-wrap align-items-center gap-2">
+            <input type="date" name="start" value="{{ start_date|date:'Y-m-d' }}" class="form-control form-control-sm" style="width:auto">
+            <input type="date" name="end" value="{{ end_date|date:'Y-m-d' }}" class="form-control form-control-sm" style="width:auto">
+            <select name="compare" class="form-select form-select-sm" style="width:auto">
+                <option value="off" {% if compare == 'off' %}selected{% endif %}>Sans comparaison</option>
+                <option value="on" {% if compare == 'on' %}selected{% endif %}>Comparer</option>
+            </select>
+            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-funnel me-1"></i>Filtrer</button>
+        </form>
+    </div>
+</div>
+
+<div class="row g-2 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card metric-card h-100">
+            <span>Revenu</span>
+            <strong>{{ revenue|floatformat:0 }} {{ currency_symbol }}</strong>
+            {% if compare != 'off' and prev_revenue %}<small class="text-muted" style="font-size:.7rem;">{{ revenue_diff|floatformat:0 }} vs période préc.</small>{% endif %}
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card metric-card h-100">
+            <span>Bénéfice brut</span>
+            <strong>{{ gross_profit|floatformat:0 }} {{ currency_symbol }}</strong>
+            <small class="text-muted" style="font-size:.7rem;">Marge: {{ margin|floatformat:1 }}%</small>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card metric-card h-100">
+            <span>Dépenses</span>
+            <strong>{{ expense_total|floatformat:0 }} {{ currency_symbol }}</strong>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card metric-card h-100">
+            <span>Net caisse</span>
+            <strong>{{ net_cash|floatformat:0 }} {{ currency_symbol }}</strong>
+            <small class="text-muted" style="font-size:.7rem;">{{ sale_count }} vente(s)</small>
+        </div>
+    </div>
+</div>
+
+<div class="row g-2 mb-4">
+    <div class="col-lg-8">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="card-title"><i class="bi bi-graph-up"></i>Évolution des ventes <small class="text-muted" style="font-weight:400;">{{ start_date|date:'d/m' }} → {{ end_date|date:'d/m' }}</small></div>
+                <canvas id="dailyChart" height="180"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="card-title"><i class="bi bi-credit-card"></i>Paiements</div>
+                <canvas id="methodChart" height="180"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-2 mb-4">
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="card-title"><i class="bi bi-pie-chart"></i>Ventes par catégorie</div>
+                <canvas id="catChart" height="180"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"><i class="bi bi-trophy"></i>Top 10 produits les plus rentables</div>
+                <div class="table-shell mt-2">
+                    <table class="table app-table align-middle mb-0">
+                        <thead>
+                            <tr><th>Produit</th><th class="text-center">Qté</th><th class="text-end">Revenu</th><th class="text-end">Coût</th><th class="text-end">Bénéfice</th><th class="text-center">Marge</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for row in product_rows %}
+                            <tr>
+                                <td>{{ row.product.name }}</td>
+                                <td class="text-center">{{ row.qty|floatformat:0 }}</td>
+                                <td class="text-end">{{ row.revenue|floatformat:0 }}</td>
+                                <td class="text-end">{{ row.cost|floatformat:0 }}</td>
+                                <td class="text-end" style="color:#16a34a">{{ row.profit|floatformat:0 }}</td>
+                                <td class="text-center"><span class="badge" style="background:var(--primary-a);">{{ row.margin_pct }}%</span></td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="6" class="text-center text-muted py-4">Aucune vente sur cette période.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"><i class="bi bi-exclamation-triangle"></i>Stock faible</div>
+                {% if low_stock_products %}
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    {% for product in low_stock_products %}
+                    <div class="alert-chip alert-chip-warning">
+                        <i class="bi bi-box-seam"></i>
+                        <span>{{ product.name }}: <strong>{{ product.stock|floatformat:0 }} / {{ product.min_stock|floatformat:0 }}</strong></span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center text-muted py-3">Aucun stock faible.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/chart.umd.min.js"></script>
+<script>
+Chart.defaults.font.family = "'Inter', system-ui, -apple-system, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#8e8e93';
+
+function initLine(id, labels, data) {
+  var ctx = document.getElementById(id); if (!ctx) return;
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Ventes',
+        data: data,
+        borderColor: '#7f1d1d',
+        backgroundColor: 'rgba(127,29,29,0.06)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#7f1d1d',
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: '#fff', titleColor: '#1d1d1f', bodyColor: '#6b7280', borderColor: '#e8e8ed', borderWidth: 1, padding: 10, cornerRadius: 8 } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { callback: function(v) { return v.toLocaleString() + ' {{ currency_symbol|escapejs }}'; } } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+function initPie(id, labels, data) {
+  var ctx = document.getElementById(id); if (!ctx) return;
+  var colors = ['#7f1d1d','#be123c','#f43f5e','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#f97316'];
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{ data: data, backgroundColor: colors.slice(0, labels.length), borderWidth: 0 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '65%',
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8, font: { size: 10 }, color: '#8e8e93' } },
+        tooltip: { backgroundColor: '#fff', titleColor: '#1d1d1f', bodyColor: '#6b7280', borderColor: '#e8e8ed', borderWidth: 1, padding: 8, cornerRadius: 8 }
+      }
+    }
+  });
+}
+
+try {
+  initLine('dailyChart', {{ daily_labels|safe }}, {{ daily_values|safe }});
+  initPie('catChart', {{ cat_labels|safe }}, {{ cat_values|safe }});
+  initPie('methodChart', {{ method_labels|safe }}, {{ method_values|safe }});
+} catch(e) { console.warn('Chart error:', e); }
+</script>
+{% endblock %}

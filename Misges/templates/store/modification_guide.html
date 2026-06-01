@@ -1,0 +1,71 @@
+{% extends 'store/base.html' %}
+{% block title %}Guide de modification - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-2">Guide de modification</h1>
+        <p class="text-secondary mb-0">Les étapes simples pour ajouter ou changer une fonctionnalité dans cette application Django.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Ajouter une nouvelle fonctionnalité</h2>
+                <ol class="mb-0">
+                    <li>Créer ou modifier un modèle dans <code>store/models.py</code>.</li>
+                    <li>Créer un formulaire dans <code>store/forms.py</code>.</li>
+                    <li>Ajouter les vues dans <code>store/views.py</code>.</li>
+                    <li>Déclarer les routes dans <code>store/urls.py</code>.</li>
+                    <li>Créer les pages HTML dans <code>templates/store/</code>.</li>
+                    <li>Lancer <code>python manage.py makemigrations</code> puis <code>python manage.py migrate</code>.</li>
+                    <li>Vérifier avec <code>python manage.py check</code>.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Ajouter ou changer un thème</h2>
+                <ol class="mb-0">
+                    <li>Ajouter le nom du thème dans <code>StoreSettings.THEME_CHOICES</code>.</li>
+                    <li>Ajouter les couleurs CSS dans <code>templates/store/base.html</code>.</li>
+                    <li>Utiliser une classe comme <code>body.theme-nom</code>.</li>
+                    <li>Aller dans Paramètres et choisir le nouveau thème.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Modifier une facture</h2>
+                <ol class="mb-0">
+                    <li>Modifier l'affichage imprimable dans <code>templates/store/sale_invoice.html</code>.</li>
+                    <li>Modifier le PDF dans <code>sale_invoice_pdf</code> dans <code>store/views.py</code>.</li>
+                    <li>Ajouter une option dans <code>StoreSettings.INVOICE_LAYOUT_CHOICES</code> si nécessaire.</li>
+                    <li>Tester une vente, puis ouvrir Facture et PDF.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Exemple de note de code</h2>
+                <pre class="bg-light p-3 rounded mb-0"><code>Fonction: Remise sur vente
+Modèle: ajouter discount dans Sale
+Vue: calculer total après remise
+Template: afficher remise sur sale_detail.html
+Migration: makemigrations + migrate</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

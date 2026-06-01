@@ -1,0 +1,57 @@
+{% extends 'store/base.html' %}
+{% block title %}Commande #{{ order.id }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Bon de commande #{{ order.id }}</h1>
+        <p class="text-secondary mb-0">
+            Fournisseur: <strong>{% if order.supplier %}{{ order.supplier.name }}{% else %}N/A{% endif %}</strong> |
+            Date: {{ order.date|date:'d/m/Y' }} |
+            Statut:
+            {% if order.status == 'draft' %}<span class="badge bg-secondary">Brouillon</span>
+            {% elif order.status == 'sent' %}<span class="badge bg-primary">Envoyée</span>
+            {% elif order.status == 'partial' %}<span class="badge bg-warning text-dark">Partielle</span>
+            {% elif order.status == 'received' %}<span class="badge bg-success">Reçue</span>
+            {% elif order.status == 'cancelled' %}<span class="badge bg-danger">Annulée</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="d-flex gap-2 mb-3 flex-wrap">
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'store:purchase_order_update' order.pk %}"><i class="bi bi-pencil me-1"></i>Modifier</a>
+    {% if order.status != 'received' and order.status != 'cancelled' %}
+        <a class="btn btn-sm btn-success" href="{% url 'store:purchase_order_receive' order.pk %}"><i class="bi bi-box-arrow-in-down me-1"></i>Réceptionner</a>
+    {% endif %}
+    <a class="btn btn-sm btn-outline-danger" href="{% url 'store:purchase_order_delete' order.pk %}"><i class="bi bi-trash me-1"></i>Supprimer</a>
+    <a class="btn btn-sm btn-secondary ms-auto" href="{% url 'store:purchase_order_list' %}"><i class="bi bi-arrow-left me-1"></i>Retour</a>
+</div>
+
+{% if order.notes %}
+    <div class="alert alert-info py-2 mb-3">{{ order.notes }}</div>
+{% endif %}
+
+<div class="table-shell">
+    <table class="table app-table align-middle mb-0">
+        <thead><tr><th>Produit</th><th>Commandé</th><th>Reçu</th><th>Restant</th><th>Prix unitaire</th><th>Sous-total</th></tr></thead>
+        <tbody>
+            {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity_ordered }}</td>
+                    <td>{{ item.quantity_received }}</td>
+                    <td>{{ item.remaining }}</td>
+                    <td>{{ item.unit_price }} FCFA</td>
+                    <td>{{ item.subtotal }} FCFA</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-center">Aucun article.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="text-end mt-3">
+    <h5>Total: <strong>{{ order.total }} FCFA</strong></h5>
+</div>
+{% endblock %}

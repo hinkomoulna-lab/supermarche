@@ -1,0 +1,113 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="ribbon ribbon-green"><i class="bi bi-pencil"></i>{{ title }}</div>
+<p class="text-secondary mb-3">Corrige les articles vendus. Le stock sera ajusté automatiquement.</p>
+
+<form method="post" id="saleForm">
+    {% csrf_token %}
+    <div class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input type="text" class="form-control form-control-sm" name="customer_name" value="{{ sale.customer_name }}" placeholder="Nom & prénom (facultatif)">
+        </div>
+        <div class="col-md-3">
+            <input type="tel" class="form-control form-control-sm" name="customer_phone" value="{{ sale.customer_phone }}" placeholder="Téléphone (facultatif)">
+        </div>
+        <div class="col-md-3">
+            <input type="date" class="form-control form-control-sm" name="sale_date" value="{{ sale.sale_date|date:'Y-m-d' }}">
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control form-control-sm" name="notes" value="{{ sale.notes }}" placeholder="Notes">
+        </div>
+    </div>
+    <div class="table-shell mb-3">
+        <table class="table app-table align-middle mb-0" id="saleTable">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th class="qty-col">Quantité</th>
+                    <th class="unit-col">Unité</th>
+                    <th class="action-col"></th>
+                </tr>
+            </thead>
+            <tbody id="saleRows">
+                {% for row in sale_rows %}
+                    <tr class="sale-row">
+                        <td>
+                            <select name="product" class="form-select product-select" required>
+                                <option value="">Choisir un produit</option>
+                                {% for product in products %}
+                                    <option value="{{ product.id }}" data-unit="{{ product.get_unit_display }}" {% if product.id == row.product_id %}selected{% endif %}>
+                                        {{ product.name }} - {{ product.price }} FCFA - stock {{ product.stock }} {{ product.get_unit_display }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><input type="number" name="quantity" min="0.01" step="0.01" value="{{ row.quantity }}" class="form-control" required></td>
+                        <td class="line-unit text-secondary">-</td>
+                        <td><button type="button" class="btn btn-outline-danger icon-btn remove-row" title="Retirer la ligne"><i class="bi bi-x-lg"></i></button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3">
+        <button type="button" class="btn btn-outline-primary" id="addRow">
+            <i class="bi bi-plus-circle me-1"></i>Ajouter une ligne
+        </button>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check2-circle me-1"></i>{{ submit_label }}
+        </button>
+    </div>
+</form>
+
+<template id="saleRowTemplate">
+    <tr class="sale-row">
+        <td>
+            <select name="product" class="form-select product-select" required>
+                <option value="">Choisir un produit</option>
+                {% for product in products %}
+                    <option value="{{ product.id }}" data-unit="{{ product.get_unit_display }}">
+                        {{ product.name }} - {{ product.price }} FCFA - stock {{ product.stock }} {{ product.get_unit_display }}
+                    </option>
+                {% endfor %}
+            </select>
+        </td>
+        <td><input type="number" name="quantity" min="0.01" step="0.01" value="1" class="form-control" required></td>
+        <td class="line-unit text-secondary">-</td>
+        <td><button type="button" class="btn btn-outline-danger icon-btn remove-row" title="Retirer la ligne"><i class="bi bi-x-lg"></i></button></td>
+    </tr>
+</template>
+
+<script>
+    const rows = document.getElementById('saleRows');
+    const template = document.getElementById('saleRowTemplate');
+
+    function refreshUnits() {
+        rows.querySelectorAll('.sale-row').forEach((row) => {
+            const select = row.querySelector('.product-select');
+            const unit = select.selectedOptions[0]?.dataset.unit || '-';
+            row.querySelector('.line-unit').textContent = unit;
+        });
+    }
+
+    function addRow() {
+        rows.appendChild(template.content.cloneNode(true));
+        refreshUnits();
+    }
+
+    document.getElementById('addRow').addEventListener('click', addRow);
+    rows.addEventListener('change', refreshUnits);
+    rows.addEventListener('click', (event) => {
+        const button = event.target.closest('.remove-row');
+        if (!button) return;
+        if (rows.querySelectorAll('.sale-row').length > 1) {
+            button.closest('.sale-row').remove();
+        }
+        refreshUnits();
+    });
+    refreshUnits();
+</script>
+{% endblock %}

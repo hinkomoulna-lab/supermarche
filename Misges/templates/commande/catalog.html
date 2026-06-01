@@ -1,0 +1,88 @@
+{% extends 'commande/base_client.html' %}
+{% block title %}Catalogue{% endblock %}
+{% block header %}Catalogue{% endblock %}
+{% block content %}
+
+<form method="get" class="mb-3">
+    <div class="d-flex gap-2 overflow-auto pb-2">
+        <a href="{% url 'commande:catalog' %}" class="btn btn-sm {% if not request.GET.category %}btn-primary{% else %}btn-outline{% endif %}">Tout</a>
+        {% for cat in categories %}
+            <a href="?category={{ cat.id }}" class="btn btn-sm {% if request.GET.category == cat.id|stringformat:'s' %}btn-primary{% else %}btn-outline{% endif %}">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+</form>
+
+<div class="product-grid">
+    {% for p in products %}
+    <div class="product-item" id="product-{{ p.id }}">
+        {% if p.image %}
+        <img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">
+        {% else %}
+        <div style="height:140px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
+            <i class="bi bi-box-seam" style="font-size:32px;"></i>
+        </div>
+        {% endif %}
+        <div class="product-info">
+            <div class="product-name">{{ p.name }}</div>
+            {% if p.packing %}<small class="text-muted">{{ p.packing }}</small>{% endif %}
+            <div class="product-price">{{ p.price }} FCFA</div>
+            <div class="product-stock">
+                {% if p.stock <= 0 %}
+                <span class="text-danger">Rupture</span>
+                {% elif p.stock <= 5 %}
+                <span class="text-warning">Stock limité</span>
+                {% else %}
+                <span class="text-success">En stock</span>
+                {% endif %}
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="decQty('{{ p.id }}')">−</button>
+                <span class="qty-value" id="qty-{{ p.id }}">0</span>
+                <button class="qty-btn" onclick="incQty('{{ p.id }}')">+</button>
+                <button class="btn btn-primary btn-sm" onclick="addCart('{{ p.id }}')" style="margin-left:auto;">
+                    <i class="bi bi-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-cart" style="grid-column:1/-1;">
+        <i class="bi bi-box-seam"></i>
+        <p>Aucun produit disponible</p>
+    </div>
+    {% endfor %}
+</div>
+
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+<script>
+var quantities = {};
+
+function getQty(id) { return quantities[id] || 0; }
+function setQty(id, v) {
+    quantities[id] = Math.max(0, v);
+    document.getElementById('qty-' + id).textContent = quantities[id];
+}
+function incQty(id) { setQty(id, getQty(id) + 1); }
+function decQty(id) { setQty(id, Math.max(0, getQty(id) - 1)); }
+
+function addCart(productId) {
+    var qty = getQty(productId);
+    if (qty <= 0) { showToast('Ajoutez au moins 1', 'warning'); return; }
+    var form = new FormData();
+    form.append('product_id', productId);
+    form.append('quantity', qty);
+    form.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+    fetch('{% url "commande:add_to_cart" %}', { method:'POST', body:form })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (d.error) { showToast(d.error, 'danger'); return; }
+            setQty(productId, 0);
+            showToast('Ajouté au panier ✓', 'success');
+            var badge = document.querySelector('.badge-cart');
+            if (badge) badge.textContent = d.cart_count;
+        })
+        .catch(function() { showToast('Erreur réseau', 'danger'); });
+}
+</script>
+{% endblock %}

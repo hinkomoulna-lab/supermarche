@@ -1,0 +1,22 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer un crédit téléphonique - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">Supprimer un crédit téléphonique</h1>
+        <p>Es-tu sûr de vouloir supprimer ce crédit téléphonique ?</p>
+        <ul>
+            <li><strong>Numéro :</strong> {{ phone_credit.phone_number }}</li>
+            <li><strong>Opérateur :</strong> {{ phone_credit.get_operator_display }}</li>
+            <li><strong>Montant payé :</strong> {{ phone_credit.amount }} FCFA</li>
+            <li><strong>Date :</strong> {{ phone_credit.date|date:'d/m/Y' }}</li>
+        </ul>
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary" href="{% url 'store:phone_credit_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

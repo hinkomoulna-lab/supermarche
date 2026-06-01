@@ -1,0 +1,24 @@
+{% extends 'store/base.html' %}
+{% block title %}Confirmer la suppression - {{ block.super }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card page-header mb-4">
+            <div class="card-body">
+                <h1 class="h3 mb-1">Confirmer la suppression</h1>
+                {% if project %}
+                <p class="mb-3">Supprimer le projet solaire #{{ project.id }} de <strong>{{ project.client_name }}</strong> ({{ project.date|date:'d/m/Y' }}) ?</p>
+                {% endif %}
+                {% if object_name %}
+                <p class="mb-3">Supprimer <strong>{{ object_name }}</strong> ?</p>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                    <a class="btn btn-secondary ms-2" href="{% if back_url %}{% url back_url %}{% else %}{% url 'store:solar_project_detail' project.pk %}{% endif %}">Annuler</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

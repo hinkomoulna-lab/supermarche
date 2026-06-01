@@ -1,0 +1,30 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ customer.name }} - Historique - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1"><i class="bi bi-person me-2"></i>{{ customer.name }}</h1>
+        <p class="text-secondary mb-0">{{ customer.phone|default:'Aucun téléphone' }} · {{ sales|length }} vente(s)</p>
+        <a class="btn btn-sm btn-outline-secondary mt-2" href="{% url 'store:customer_list' %}"><i class="bi bi-arrow-left"></i> Retour</a>
+    </div>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>#</th><th>Date</th><th>Total</th><th>Payé</th><th>Statut</th><th></th></tr></thead>
+        <tbody>
+            {% for sale in sales %}
+                <tr>
+                    <td>{{ sale.id }}</td>
+                    <td>{{ sale.sale_date|date:'d/m/Y' }}</td>
+                    <td><strong>{{ sale.total }} FCFA</strong></td>
+                    <td>{{ sale.amount_paid }} FCFA</td>
+                    <td>{% if sale.payment_status == 'paid' %}<span class="badge bg-success">Payé</span>{% elif sale.payment_status == 'partial' %}<span class="badge bg-warning">Partiel</span>{% else %}<span class="badge bg-danger">Impayé</span>{% endif %}</td>
+                    <td><a class="btn btn-sm btn-outline-secondary" href="{% url 'store:sale_detail' sale.id %}"><i class="bi bi-eye"></i></a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-center">Aucun achat.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

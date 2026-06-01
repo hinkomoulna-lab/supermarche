@@ -1,0 +1,48 @@
+{% extends 'store/base.html' %}
+{% block title %}Créer un compte - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-2">Créer un compte utilisateur</h1>
+        <p class="text-secondary mb-0">Ajoute un accès pour toi ou pour une personne qui travaille avec toi.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-4">
+                <label class="form-label">Nom d'utilisateur</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Prénom</label>
+                {{ form.first_name }}
+                {{ form.first_name.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nom</label>
+                {{ form.last_name }}
+                {{ form.last_name.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Mot de passe</label>
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Confirmation</label>
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+            <div class="col-12">
+                <button class="btn btn-success" type="submit">Créer le compte</button>
+                <a class="btn btn-secondary ms-2" href="{% url 'store:store_settings' %}">Retour</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

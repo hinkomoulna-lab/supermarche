@@ -1,0 +1,1216 @@
+{% extends 'store/base.html' %}
+{% block title %}Accueil - Supermarché{% endblock %}
+
+{% block content %}
+<style>
+:root {
+  --card-caisse: #16a34a;
+  --card-produits: #2563eb;
+  --card-stock: #f59e0b;
+  --card-appro: #14b8a6;
+  --card-clients: #7c3aed;
+  --card-historique: #ec4899;
+  --card-depenses: #dc2626;
+  --card-dettes: #d97706;
+  --card-benefices: #10b981;
+  --card-pertes: #f43f5e;
+  --card-credits: #06b6d4;
+  --card-parametres: #64748b;
+  --card-ia: #8b5cf6;
+  --card-dashboard: #0ea5e9;
+  --card-etiquettes: #6366f1;
+  --card-panier: #e11d48;
+}
+
+/* ===== APP CARDS GRID ===== */
+.home-ops {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .75rem;
+}
+.home-ops-title {
+  font-size: .95rem;
+  font-weight: 800;
+  margin: 0;
+}
+.home-ops-subtitle {
+  color: var(--muted-text, #64748b);
+  font-size: .75rem;
+  margin: .1rem 0 0;
+}
+.home-ops-actions {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.home-ops-actions .btn {
+  border-radius: 9999px;
+  font-size: .75rem;
+  font-weight: 700;
+}
+.home-live {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(74px, auto));
+  gap: .4rem;
+}
+.live-tile {
+  min-height: 46px;
+  padding: .42rem .58rem;
+  border-radius: 8px;
+  border: 1px solid var(--surface-border, #e2e8f0);
+  background: linear-gradient(145deg, rgba(255,255,255,.95), rgba(248,250,252,.82));
+  box-shadow: 0 8px 18px rgba(15,23,42,.07), inset 0 1px 0 rgba(255,255,255,.82);
+}
+.live-tile small {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  color: var(--muted-text, #64748b);
+  font-size: .62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.live-tile strong {
+  display: block;
+  margin-top: .12rem;
+  font-size: .9rem;
+  line-height: 1.1;
+  color: var(--app-text, #1e293b);
+  white-space: nowrap;
+}
+.app-section-title {
+  color: var(--muted-text, #64748b);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin: .85rem 0 .4rem;
+}
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+.app-card {
+  position: relative;
+  border-radius: 10px;
+  padding: .75rem;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .3rem;
+  color: #fff;
+  border: none;
+  overflow: hidden;
+  min-height: 86px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .13), inset 0 1px 0 rgba(255,255,255,.18);
+  isolation: isolate;
+}
+.app-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255,255,255,.34), transparent 28%),
+    linear-gradient(135deg, rgba(255,255,255,.16), transparent 44%);
+  pointer-events: none;
+  transition: background .2s ease;
+}
+.app-card::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  background: linear-gradient(0deg, rgba(0,0,0,.16), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+.app-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(15,23,42,.2), inset 0 1px 0 rgba(255,255,255,.22);
+  filter: saturate(1.05);
+}
+.app-card:hover::before {
+  background: linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,.05));
+}
+.app-card:active {
+  transform: translateY(-1px);
+}
+.app-card-icon {
+  font-size: 1.15rem;
+  opacity: .9;
+  text-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.app-card-title {
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.app-card-desc {
+  font-size: .625rem;
+  opacity: .7;
+  line-height: 1.3;
+}
+
+/* ===== MODAL WINDOW SYSTEM ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.modal-overlay.active { visibility: visible; opacity: 1; pointer-events: auto; }
+
+.app-window {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 80px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+.app-window-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem .75rem .5rem 1.25rem;
+  color: #fff;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.app-window-header .app-window-icon {
+  font-size: 1.1rem;
+  opacity: .9;
+}
+.app-window-header .app-window-title {
+  font-weight: 600;
+  font-size: .8125rem;
+  letter-spacing: .01em;
+  flex: 1;
+}
+.app-window-header .btn-close-window {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background .12s ease;
+}
+.app-window-header .btn-close-window:hover {
+  background: rgba(255,255,255,.25);
+}
+.app-window-body {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--app-bg, #f1f5f9);
+}
+.app-window-body iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+}
+
+@media (max-width: 640px) {
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .app-window { max-height: 95vh; border-radius: 16px 16px 0 0; }
+}
+
+
+
+/* ===== SALE WINDOW (built-in) ===== */
+.sale-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1rem;
+  height: 100%;
+  min-height: 500px;
+}
+.sale-products {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+.sale-search-box {
+  position: relative;
+}
+.sale-search-box input {
+  padding-left: 2.2rem;
+  border-radius: 9999px;
+  font-size: .875rem;
+  height: 40px;
+  border: 2px solid var(--surface-border, #e2e8f0);
+}
+.sale-search-box input:focus {
+  border-color: var(--card-caisse, #16a34a);
+  box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+}
+.sale-search-box i {
+  position: absolute;
+  left: .75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--o-text-secondary, #64748b);
+  font-size: .9rem;
+}
+.sale-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: .5rem;
+  max-height: 340px;
+  overflow: auto;
+  padding: .25rem 0;
+}
+.sale-product-item {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  padding: .6rem;
+  border-radius: 8px;
+  border: 1px solid var(--surface-border, #e2e8f0);
+  background: var(--surface-bg, #fff);
+  cursor: pointer;
+  transition: border-color .12s ease, box-shadow .12s ease;
+}
+.sale-product-item:hover {
+  border-color: var(--card-caisse, #16a34a);
+  box-shadow: 0 2px 8px rgba(22,163,74,.1);
+}
+.sale-product-item img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: var(--app-bg, #f1f5f9);
+}
+.sale-product-item .no-img {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--app-bg, #f1f5f9);
+  border-radius: 4px;
+  color: var(--o-text-secondary, #64748b);
+  font-size: 1.2rem;
+}
+.sale-product-item .p-name {
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--app-text, #1e293b);
+  line-height: 1.2;
+}
+.sale-product-item .p-price {
+  font-size: .6875rem;
+  color: var(--card-caisse, #16a34a);
+  font-weight: 700;
+}
+.sale-product-item .p-stock {
+  font-size: .625rem;
+  color: var(--o-text-secondary, #64748b);
+}
+
+/* Sale cart */
+.sale-cart {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  background: var(--surface-bg, #fff);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 10px;
+  padding: .75rem;
+}
+.sale-cart-title {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--o-text-secondary, #64748b);
+}
+.sale-cart-items {
+  flex: 1;
+  overflow: auto;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.sale-cart-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .4rem .5rem;
+  background: var(--app-bg, #f1f5f9);
+  border-radius: 6px;
+  font-size: .75rem;
+}
+.sale-cart-item .ci-name {
+  flex: 1;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sale-cart-item .ci-qty {
+  width: 50px;
+  text-align: center;
+}
+.sale-cart-item .ci-qty input {
+  width: 100%;
+  padding: .15rem;
+  text-align: center;
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 4px;
+  font-size: .75rem;
+}
+.sale-cart-item .ci-total {
+  font-weight: 700;
+  min-width: 60px;
+  text-align: right;
+}
+.sale-cart-item .ci-remove {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--o-text-secondary, #64748b);
+  cursor: pointer;
+  font-size: .7rem;
+  flex-shrink: 0;
+}
+.sale-cart-item .ci-remove:hover {
+  background: rgba(220,38,38,.1);
+  color: #dc2626;
+}
+.sale-cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: .5rem;
+  border-top: 2px solid var(--surface-border, #e2e8f0);
+  font-size: .875rem;
+  font-weight: 700;
+}
+.sale-cart-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.sale-cart-actions .btn {
+  border-radius: 9999px;
+  font-weight: 600;
+}
+.sale-customer {
+  display: flex;
+  gap: .5rem;
+}
+.sale-customer input {
+  flex: 1;
+  font-size: .75rem;
+  padding: .35rem .6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--surface-border, #e2e8f0);
+}
+
+.sale-actions-after {
+  display: none;
+  flex-direction: column;
+  gap: .35rem;
+}
+.sale-actions-after.show { display: flex; }
+
+.sale-empty-cart {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--o-text-secondary, #64748b);
+  font-size: .75rem;
+}
+.sale-empty-cart i {
+  font-size: 1.5rem;
+  opacity: .4;
+  margin-bottom: .25rem;
+}
+
+/* Search results info */
+.sale-no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--o-text-secondary, #64748b);
+  font-size: .75rem;
+}
+
+@media (max-width: 768px) {
+  .sale-layout { grid-template-columns: 1fr; }
+  .apps-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .home-ops { grid-template-columns: 1fr; }
+  .home-live { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-ops-actions { justify-content: flex-start; }
+  .app-window { max-height: 95vh; border-radius: 8px; margin: .5rem; }
+  .modal-overlay { padding: .5rem; align-items: flex-end; }
+  .app-window-body { padding: .75rem; }
+}
+</style>
+
+<!-- ===== MAIN LAYOUT: app cards ===== -->
+<div class="home-ops toolbar-card">
+  <div>
+    <h1 class="home-ops-title">Centre de contrôle</h1>
+    <p class="home-ops-subtitle">Ventes, stock, finances et outils, prêts pour le travail quotidien.</p>
+  </div>
+  <div class="home-live" aria-label="Heure et météo">
+    <div class="live-tile">
+      <small><i class="bi bi-clock"></i>Heure</small>
+      <strong id="homeClock">--:--</strong>
+    </div>
+    <div class="live-tile">
+      <small><i class="bi bi-thermometer-half"></i>Temp.</small>
+      <strong id="homeTemp">--°C</strong>
+    </div>
+  </div>
+  <div class="home-ops-actions">
+    <button class="btn btn-primary btn-sm" type="button" data-home-open="caisse"><i class="bi bi-cash-stack me-1"></i>Vendre</button>
+    <button class="btn btn-outline-primary btn-sm" type="button" data-home-open="stock"><i class="bi bi-tags me-1"></i>Stock</button>
+    <button class="btn btn-outline-primary btn-sm" type="button" data-home-open="dashboard"><i class="bi bi-bar-chart-fill me-1"></i>Stats</button>
+  </div>
+</div>
+
+<div class="metric-strip">
+  <div class="metric-chip"><i class="bi bi-exclamation-triangle"></i><div><small>Stock faible</small><strong>{{ low_stock_count|default:0 }} alerte(s)</strong></div></div>
+  <div class="metric-chip"><i class="bi bi-upc-scan"></i><div><small>Inventaire</small><strong>Codes et étiquettes</strong></div></div>
+  <div class="metric-chip"><i class="bi bi-phone-vibrate"></i><div><small>Mobilité</small><strong>Scanner téléphone</strong></div></div>
+</div>
+
+<div class="app-section-title">Applications</div>
+<div class="apps-grid">
+  <div class="app-card" style="background:var(--card-caisse)" data-app="caisse" data-url="{% url 'store:create_sale' %}">
+    <div class="app-card-icon"><i class="bi bi-cash-stack"></i></div>
+    <div class="app-card-title">Vendre</div>
+    <div class="app-card-desc">Ventes rapides et encaissement</div>
+  </div>
+  <div class="app-card" style="background:var(--card-produits)" data-app="produits" data-url="{% url 'store:product_list' %}">
+    <div class="app-card-icon"><i class="bi bi-box-seam"></i></div>
+    <div class="app-card-title">Produits</div>
+    <div class="app-card-desc">Catalogue et inventaire</div>
+  </div>
+  <div class="app-card" style="background:var(--card-stock)" data-app="stock" data-url="{% url 'store:product_manage' %}">
+    <div class="app-card-icon"><i class="bi bi-tags"></i></div>
+    <div class="app-card-title">Gestion stock</div>
+    <div class="app-card-desc">Suivi et réapprovisionnement</div>
+  </div>
+  <div class="app-card" style="background:var(--card-appro)" data-app="appro" data-url="{% url 'store:feature_list' %}">
+    <div class="app-card-icon"><i class="bi bi-puzzle"></i></div>
+    <div class="app-card-title">Fonctionnalités</div>
+    <div class="app-card-desc">Gestion des fonctionnalités</div>
+  </div>
+  <div class="app-card" style="background:var(--card-clients)" data-app="clients" data-url="{% url 'store:mobile_access' %}">
+    <div class="app-card-icon"><i class="bi bi-phone-vibrate"></i></div>
+    <div class="app-card-title">Accès Téléphone</div>
+    <div class="app-card-desc">Accès mobile à l'application</div>
+  </div>
+  <div class="app-card" style="background:var(--card-historique)" data-app="historique" data-url="{% url 'store:sale_history' %}">
+    <div class="app-card-icon"><i class="bi bi-clock-history"></i></div>
+    <div class="app-card-title">Historique</div>
+    <div class="app-card-desc">Ventes et transactions</div>
+  </div>
+  <div class="app-card" style="background:var(--card-depenses)" data-app="depenses" data-url="{% url 'store:expense_list' %}">
+    <div class="app-card-icon"><i class="bi bi-wallet2"></i></div>
+    <div class="app-card-title">Dépenses</div>
+    <div class="app-card-desc">Suivi des dépenses</div>
+  </div>
+  <div class="app-card" style="background:var(--card-dettes)" data-app="dettes" data-url="{% url 'store:debt_list' %}">
+    <div class="app-card-icon"><i class="bi bi-file-earmark-text"></i></div>
+    <div class="app-card-title">Dettes</div>
+    <div class="app-card-desc">Créances et dettes</div>
+  </div>
+  <div class="app-card" style="background:var(--card-benefices)" data-app="benefices" data-url="{% url 'store:profit_view' %}">
+    <div class="app-card-icon"><i class="bi bi-graph-up-arrow"></i></div>
+    <div class="app-card-title">Bénéfices</div>
+    <div class="app-card-desc">Rapports et analyses</div>
+  </div>
+  <div class="app-card" style="background:var(--card-pertes)" data-app="pertes" data-url="{% url 'store:stock_loss_list' %}">
+    <div class="app-card-icon"><i class="bi bi-trash"></i></div>
+    <div class="app-card-title">Pertes</div>
+    <div class="app-card-desc">Pertes et invendus</div>
+  </div>
+  <div class="app-card" style="background:var(--card-credits)" data-app="credits" data-url="{% url 'store:phone_credit_list' %}">
+    <div class="app-card-icon"><i class="bi bi-phone"></i></div>
+    <div class="app-card-title">Crédits</div>
+    <div class="app-card-desc">Ventes de crédits téléphone</div>
+  </div>
+  <div class="app-card" style="background:var(--card-panier)" data-app="panier" data-url="{% url 'store:cart' %}">
+    <div class="app-card-icon"><i class="bi bi-cart3"></i></div>
+    <div class="app-card-title">Panier</div>
+    <div class="app-card-desc">Panier d'achats</div>
+  </div>
+  <div class="app-card" style="background:var(--card-etiquettes)" data-app="etiquettes" data-url="{% url 'store:price_labels' %}">
+    <div class="app-card-icon"><i class="bi bi-upc-scan"></i></div>
+    <div class="app-card-title">Étiquettes</div>
+    <div class="app-card-desc">Impression prix et codes</div>
+  </div>
+  <div class="app-card" style="background:var(--card-ia)" data-app="ia" data-url="{% url 'store:ai_feature_assistant' %}">
+    <div class="app-card-icon"><i class="bi bi-stars"></i></div>
+    <div class="app-card-title">Assistant IA</div>
+    <div class="app-card-desc">Intelligence artificielle</div>
+  </div>
+  <div class="app-card" style="background:var(--card-dashboard)" data-app="dashboard" data-url="{% url 'store:dashboard' %}">
+    <div class="app-card-icon"><i class="bi bi-bar-chart-fill"></i></div>
+    <div class="app-card-title">Tableau de bord</div>
+    <div class="app-card-desc">Courbes, stats et situation</div>
+  </div>
+  <div class="app-card" style="background:var(--card-parametres)" data-app="params" data-url="{% url 'store:store_settings' %}">
+    <div class="app-card-icon"><i class="bi bi-sliders"></i></div>
+    <div class="app-card-title">Paramètres</div>
+    <div class="app-card-desc">Configuration du magasin</div>
+  </div>
+</div>
+
+<!-- ===== MODAL OVERLAY ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="app-window" id="appWindow">
+    <div class="app-window-header" id="appWindowHeader">
+      <i class="app-window-icon bi bi-window-stack" id="appWindowIcon"></i>
+      <span class="app-window-title" id="appWindowTitle">Application</span>
+      <button class="btn btn-sm text-white" id="appWindowBack" style="background:rgba(255,255,255,.1);border-radius:8px;padding:.25rem .5rem;display:none;" title="Retour">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <button class="btn btn-sm text-white" id="appWindowReset" style="display:none;background:rgba(255,255,255,.1);border-radius:8px;padding:.25rem .5rem;" title="Réinitialiser">
+        <i class="bi bi-arrow-counterclockwise"></i>
+      </button>
+      <button class="btn-close-window" id="appWindowClose"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="app-window-body" id="appWindowBody">
+      <!-- Content loaded dynamically -->
+    </div>
+  </div>
+</div>
+
+
+  </div>
+
+  {% if store_settings.scripture_mode %}
+  <div class="row">
+    <div class="col-12">
+      <div class="scripture-panel">
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <i class="bi bi-book-half" style="color:var(--primary-a);"></i>
+          <span class="scripture-ref" id="scriptureRef">Proverbes 16:3</span>
+        </div>
+        <p class="scripture-text mb-0" id="scriptureText">Recommande à l'Éternel tes oeuvres, et tes projets réussiront.</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+// ===== APP CARD CLICK -> WINDOW MODAL =====
+const overlay = document.getElementById('modalOverlay');
+const appWindow = document.getElementById('appWindow');
+const appWindowHeader = document.getElementById('appWindowHeader');
+const appWindowBody = document.getElementById('appWindowBody');
+const appWindowTitle = document.getElementById('appWindowTitle');
+const appWindowIcon = document.getElementById('appWindowIcon');
+const appWindowClose = document.getElementById('appWindowClose');
+const appWindowReset = document.getElementById('appWindowReset');
+const appWindowBack = document.getElementById('appWindowBack');
+
+const APP_COLORS = {
+  caisse: '#16a34a', produits: '#2563eb', stock: '#f59e0b', appro: '#14b8a6',
+  clients: '#7c3aed', historique: '#ec4899', depenses: '#dc2626', dettes: '#d97706',
+  benefices: '#10b981', pertes: '#f43f5e', credits: '#06b6d4', panier: '#e11d48',
+  etiquettes: '#6366f1', ia: '#8b5cf6', params: '#64748b'
+};
+
+let currentApp = null;
+let saleProducts = [];
+let cart = [];
+let saleTotal = 0;
+let lastSaleResult = null;
+let saleSearchTimeout = null;
+
+document.querySelectorAll('.app-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    var app = this.dataset.app;
+    var url = this.dataset.url;
+    var color = APP_COLORS[app] || '#64748b';
+    var title = this.querySelector('.app-card-title').textContent;
+    openAppWindow(app, title, color, url);
+  });
+});
+
+document.querySelectorAll('[data-home-open]').forEach(function(button) {
+  button.addEventListener('click', function() {
+    var card = document.querySelector('.app-card[data-app="' + this.dataset.homeOpen + '"]');
+    if (card) card.click();
+  });
+});
+
+function updateHomeClock() {
+  var clock = document.getElementById('homeClock');
+  if (!clock) return;
+  var now = new Date();
+  clock.textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
+updateHomeClock();
+setInterval(updateHomeClock, 1000 * 30);
+
+function setHomeTemp(text) {
+  var temp = document.getElementById('homeTemp');
+  if (temp) temp.textContent = text;
+}
+
+function loadHomeTemperature() {
+  if (!navigator.onLine) {
+    setHomeTemp('Hors ligne');
+    return;
+  }
+  if (!navigator.geolocation) {
+    setHomeTemp('N/D');
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + encodeURIComponent(lat) +
+      '&longitude=' + encodeURIComponent(lon) + '&current_weather=true';
+    fetch(url, { cache: 'no-store' })
+      .then(function(response) { return response.ok ? response.json() : null; })
+      .then(function(data) {
+        if (data && data.current_weather && typeof data.current_weather.temperature === 'number') {
+          setHomeTemp(Math.round(data.current_weather.temperature) + '°C');
+        } else {
+          setHomeTemp('N/D');
+        }
+      })
+      .catch(function() { setHomeTemp('N/D'); });
+  }, function() {
+    setHomeTemp('N/D');
+  }, { maximumAge: 1000 * 60 * 20, timeout: 8000 });
+}
+loadHomeTemperature();
+window.addEventListener('online', loadHomeTemperature);
+window.addEventListener('offline', function() { setHomeTemp('Hors ligne'); });
+
+function openAppWindow(app, title, color, url) {
+  currentApp = app;
+  appWindowHeader.style.background = color;
+  appWindowTitle.textContent = title;
+  appWindowIcon.className = (app === 'caisse') ? 'bi bi-cash-stack' : 'bi bi-window-stack';
+
+  if (app === 'caisse') {
+    appWindowReset.style.display = 'inline-flex';
+    if (appWindowBack) appWindowBack.style.display = 'none';
+    loadSaleInterface();
+  } else {
+    appWindowReset.style.display = 'inline-flex';
+    if (appWindowBack) appWindowBack.style.display = 'inline-flex';
+    var sep = url.indexOf('?') > -1 ? '&' : '?';
+    appWindowBody.innerHTML = '<iframe src="' + url + sep + 'embed=1" loading="lazy" style="width:100%;height:100%;min-height:500px;border:none;border-radius:8px;"></iframe>';
+  }
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAppWindow() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  appWindowBody.innerHTML = '';
+  if (appWindowBack) appWindowBack.style.display = 'none';
+  cart = [];
+  saleTotal = 0;
+  lastSaleResult = null;
+}
+
+appWindowClose.addEventListener('click', closeAppWindow);
+if (appWindowReset) {
+  appWindowReset.addEventListener('click', function() {
+    if (currentApp === 'caisse') {
+      resetSale();
+    } else {
+      var iframe = appWindowBody.querySelector('iframe');
+      if (iframe) iframe.contentWindow.location.reload();
+    }
+  });
+}
+if (appWindowBack) {
+  appWindowBack.addEventListener('click', function() {
+    var iframe = appWindowBody.querySelector('iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.history.back();
+    }
+  });
+}
+// Désactivé : clic sur l'arrière-plan ne ferme plus la fenêtre
+// overlay.addEventListener('click', function(e) {
+//   if (e.target === overlay) closeAppWindow();
+// });
+
+// ===== SALE INTERFACE (built-in via API) =====
+function loadSaleInterface() {
+  appWindowBody.innerHTML =
+    '<div class="sale-layout">' +
+      '<div class="sale-products">' +
+        '<div class="sale-customer">' +
+          '<input type="text" id="saleCustomerName" placeholder="Nom client (facultatif)">' +
+          '<input type="tel" id="saleCustomerPhone" placeholder="Téléphone (facultatif)">' +
+        '</div>' +
+        '<div class="sale-search-box">' +
+          '<i class="bi bi-search"></i>' +
+          '<input type="search" class="form-control" id="saleProductSearch" placeholder="Rechercher par nom ou code-barres..." autocomplete="off">' +
+        '</div>' +
+        '<div class="sale-results" id="saleResults"><div class="sale-no-results">Commencez à taper pour chercher des produits</div></div>' +
+        '<div style="display:flex;gap:.35rem;flex-wrap:wrap;">' +
+          '<button class="btn btn-sm btn-outline-secondary" onclick="closeAppWindow()"><i class="bi bi-house-door me-1"></i>Accueil</button>' +
+          '<button class="btn btn-sm btn-outline-danger" onclick="resetSale()"><i class="bi bi-arrow-counterclockwise me-1"></i>Réinitialiser</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="sale-cart">' +
+        '<div class="sale-cart-title"><i class="bi bi-cart me-1"></i>Panier</div>' +
+        '<div class="sale-cart-items" id="saleCartItems">' +
+          '<div class="sale-empty-cart"><i class="bi bi-cart"></i><p>Panier vide<br>Ajoutez des produits</p></div>' +
+        '</div>' +
+        '<div class="sale-cart-total"><span>Total</span><span id="saleTotalDisplay">0 FCFA</span></div>' +
+        '<div class="sale-cart-actions" id="saleActions">' +
+          '<button class="btn btn-success" id="validateSaleBtn" disabled><i class="bi bi-check2-circle me-1"></i>Valider la vente</button>' +
+        '</div>' +
+        '<div class="sale-actions-after" id="saleActionsAfter">' +
+          '<div class="d-flex gap-1 flex-wrap">' +
+            '<button class="btn btn-sm btn-outline-primary" id="modifySaleBtn"><i class="bi bi-pencil me-1"></i>Modifier</button>' +
+            '<button class="btn btn-sm btn-outline-danger" id="cancelSaleBtn"><i class="bi bi-x-circle me-1"></i>Annuler</button>' +
+            '<button class="btn btn-sm btn-outline-secondary" id="printInvoiceBtn"><i class="bi bi-printer me-1"></i>Facture</button>' +
+            '<button class="btn btn-sm btn-outline-secondary" id="printReceiptBtn"><i class="bi bi-receipt me-1"></i>Ticket</button>' +
+          '</div>' +
+          '<button class="btn btn-primary" id="doneSaleBtn"><i class="bi bi-check-lg me-1"></i>Terminé</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  var searchInput = document.getElementById('saleProductSearch');
+  var resultsDiv = document.getElementById('saleResults');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      clearTimeout(saleSearchTimeout);
+      var q = this.value.trim();
+      if (q.length < 1) {
+        resultsDiv.innerHTML = '<div class="sale-no-results">Commencez à taper pour chercher des produits</div>';
+        return;
+      }
+      saleSearchTimeout = setTimeout(function() { searchProducts(q); }, 250);
+    });
+  }
+
+  var validateBtn = document.getElementById('validateSaleBtn');
+  var doneBtn = document.getElementById('doneSaleBtn');
+  var modifyBtn = document.getElementById('modifySaleBtn');
+  var cancelBtn = document.getElementById('cancelSaleBtn');
+  var printInvBtn = document.getElementById('printInvoiceBtn');
+  var printRecBtn = document.getElementById('printReceiptBtn');
+
+  if (validateBtn) validateBtn.addEventListener('click', validateSale);
+  if (doneBtn) {
+    doneBtn.addEventListener('click', function() {
+      resetSale();
+      var actions = document.getElementById('saleActions');
+      var after = document.getElementById('saleActionsAfter');
+      if (actions) actions.style.display = '';
+      if (after) after.classList.remove('show');
+    });
+  }
+  if (modifyBtn) {
+    modifyBtn.addEventListener('click', function() {
+      var actions = document.getElementById('saleActions');
+      var after = document.getElementById('saleActionsAfter');
+      var vb = document.getElementById('validateSaleBtn');
+      if (actions) actions.style.display = '';
+      if (after) after.classList.remove('show');
+      if (vb) vb.disabled = false;
+    });
+  }
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', function() {
+      if (lastSaleResult && lastSaleResult.id) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/cancel-sale/' + lastSaleResult.id + '/', true);
+        xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+        xhr.onload = function() {
+          resetSale();
+          var actions = document.getElementById('saleActions');
+          var after = document.getElementById('saleActionsAfter');
+          if (actions) actions.style.display = '';
+          if (after) after.classList.remove('show');
+        };
+        xhr.send();
+      }
+    });
+  }
+  if (printInvBtn) {
+    printInvBtn.addEventListener('click', function() {
+      if (lastSaleResult && lastSaleResult.id) {
+        window.location.href = lastSaleResult.invoice_url || ('/ventes/' + lastSaleResult.id + '/facture/');
+      }
+    });
+  }
+  if (printRecBtn) {
+    printRecBtn.addEventListener('click', function() {
+      if (lastSaleResult && lastSaleResult.id) {
+        window.location.href = lastSaleResult.receipt_url || ('/ventes/' + lastSaleResult.id + '/ticket/');
+      }
+    });
+  }
+}
+
+
+// ===== PRINT INVOICE / RECEIPT =====
+function imprimerDepuisUrl(url) {
+  var iframe = document.createElement('iframe');
+  iframe.style.position = 'fixed';
+  iframe.style.top = '-9999px';
+  iframe.style.left = '-9999px';
+  iframe.style.width = '1px';
+  iframe.style.height = '1px';
+  iframe.onload = function() {
+    setTimeout(function() {
+      try { iframe.contentWindow.print(); } catch(e) {
+        try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch(e2) {
+          window.location.href = url;
+        }
+      }
+    }, 1000);
+  };
+  iframe.src = url;
+  document.body.appendChild(iframe);
+}
+
+function imprimerFacture(id) { imprimerDepuisUrl('/ventes/' + id + '/facture/'); }
+function imprimerTicket(id) { imprimerDepuisUrl('/ventes/' + id + '/ticket/'); }
+
+// ===== PRODUCT SEARCH (via API) =====
+function searchProducts(q) {
+  var resultsDiv = document.getElementById('saleResults');
+  if (!resultsDiv) return;
+  resultsDiv.innerHTML = '<div class="sale-no-results">Recherche...</div>';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/api/products/?q=' + encodeURIComponent(q), true);
+  xhr.onload = function() {
+    if (xhr.status !== 200) {
+      resultsDiv.innerHTML = '<div class="sale-no-results">Erreur de recherche</div>';
+      return;
+    }
+    var products;
+    try { products = JSON.parse(xhr.responseText); } catch(e) {
+      resultsDiv.innerHTML = '<div class="sale-no-results">Erreur de recherche</div>';
+      return;
+    }
+    saleProducts = products;
+    if (products.length === 0) {
+      resultsDiv.innerHTML = '<div class="sale-no-results">Aucun produit trouvé</div>';
+      return;
+    }
+    resultsDiv.innerHTML = '';
+    for (var i = 0; i < products.length; i++) {
+      var p = products[i];
+      var el = document.createElement('div');
+      el.className = 'sale-product-item';
+      el.setAttribute('data-id', p.id);
+      el.setAttribute('data-name', p.name);
+      el.setAttribute('data-price', p.price);
+      el.setAttribute('data-stock', p.stock);
+      if (p.image) {
+        var img = document.createElement('img');
+        img.src = p.image;
+        img.alt = p.name;
+        img.loading = 'lazy';
+        el.appendChild(img);
+      } else {
+        var noImg = document.createElement('div');
+        noImg.className = 'no-img';
+        noImg.innerHTML = '<i class="bi bi-image"></i>';
+        el.appendChild(noImg);
+      }
+      var nameDiv = document.createElement('div');
+      nameDiv.className = 'p-name';
+      nameDiv.textContent = p.name;
+      el.appendChild(nameDiv);
+      var priceDiv = document.createElement('div');
+      priceDiv.className = 'p-price';
+      priceDiv.textContent = p.price + ' FCFA';
+      el.appendChild(priceDiv);
+      var stockDiv = document.createElement('div');
+      stockDiv.className = 'p-stock';
+      stockDiv.textContent = 'Stock: ' + p.stock;
+      el.appendChild(stockDiv);
+      el.addEventListener('click', function() {
+        addToCart(parseInt(this.getAttribute('data-id')), this.getAttribute('data-name'), parseFloat(this.getAttribute('data-price')), parseInt(this.getAttribute('data-stock')));
+      });
+      resultsDiv.appendChild(el);
+    }
+  };
+  xhr.onerror = function() {
+    resultsDiv.innerHTML = '<div class="sale-no-results">Erreur de recherche</div>';
+  };
+  xhr.send();
+}
+
+// ===== CART MANAGEMENT =====
+function addToCart(id, name, price, stock) {
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].id === id) {
+      cart[i].qty += 1;
+      renderCart();
+      return;
+    }
+  }
+  cart.push({ id: id, name: name, price: price, stock: stock, qty: 1 });
+  renderCart();
+}
+
+function removeFromCart(id) {
+  var newCart = [];
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].id !== id) newCart.push(cart[i]);
+  }
+  cart = newCart;
+  renderCart();
+}
+
+function updateQty(id, qty) {
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].id === id) {
+      cart[i].qty = Math.max(0.01, parseFloat(qty) || 1);
+      if (cart[i].qty <= 0) {
+        removeFromCart(id);
+        return;
+      }
+    }
+  }
+  renderCart();
+}
+
+function renderCart() {
+  var container = document.getElementById('saleCartItems');
+  var totalDisplay = document.getElementById('saleTotalDisplay');
+  var validateBtn = document.getElementById('validateSaleBtn');
+  if (!container || !totalDisplay || !validateBtn) return;
+
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="sale-empty-cart"><i class="bi bi-cart"></i><p>Panier vide<br>Ajoutez des produits</p></div>';
+    totalDisplay.textContent = '0 FCFA';
+    validateBtn.disabled = true;
+    return;
+  }
+
+  var total = 0;
+  var html = '';
+  for (var i = 0; i < cart.length; i++) {
+    var item = cart[i];
+    var lineTotal = item.price * item.qty;
+    total += lineTotal;
+    html += '<div class="sale-cart-item">' +
+      '<span class="ci-name">' + escapeHtml(item.name) + '</span>' +
+      '<span class="ci-qty"><input type="number" value="' + item.qty + '" min="0.01" step="1" data-id="' + item.id + '" class="cart-qty-input"></span>' +
+      '<span class="ci-total">' + lineTotal.toFixed(0) + ' FCFA</span>' +
+      '<button class="ci-remove" data-id="' + item.id + '"><i class="bi bi-x"></i></button>' +
+    '</div>';
+  }
+  container.innerHTML = html;
+
+  saleTotal = total;
+  totalDisplay.textContent = total.toFixed(0) + ' FCFA';
+  validateBtn.disabled = false;
+
+  var qtyInputs = container.querySelectorAll('.cart-qty-input');
+  for (var j = 0; j < qtyInputs.length; j++) {
+    qtyInputs[j].addEventListener('change', function() {
+      updateQty(parseInt(this.getAttribute('data-id')), this.value);
+    });
+  }
+  var rmBtns = container.querySelectorAll('.ci-remove');
+  for (var k = 0; k < rmBtns.length; k++) {
+    rmBtns[k].addEventListener('click', function() {
+      removeFromCart(parseInt(this.getAttribute('data-id')));
+    });
+  }
+}
+
+function resetSale() {
+  cart = [];
+  saleTotal = 0;
+  lastSaleResult = null;
+  var searchInput = document.getElementById('saleProductSearch');
+  if (searchInput) searchInput.value = '';
+  var resultsDiv = document.getElementById('saleResults');
+  if (resultsDiv) resultsDiv.innerHTML = '<div class="sale-no-results">Commencez à taper pour chercher des produits</div>';
+  renderCart();
+  var actions = document.getElementById('saleActions');
+  var after = document.getElementById('saleActionsAfter');
+  if (actions) actions.style.display = '';
+  if (after) after.classList.remove('show');
+  var cn = document.getElementById('saleCustomerName');
+  var cp = document.getElementById('saleCustomerPhone');
+  if (cn) cn.value = '';
+  if (cp) cp.value = '';
+}
+
+function escapeHtml(text) {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(text));
+  return div.innerHTML;
+}
+
+// ===== VALIDATE SALE =====
+function validateSale() {
+  if (cart.length === 0) return;
+
+  var items = [];
+  for (var i = 0; i < cart.length; i++) {
+    items.push({ product_id: cart[i].id, quantity: cart[i].qty, sale_mode: 'piece' });
+  }
+  var data = JSON.stringify({
+    items: items,
+    amount_paid: saleTotal,
+    payment_method: 'cash',
+    customer_name: document.getElementById('saleCustomerName') ? document.getElementById('saleCustomerName').value : '',
+    customer_phone: document.getElementById('saleCustomerPhone') ? document.getElementById('saleCustomerPhone').value : '',
+    currency: 'XOF'
+  });
+
+  var validateBtn = document.getElementById('validateSaleBtn');
+  if (validateBtn) {
+    validateBtn.disabled = true;
+    validateBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Traitement...';
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/create-sale/', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+  xhr.onload = function() {
+    if (xhr.status === 201) {
+      var result = JSON.parse(xhr.responseText);
+      if (result.id) {
+        lastSaleResult = result;
+        var actions = document.getElementById('saleActions');
+        var after = document.getElementById('saleActionsAfter');
+        if (actions) actions.style.display = 'none';
+        if (after) {
+          after.classList.add('show');
+          var invBtn = after.querySelector('#printInvoiceBtn');
+          var recBtn = after.querySelector('#printReceiptBtn');
+          if (invBtn) {
+            invBtn.outerHTML = '<button class="btn btn-sm btn-outline-secondary" id="printInvoiceBtn" onclick="imprimerFacture(' + result.id + ')"><i class="bi bi-file-earmark-text me-1"></i>Facture</button>';
+          }
+          if (recBtn) {
+            recBtn.outerHTML = '<button class="btn btn-sm btn-outline-secondary" id="printReceiptBtn" onclick="imprimerTicket(' + result.id + ')"><i class="bi bi-receipt me-1"></i>Ticket</button>';
+          }
+        }
+        if (validateBtn) {
+          validateBtn.disabled = false;
+          validateBtn.innerHTML = '<i class="bi bi-check2-circle me-1"></i>Valider la vente';
+        }
+        return;
+      }
+    }
+    document.querySelector('.sale-cart').insertAdjacentHTML('beforeend',
+      '<div style="padding:8px;margin-top:8px;background:#fee2e2;border-radius:8px;text-align:center;font-weight:600;font-size:.8rem">Erreur serveur: statut ' + xhr.status + '</div>');
+    if (validateBtn) {
+      validateBtn.disabled = false;
+      validateBtn.innerHTML = '<i class="bi bi-check2-circle me-1"></i>Valider la vente';
+    }
+  };
+  xhr.onerror = function() {
+    document.querySelector('.sale-cart').insertAdjacentHTML('beforeend',
+      '<div style="padding:8px;margin-top:8px;background:#fee2e2;border-radius:8px;text-align:center;font-weight:600;font-size:.8rem">Erreur réseau</div>');
+    if (validateBtn) {
+      validateBtn.disabled = false;
+      validateBtn.innerHTML = '<i class="bi bi-check2-circle me-1"></i>Valider la vente';
+    }
+  };
+  xhr.send(data);
+}
+
+function getCSRFToken() {
+  var cookies = document.cookie.split(';');
+  for (var i = 0; i < cookies.length; i++) {
+    var c = cookies[i].trim();
+    if (c.indexOf('csrftoken=') === 0) return decodeURIComponent(c.substring(10));
+  }
+  return '';
+}
+
+{% if store_settings.scripture_mode %}
+const scriptures = [
+  { ref: 'Proverbes 16:3', text: "Recommande à l'Éternel tes oeuvres, et tes projets réussiront." },
+  { ref: 'Psaume 90:17', text: "Affermis l'ouvrage de nos mains, oui, affermis l'ouvrage de nos mains." },
+  { ref: 'Colossiens 3:23', text: "Tout ce que vous faites, faites-le de bon coeur, comme pour le Seigneur." },
+  { ref: 'Proverbes 11:25', text: "L'âme bienfaisante sera rassasiée, et celui qui arrose sera lui-même arrosé." },
+  { ref: 'Philippiens 4:13', text: "Je puis tout par celui qui me fortifie." },
+  { ref: 'Jérémie 29:11', text: "Car je connais les projets que j'ai formés sur vous, projets de paix et non de malheur." },
+  { ref: 'Proverbes 3:9-10', text: "Honore l'Éternel avec tes biens, et tes greniers seront remplis d'abondance." },
+  { ref: 'Matthieu 6:33', text: "Cherchez premièrement le royaume et la justice de Dieu; et toutes ces choses vous seront données par-dessus." },
+  { ref: 'Deutéronome 8:18', text: "C'est l'Éternel qui te donne la force de t'enrichir." },
+  { ref: 'Psaume 1:3', text: "Il est comme un arbre planté près d'un courant d'eau, qui donne son fruit en sa saison." },
+  { ref: 'Proverbes 10:22', text: "C'est la bénédiction de l'Éternel qui enrichit, et la douleur ne s'y mêle pas." },
+  { ref: 'Ecclésiaste 3:1', text: "Il y a un temps pour tout, un temps pour toute chose sous les cieux." },
+  { ref: 'Proverbes 22:29', text: "Si tu vois un homme habile dans son ouvrage, il se tient devant les rois." },
+  { ref: 'Psaume 37:4', text: "Fais de l'Éternel tes délices, et il te donnera ce que ton coeur désire." },
+  { ref: 'Josué 1:8', text: "Que ce livre de la loi ne s'éloigne point de ta bouche; médite-le jour et nuit." },
+  { ref: 'Proverbes 27:23', text: "Connais bien l'état de tes brebis, donne tes soins à tes troupeaux." },
+  { ref: 'Malachie 3:10', text: "Mettez-moi à l'épreuve, dit l'Éternel, et vous verrez si je n'ouvre pas les écluses des cieux." },
+  { ref: 'Psaume 20:5', text: "Que l'Éternel accomplisse tous tes desseins!" },
+  { ref: 'Romains 8:28', text: "Toutes choses concourent au bien de ceux qui aiment Dieu." },
+  { ref: 'Proverbes 13:11', text: "La richesse mal acquise diminue, mais celui qui amasse peu à peu l'augmente." },
+];
+let scriptureIndex = 0;
+const scriptureRef = document.getElementById('scriptureRef');
+const scriptureText = document.getElementById('scriptureText');
+if (scriptureRef && scriptureText) {
+  setInterval(() => {
+    scriptureText.classList.add('is-changing');
+    setTimeout(() => {
+      scriptureIndex = (scriptureIndex + 1) % scriptures.length;
+      scriptureRef.textContent = scriptures[scriptureIndex].ref;
+      scriptureText.textContent = scriptures[scriptureIndex].text;
+      scriptureText.classList.remove('is-changing');
+    }, 350);
+  }, 6000);
+}
+{% endif %}
+
+</script>
+{% endblock %}

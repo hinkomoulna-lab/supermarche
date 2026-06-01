@@ -1,0 +1,64 @@
+{% extends 'store/base.html' %}
+{% block title %}Cartes cadeaux - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1">Cartes cadeaux</h1>
+            <p class="text-secondary mb-0">Gère les cartes cadeaux et consulte les soldes.</p>
+        </div>
+        <a class="btn btn-primary" href="{% url 'store:giftcard_create' %}"><i class="bi bi-plus-circle me-1"></i>Vendre une carte</a>
+    </div>
+</div>
+
+<div class="table-shell">
+<table class="table app-table table-striped align-middle mb-0">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Client</th>
+            <th>Solde initial</th>
+            <th>Solde restant</th>
+            <th>Créée le</th>
+            <th>Expire le</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for card in cards %}
+            <tr>
+                <td><span class="badge fs-6" style="background:var(--surface-bg);color:var(--app-text)">{{ card.code }}</span></td>
+                <td>{% if card.customer %}{{ card.customer.name }}{% else %}-{% endif %}</td>
+                <td>{{ card.initial_balance|floatformat:0 }} {{ card.get_currency_display|default:'FCFA' }}</td>
+                <td><strong>{{ card.balance|floatformat:0 }}</strong> FCFA</td>
+                <td>{{ card.created_at|date:'d/m/Y H:i' }}</td>
+                <td>{% if card.expires_at %}{{ card.expires_at|date:'d/m/Y' }}{% else %}-{% endif %}</td>
+                <td>
+                    {% if not card.active %}
+                        <span class="badge bg-secondary">Désactivée</span>
+                    {% elif card.is_expired %}
+                        <span class="badge bg-danger">Expirée</span>
+                    {% elif card.balance <= 0 %}
+                        <span class="badge bg-warning">Épuisée</span>
+                    {% else %}
+                        <span class="badge bg-success">Active</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'store:giftcard_detail' card.pk %}"><i class="bi bi-eye"></i></a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:giftcard_toggle_active' card.pk %}">
+                        {% if card.active %}<i class="bi bi-pause-circle"></i>{% else %}<i class="bi bi-play-circle"></i>{% endif %}
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="8" class="text-center">Aucune carte cadeau.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

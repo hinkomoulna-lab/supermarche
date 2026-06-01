@@ -1,0 +1,51 @@
+{% extends 'store/base.html' %}
+{% block title %}Panier - Supermarché{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Panier</h1>
+        <p class="text-muted">Vérifie les articles avant de valider la vente.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="{% url 'store:product_list' %}">Ajouter des produits</a>
+</div>
+{% if items %}
+    <div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Produit</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Sous-total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.price }} FCFA</td>
+                    <td>{{ item.quantity }} {{ item.product.get_unit_display }}</td>
+                    <td>{{ item.subtotal }} FCFA</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'store:remove_from_cart' item.product.id %}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <div>
+            <strong>Total :</strong> {{ total }} FCFA
+        </div>
+        <form method="post" action="{% url 'store:cart_checkout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Valider la vente</button>
+        </form>
+    </div>
+{% else %}
+    <div class="alert alert-info">Le panier est vide.</div>
+{% endif %}
+{% endblock %}

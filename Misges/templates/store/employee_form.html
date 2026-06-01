@@ -1,0 +1,56 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">{{ title }}</h1>
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label class="form-label">Prénom</label>
+                {{ form.first_name }}{{ form.first_name.errors }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Nom</label>
+                {{ form.last_name }}{{ form.last_name.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Téléphone</label>
+                {{ form.phone }}{{ form.phone.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Email</label>
+                {{ form.email }}{{ form.email.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Poste</label>
+                {{ form.role }}{{ form.role.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Salaire (FCFA)</label>
+                {{ form.salary }}{{ form.salary.errors }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Date d'embauche</label>
+                {{ form.hire_date }}{{ form.hire_date.errors }}
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <div class="form-check">
+                    {{ form.is_active }}
+                    <label class="form-check-label">Actif</label>
+                    {{ form.is_active.errors }}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Notes</label>
+                {{ form.notes }}{{ form.notes.errors }}
+            </div>
+            <div class="col-md-12 d-flex gap-2">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary" href="{% url 'store:employee_list' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,338 @@
+{% extends 'store/base.html' %}
+{% block title %}Manuel d'utilisation - Supermarché{% endblock %}
+{% block body_class %}manual-page{% endblock %}
+
+{% block content %}
+<style>
+.manual-wrapper { max-width: 900px; margin: 0 auto; }
+.manual-header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 3px solid var(--primary-a); margin-bottom: 2rem; }
+.manual-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: .25rem; }
+.manual-header .subtitle { color: var(--muted-text); font-size: 1.1rem; }
+.manual-header .version { color: var(--muted-text); font-size: .85rem; margin-top: .5rem; }
+.manual-toc { background: var(--surface-bg); border: 1px solid var(--surface-border); border-radius: 8px; padding: 1.5rem 2rem; margin-bottom: 2rem; }
+.manual-toc h2 { font-size: 1.1rem; margin-bottom: .75rem; }
+.manual-toc ol { columns: 2; column-gap: 2rem; padding-left: 1.2rem; }
+.manual-toc li { margin-bottom: .3rem; font-size: .875rem; break-inside: avoid; }
+.manual-toc a { color: var(--primary-a); text-decoration: none; }
+.manual-toc a:hover { text-decoration: underline; }
+.manual-section { margin-bottom: 2.5rem; }
+.manual-section h2 { font-size: 1.4rem; font-weight: 700; padding-bottom: .4rem; border-bottom: 2px solid var(--primary-a); margin-bottom: 1rem; color: var(--app-text); }
+.manual-section h3 { font-size: 1.05rem; font-weight: 600; margin: 1.2rem 0 .5rem; color: var(--app-text); }
+.manual-section p { font-size: .9rem; line-height: 1.6; color: var(--app-text); margin-bottom: .6rem; }
+.manual-section ul { padding-left: 1.2rem; margin-bottom: .6rem; }
+.manual-section li { font-size: .88rem; line-height: 1.5; margin-bottom: .3rem; color: var(--app-text); }
+.manual-footer { text-align: center; padding: 2rem; border-top: 1px solid var(--surface-border); color: var(--muted-text); font-size: .85rem; margin-top: 2rem; }
+.print-btn { position: fixed; bottom: 2rem; right: 2rem; z-index: 1030; width: 52px; height: 52px; border-radius: 50%; background: var(--primary-a); color: #fff; border: none; box-shadow: 0 4px 20px rgba(0,0,0,.15); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; cursor: pointer; transition: transform .15s; }
+.print-btn:hover { transform: scale(1.1); }
+@media print {
+    .header-bar, .app-sidebar, .bottom-nav, .breadcrumb-bar, .print-btn, .page-header, .app-footer, .toast-container { display: none !important; }
+    .app-content { margin-left: 0 !important; padding: 0 !important; animation: none !important; }
+    body { padding-top: 0 !important; background: #fff !important; color: #000 !important; }
+    .manual-wrapper { max-width: 100%; }
+    .manual-toc ol { columns: 1; }
+    .manual-section h2 { border-bottom-color: #000; }
+    .manual-section a { color: #000 !important; }
+    .manual-header { border-bottom-color: #000; }
+    @page { margin: 1.5cm; }
+}
+</style>
+
+<div class="manual-wrapper">
+    <button class="print-btn" onclick="window.print()" title="Imprimer / Enregistrer en PDF"><i class="bi bi-printer"></i></button>
+
+    <div class="manual-header">
+        <h1>Manuel d'utilisation</h1>
+        <div class="subtitle">Logiciel de Gestion de Supermarché</div>
+        <div class="version">Version {{ store_settings.store_name|default:'1.0' }}</div>
+    </div>
+
+    <div class="manual-toc">
+        <h2><i class="bi bi-list-ul me-1"></i>Table des matières</h2>
+        <ol>
+            <li><a href="#s1">Présentation générale</a></li>
+            <li><a href="#s2">Tableau de bord</a></li>
+            <li><a href="#s3">Gestion des produits</a></li>
+            <li><a href="#s4">Ventes et caisse</a></li>
+            <li><a href="#s5">Achats et approvisionnements</a></li>
+            <li><a href="#s6">Dépenses et dettes</a></li>
+            <li><a href="#s7">Clients et crédits téléphoniques</a></li>
+            <li><a href="#s8">Caisse et sessions</a></li>
+            <li><a href="#s9">Retours fournisseurs</a></li>
+            <li><a href="#s10">Promotions</a></li>
+            <li><a href="#s11">Recettes / Produits composites</a></li>
+            <li><a href="#s12">Employés et pointage</a></li>
+            <li><a href="#s13">Paie et RH</a></li>
+            <li><a href="#s14">Rapports et marges</a></li>
+            <li><a href="#s15">Paramètres et configuration</a></li>
+            <li><a href="#s16">Sauvegarde et base de données</a></li>
+            <li><a href="#s17">Raccourcis clavier</a></li>
+        </ol>
+    </div>
+
+    <div id="s1" class="manual-section">
+        <h2>1. Présentation générale</h2>
+        <p>Ce logiciel de gestion de supermarché permet de gérer l'intégralité des opérations d'un point de vente : de la réception des marchandises à la vente au comptoir, en passant par le suivi des stocks, des employés, des finances et de la relation client. L'interface est conçue pour être utilisée aussi bien sur ordinateur que sur tablette et téléphone mobile.</p>
+        <h3>Fonctionnalités principales</h3>
+        <ul>
+            <li>Caisse tactile avec scan de code-barres</li>
+            <li>Gestion complète des stocks et inventaire</li>
+            <li>Module RH avec pointage et paie</li>
+            <li>Recettes / nomenclature (BOM) pour produits composites</li>
+            <li>Rapports détaillés et valorisation du stock</li>
+            <li>Sauvegarde automatique de la base de données</li>
+            <li>Interface responsive (mobile, tablette, desktop)</li>
+            <li>Thèmes d'interface personnalisables</li>
+        </ul>
+    </div>
+
+    <div id="s2" class="manual-section">
+        <h2>2. Tableau de bord</h2>
+        <p>La page d'accueil affiche un tableau de bord avec des tuiles d'accès rapide aux différentes fonctionnalités : Caisse, Produits, Stock, Approvisionnements, Clients, Historique, Dépenses, Dettes, Bénéfices, etc.</p>
+        <h3>Barre de navigation latérale</h3>
+        <p>La barre latérale gauche permet d'accéder à toutes les sections. Elle peut être réduite (mini-sidebar) à l'aide du bouton hamburger ☰. Sur mobile, elle se cache automatiquement et s'affiche par-dessus le contenu.</p>
+        <h3>Barre du haut</h3>
+        <p>La barre d'en-tête contient le nom du magasin, la barre de recherche globale, le statut réseau (en ligne/hors ligne), le compteur de notifications, le compteur du panier et le menu utilisateur.</p>
+        <h3>Navigation mobile</h3>
+        <p>Sur téléphone, une barre de navigation inférieure fixe donne accès aux 5 sections principales : Accueil, Vente, Panier, Produits, Plus.</p>
+    </div>
+
+    <div id="s3" class="manual-section">
+        <h2>3. Gestion des produits</h2>
+        <p>La section Produits permet de créer, modifier, supprimer et gérer le stock de tous les articles du magasin.</p>
+        <h3>Créer un produit</h3>
+        <ul>
+            <li>Aller dans Produits → Gérer → Nouveau produit</li>
+            <li>Renseigner le nom, le code (automatique si vide), le code-barres (scannable)</li>
+            <li>Sélectionner la catégorie ou créer une nouvelle catégorie</li>
+            <li>Définir l'unité de vente (pièce, kg, litre, etc.)</li>
+            <li>Saisir le prix de vente et le prix d'achat (coût)</li>
+            <li>Définir le stock initial et le stock minimum d'alerte</li>
+            <li>Optionnel : taille du paquet, prix du paquet, taille du carton, date de péremption</li>
+            <li>Enregistrer</li>
+        </ul>
+        <h3>Gestion du stock</h3>
+        <p>Depuis la liste des produits, vous pouvez : approvisionner (augmenter le stock), effectuer un stock rapide, voir l'historique des prix, dupliquer un produit, et imprimer des étiquettes de prix avec code-barres.</p>
+        <h3>Import/Export</h3>
+        <p>Les produits peuvent être importés en masse depuis un fichier Excel et exportés vers Excel ou CSV. Des actions par lot (modification de prix, changement de catégorie) sont disponibles dans la vue de gestion.</p>
+    </div>
+
+    <div id="s4" class="manual-section">
+        <h2>4. Ventes et caisse</h2>
+        <p>Le module de vente gère l'encaissement des produits avec plusieurs modes de vente.</p>
+        <h3>Vente simple</h3>
+        <ul>
+            <li>Aller dans Caisse ou Vente</li>
+            <li>Scanner le code-barres d'un produit ou le sélectionner dans la liste</li>
+            <li>Saisir la quantité et le mode (pièce, paquet, carton)</li>
+            <li>Le total est calculé automatiquement</li>
+            <li>Choisir le mode de paiement (espèces, Orange Money, etc.)</li>
+            <li>Valider la vente</li>
+        </ul>
+        <h3>Caisse tactile (POS)</h3>
+        <p>La vue Caisse tactile est optimisée pour les écrans tactiles avec des grandes tuiles produits. Un scan de code-barres intégré (via caméra) permet d'ajouter rapidement les produits. Le panier s'affiche à droite et les totaux sont mis à jour en temps réel.</p>
+        <h3>Panier</h3>
+        <p>Le panier permet d'accumuler des produits avant de finaliser une vente. Accessible via l'icône panier dans l'en-tête ou le bouton flottant sur mobile. Vous pouvez ajouter/supprimer des articles depuis la page produit.</p>
+        <h3>Historique et détail des ventes</h3>
+        <p>Toutes les ventes sont enregistrées avec date, heure, total, mode de paiement et statut de paiement. Vous pouvez visualiser, modifier ou supprimer une vente, et imprimer une facture ou un ticket.</p>
+    </div>
+
+    <div id="s5" class="manual-section">
+        <h2>5. Achats et approvisionnements</h2>
+        <p>Le module d'approvisionnement permet de gérer les entrées de stock.</p>
+        <h3>Approvisionnement direct</h3>
+        <ul>
+            <li>Depuis la fiche produit, cliquer sur Approvisionner</li>
+            <li>Saisir la quantité ajoutée et le prix d'achat</li>
+            <li>Le stock est automatiquement augmenté</li>
+            <li>L'historique des prix d'achat est conservé</li>
+        </ul>
+        <h3>Réapprovisionnement automatique</h3>
+        <p>La vue Réassort automatique liste les produits dont le stock est inférieur au seuil minimum. Vous pouvez générer une commande fournisseur en un clic.</p>
+        <h3>Commandes fournisseurs</h3>
+        <p>Les bons de commande permettent de passer commande auprès des fournisseurs. À la réception, vous validez la commande et le stock est mis à jour automatiquement.</p>
+    </div>
+
+    <div id="s6" class="manual-section">
+        <h2>6. Dépenses et dettes</h2>
+        <p>Suivez les dépenses courantes du magasin (loyer, électricité, salaires, etc.) ainsi que les dettes actives et passives.</p>
+        <h3>Dépenses</h3>
+        <ul>
+            <li>Aller dans Dépenses → Nouvelle dépense</li>
+            <li>Saisir le montant, la catégorie et la date</li>
+            <li>Optionnel : ajouter une note</li>
+        </ul>
+        <h3>Dettes</h3>
+        <ul>
+            <li>Aller dans Dettes → Nouvelle dette</li>
+            <li>Saisir le contact, le montant, la date d'échéance</li>
+            <li>Marquer comme réglée une fois remboursée</li>
+            <li>Les dettes en retard sont surlignées en rouge</li>
+        </ul>
+    </div>
+
+    <div id="s7" class="manual-section">
+        <h2>7. Clients et crédits téléphoniques</h2>
+        <p>Gérez vos clients et leur historique d'achats, ainsi que la vente de crédits téléphoniques.</p>
+        <ul>
+            <li>Aller dans Clients pour voir la liste</li>
+            <li>Cliquer sur un client pour voir son historique d'achats</li>
+            <li>Configurer les opérateurs et montants dans Crédits téléphoniques</li>
+            <li>Vendre un crédit depuis la caisse ou depuis le module dédié</li>
+            <li>Suivre les achats de crédits dans l'historique</li>
+        </ul>
+    </div>
+
+    <div id="s8" class="manual-section">
+        <h2>8. Caisse et sessions</h2>
+        <p>Le module Caisse permet d'ouvrir et fermer des sessions de caisse pour suivre les encaissements et les mouvements d'argent.</p>
+        <ul>
+            <li>Ouvrir une session avec le montant de départ</li>
+            <li>Les ventes sont automatiquement enregistrées dans la session en cours</li>
+            <li>Fermer la session : le solde final est calculé automatiquement</li>
+            <li>Un rapport de clôture récapitule les ventes et mouvements</li>
+            <li>Ajouter des mouvements (retrait/dépôt) via Caisse → Mouvement</li>
+        </ul>
+    </div>
+
+    <div id="s9" class="manual-section">
+        <h2>9. Retours fournisseurs</h2>
+        <p>Gérez les retours de produits aux fournisseurs (produits défectueux, périmés, etc.) avec suivi des remboursements.</p>
+        <ul>
+            <li>Aller dans Retours → Nouveau retour</li>
+            <li>Sélectionner le fournisseur et ajouter les produits retournés</li>
+            <li>Le montant du remboursement est calculé automatiquement</li>
+            <li>Approuver ou rejeter le retour</li>
+        </ul>
+    </div>
+
+    <div id="s10" class="manual-section">
+        <h2>10. Promotions</h2>
+        <p>Créez des promotions sur les produits pour une période donnée.</p>
+        <ul>
+            <li>Aller dans Promotions → Nouvelle promotion</li>
+            <li>Sélectionner un produit, définir le prix promotionnel</li>
+            <li>Définir les dates de début et fin</li>
+            <li>Activer/désactiver la promotion</li>
+            <li>Les promotions actives sont affichées dans la caisse</li>
+        </ul>
+    </div>
+
+    <div id="s11" class="manual-section">
+        <h2>11. Recettes / Produits composites (BOM)</h2>
+        <p>Le module Recettes permet de définir des produits composites fabriqués à partir d'ingrédients. Lors de la vente d'un produit composite, le stock de ses ingrédients est automatiquement décrémenté.</p>
+        <h3>Créer une recette</h3>
+        <ul>
+            <li>Aller dans Produits → Recettes → Nouvelle recette</li>
+            <li>Sélectionner le produit composite (ex: « Assiette poulet »)</li>
+            <li>Ajouter les ingrédients avec leurs quantités (ex: 1 poulet, 2 kg riz, 0.5 L huile)</li>
+            <li>Le coût total et la marge sont calculés automatiquement</li>
+            <li>Enregistrer</li>
+        </ul>
+        <h3>Vente d'un produit composite</h3>
+        <p>Lors de la vente (Caisse ou Vente simple), les ingrédients du produit composite sont automatiquement déduits du stock. Le détail de la consommation apparaît dans la page de détail de la vente.</p>
+        <h3>Traçabilité</h3>
+        <p>Dans le détail d'une vente, les produits composites affichent la liste des ingrédients consommés avec les quantités correspondantes.</p>
+    </div>
+
+    <div id="s12" class="manual-section">
+        <h2>12. Employés et pointage</h2>
+        <p>Le module RH permet de gérer les employés et leurs pointages (arrivée/départ).</p>
+        <h3>Gestion des employés</h3>
+        <ul>
+            <li>Aller dans Ressources → Employés → Nouvel employé</li>
+            <li>Saisir le nom, prénom, téléphone, email</li>
+            <li>Choisir le poste (caissier, gérant, magasinier, etc.)</li>
+            <li>Définir le salaire mensuel et la date d'embauche</li>
+            <li>Activer ou désactiver l'employé</li>
+        </ul>
+        <h3>Pointage (Arrivée/Départ)</h3>
+        <ul>
+            <li>Aller dans Ressources → Pointage</li>
+            <li>Voir les employés actifs avec leur statut (Absent / En service)</li>
+            <li>Cliquer sur « Pointer arrivée » ou « Pointer départ »</li>
+            <li>Les heures travaillées sont calculées automatiquement</li>
+            <li>L'historique des 50 derniers pointages est affiché</li>
+        </ul>
+    </div>
+
+    <div id="s13" class="manual-section">
+        <h2>13. Paie et RH</h2>
+        <p>Le tableau de bord RH et le rapport de paie synthétisent les données des employés et des pointages.</p>
+        <h3>Dashboard RH</h3>
+        <ul>
+            <li>Accessible via le menu RH</li>
+            <li>Affiche : nombre d'employés, en service aujourd'hui, heures du mois, masse salariale</li>
+            <li>Liste des employés avec leur statut du jour</li>
+        </ul>
+        <h3>Rapport de paie</h3>
+        <ul>
+            <li>Accessible via le menu Paie</li>
+            <li>Sélectionner le mois et l'année</li>
+            <li>Le rapport calcule pour chaque employé : jours travaillés, heures totales, salaire prorata</li>
+            <li>La masse salariale totale est affichée en haut</li>
+        </ul>
+    </div>
+
+    <div id="s14" class="manual-section">
+        <h2>14. Rapports et marges</h2>
+        <p>Plusieurs rapports sont disponibles pour analyser l'activité du magasin.</p>
+        <h3>Rapport journalier</h3>
+        <p>Affiche les ventes du jour, les dépenses, les dettes échues, les produits en rupture et les performances de la journée.</p>
+        <h3>Rapport de marges</h3>
+        <p>Analyse détaillée des marges par catégorie de produits avec évolution mensuelle. Sélectionnez la période (3, 6, 12 mois ou année en cours).</p>
+        <h3>Valorisation du stock</h3>
+        <p>Calcule la valeur totale du stock au coût d'achat et au prix de vente. Utile pour les inventaires comptables.</p>
+        <h3>Rapport par moyen de paiement</h3>
+        <p>Répartition des ventes par moyen de paiement (espèces, Orange Money, Mobile Money, etc.) avec le nombre de transactions et les totaux.</p>
+        <h3>Rapport de bénéfices</h3>
+        <p>Analyse des bénéfices par produit sur une période donnée avec calcul de la marge brute.</p>
+    </div>
+
+    <div id="s15" class="manual-section">
+        <h2>15. Paramètres et configuration</h2>
+        <p>La page Paramètres permet de configurer l'ensemble du logiciel.</p>
+        <ul>
+            <li>Nom du magasin et message d'accueil</li>
+            <li>Logo et image de fond</li>
+            <li>Thème d'interface (Bordeaux, Bleu, Vert, Sombre, Clair, Cyber futuriste)</li>
+            <li>Disposition des factures (Classique, Compacte, Moderne)</li>
+            <li>Devise (FCFA, EUR, USD), taux de change</li>
+            <li>Adresse, téléphone, signature</li>
+            <li>Alertes vocales</li>
+            <li>Limite de dépenses mensuelles</li>
+            <li>Configuration SMS et WhatsApp</li>
+            <li>Compte bancaire par défaut</li>
+            <li>Format des étiquettes de prix</li>
+        </ul>
+    </div>
+
+    <div id="s16" class="manual-section">
+        <h2>16. Sauvegarde et base de données</h2>
+        <p>Le logiciel inclut plusieurs outils pour la sauvegarde et la maintenance de la base de données.</p>
+        <ul>
+            <li>Sauvegarde manuelle : Outils → Base de données → Sauvegarder</li>
+            <li>Sauvegarde automatique programmée (rotative, garde les 20 dernières)</li>
+            <li>Export JSON complet de la base</li>
+            <li>Import JSON pour restaurer une sauvegarde</li>
+            <li>Nettoyage des anciennes données</li>
+        </ul>
+        <p>Les sauvegardes sont stockées dans le dossier <code>backups/</code> au même niveau que la base de données.</p>
+    </div>
+
+    <div id="s17" class="manual-section">
+        <h2>17. Raccourcis clavier</h2>
+        <p>Des raccourcis clavier sont disponibles pour accélérer la navigation (accessibles via <kbd>?</kbd> depuis n'importe quelle page).</p>
+        <ul>
+            <li><kbd>Échap</kbd> — Fermer la modale / revenir en arrière</li>
+            <li><kbd>?</kbd> — Afficher l'aide des raccourcis</li>
+            <li><kbd>Ctrl+F</kbd> — Rechercher un produit</li>
+            <li><kbd>Ctrl+N</kbd> — Nouvelle vente</li>
+            <li><kbd>/</kbd> — Focus barre de recherche</li>
+        </ul>
+    </div>
+
+    <div class="manual-footer">
+        Fin du manuel — Généré depuis le logiciel
+    </div>
+</div>
+{% endblock %}

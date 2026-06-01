@@ -1,0 +1,46 @@
+{% extends 'store/base.html' %}
+{% block title %}Retour #{{ sr.id }} - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Retour fournisseur #{{ sr.id }}</h1>
+        <p class="text-secondary mb-0">
+            Fournisseur: <strong>{{ sr.supplier.name }}</strong> |
+            Date: {{ sr.date|date:'d/m/Y' }} |
+            Raison: {{ sr.get_reason_display }} |
+            Statut: <span class="badge bg-{% if sr.status == 'credited' %}success{% elif sr.status == 'sent' %}warning{% elif sr.status == 'cancelled' %}secondary{% else %}info{% endif %}">{{ sr.get_status_display }}</span>
+        </p>
+    </div>
+</div>
+
+<div class="d-flex gap-2 mb-3 flex-wrap">
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'store:supplier_return_update' sr.pk %}"><i class="bi bi-pencil me-1"></i>Modifier</a>
+    <a class="btn btn-sm btn-outline-danger" href="{% url 'store:supplier_return_delete' sr.pk %}"><i class="bi bi-trash me-1"></i>Supprimer</a>
+    <a class="btn btn-sm btn-secondary ms-auto" href="{% url 'store:supplier_return_list' %}"><i class="bi bi-arrow-left me-1"></i>Retour</a>
+</div>
+
+{% if sr.notes %}
+    <div class="alert alert-info py-2 mb-3">{{ sr.notes }}</div>
+{% endif %}
+
+<div class="table-shell">
+    <table class="table app-table align-middle mb-0">
+        <thead><tr><th>Produit</th><th>Quantité</th><th>Prix unitaire</th><th>Sous-total</th></tr></thead>
+        <tbody>
+            {% for item in sr.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.unit_price }} FCFA</td>
+                    <td>{{ item.subtotal }} FCFA</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4" class="text-center">Aucun article.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="text-end mt-3">
+    <h5>Total: <strong>{{ sr.total }} FCFA</strong></h5>
+</div>
+{% endblock %}

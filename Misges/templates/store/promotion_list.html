@@ -1,0 +1,47 @@
+{% extends 'store/base.html' %}
+{% block title %}Promotions - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Promotions & Remises</h1>
+        <p class="text-secondary mb-0">Gère les offres promotionnelles et réductions.</p>
+    </div>
+</div>
+<div class="d-flex justify-content-between mb-3">
+    <span></span>
+    <a class="btn btn-success btn-sm" href="{% url 'store:promotion_create' %}"><i class="bi bi-plus-circle me-1"></i>Nouvelle promotion</a>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>Nom</th><th>Type</th><th>Valeur</th><th>Début</th><th>Fin</th><th>Statut</th><th></th></tr></thead>
+        <tbody>
+            {% for promo in page_obj %}
+                <tr>
+                    <td>{{ promo.name }}</td>
+                    <td>{% if promo.discount_type == 'percentage' %}{% else %}{% endif %}{{ promo.get_discount_type_display }}</td>
+                    <td>{% if promo.discount_type == 'percentage' %}{{ promo.discount_value }}%{% else %}{{ promo.discount_value }} FCFA{% endif %}</td>
+                    <td>{{ promo.start_date|date:'d/m/Y' }}</td>
+                    <td>{{ promo.end_date|date:'d/m/Y' }}</td>
+                    <td>
+                        {% if promo.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% elif not promo.active %}
+                            <span class="badge bg-secondary">Désactivée</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Expirée</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'store:promotion_update' promo.pk %}"><i class="bi bi-pencil"></i></a>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'store:promotion_delete' promo.pk %}"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="7" class="text-center">Aucune promotion.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'store/_pagination.html' %}
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'store/base.html' %}
+{% block title %}Bons de commande - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Bons de commande fournisseurs</h1>
+        <p class="text-secondary mb-0">Crée et suis les commandes passées aux fournisseurs.</p>
+    </div>
+</div>
+<div class="d-flex justify-content-between mb-3">
+    <span></span>
+    <a class="btn btn-success btn-sm" href="{% url 'store:purchase_order_create' %}"><i class="bi bi-plus-circle me-1"></i>Nouvelle commande</a>
+</div>
+<div class="table-shell">
+    <table class="table app-table table-striped align-middle mb-0">
+        <thead><tr><th>#</th><th>Fournisseur</th><th>Date</th><th>Statut</th><th>Total</th><th></th></tr></thead>
+        <tbody>
+            {% for order in page_obj %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{% if order.supplier %}{{ order.supplier.name }}{% else %}-{% endif %}</td>
+                    <td>{{ order.date|date:'d/m/Y' }}</td>
+                    <td>
+                        {% if order.status == 'draft' %}<span class="badge bg-secondary">Brouillon</span>
+                        {% elif order.status == 'sent' %}<span class="badge bg-primary">Envoyée</span>
+                        {% elif order.status == 'partial' %}<span class="badge bg-warning text-dark">Partielle</span>
+                        {% elif order.status == 'received' %}<span class="badge bg-success">Reçue</span>
+                        {% elif order.status == 'cancelled' %}<span class="badge bg-danger">Annulée</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ order.total }} FCFA</td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'store:purchase_order_detail' order.pk %}"><i class="bi bi-eye"></i></a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-center">Aucun bon de commande.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'store/_pagination.html' %}
+{% endblock %}

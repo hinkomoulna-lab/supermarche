@@ -1,0 +1,17 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer la commande - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Supprimer le bon de commande</h1>
+        <p>Es-tu sûr de vouloir supprimer la commande #{{ order.id }}
+        {% if order.supplier %}({{ order.supplier.name }}){% endif %} ?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary ms-2" href="{% url 'store:purchase_order_detail' order.pk %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

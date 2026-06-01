@@ -1,0 +1,115 @@
+{% extends 'store/base.html' %}
+{% block title %}Approvisionner {{ product.name }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1"><i class="bi bi-box-arrow-in-down me-2"></i>Approvisionner {{ product.name }}</h1>
+            <p class="text-secondary mb-0">Stock actuel : {{ product.stock }} {{ product.get_unit_display }}. Carton actuel : {{ product.pack_size|floatformat:0 }} unités x {{ product.carton_size|floatformat:0 }} paquets.</p>
+        </div>
+        <a class="btn btn-outline-secondary" href="{% url 'store:product_manage' %}"><i class="bi bi-arrow-left-circle me-1"></i>Retour</a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="post" class="row g-3" id="supplyForm">
+            {% csrf_token %}
+            <div class="col-md-4">
+                <label class="form-label">Fournisseur</label>
+                {{ form.supplier }}
+                {{ form.supplier.errors }}
+                <div class="form-text">Choisis le fournisseur ou laisse vide si inconnu.</div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Quantité reçue</label>
+                {{ form.quantity }}
+                {{ form.quantity.errors }}
+                <div class="form-text">Combien d'unités/paquets/cartons as-tu reçus ?</div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Conditionnement</label>
+                {{ form.supply_mode }}
+                {{ form.supply_mode.errors }}
+                <div class="form-text">Reçois-tu des pièces, des paquets ou des cartons ?</div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Date de réception</label>
+                {{ form.date }}
+                {{ form.date.errors }}
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Unités par paquet</label>
+                {{ form.units_per_package }}
+                {{ form.units_per_package.errors }}
+                <div class="form-text">Ex: 12 bouteilles par paquet.</div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Paquets par carton</label>
+                {{ form.packages_per_carton }}
+                {{ form.packages_per_carton.errors }}
+                <div class="form-text">Combien de paquets dans un carton ?</div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Prix d'achat unitaire (FCFA)</label>
+                {{ form.unit_cost_price }}
+                {{ form.unit_cost_price.errors }}
+                <div class="form-text">Ce que tu as payé pour une pièce.</div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Prix de vente unitaire (FCFA)</label>
+                {{ form.unit_sale_price }}
+                {{ form.unit_sale_price.errors }}
+                <div class="form-text">Laisse vide pour garder l'ancien prix.</div>
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">Notes (optionnel)</label>
+                {{ form.notes }}
+                {{ form.notes.errors }}
+                <div class="form-text">Infos complémentaires sur cet approvisionnement.</div>
+            </div>
+            <div class="col-md-4">
+                <div class="border rounded p-3 h-100">
+                    <div class="text-secondary small text-uppercase">Unités ajoutées</div>
+                    <div class="h3 mb-1" id="totalUnits">0</div>
+                    <div class="text-secondary small">Le stock sera augmenté automatiquement.</div>
+                </div>
+            </div>
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle me-1"></i>Valider l'approvisionnement</button>
+                <a class="btn btn-secondary" href="{% url 'store:product_manage' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const quantityInput = document.getElementById('id_quantity');
+    const modeInput = document.getElementById('id_supply_mode');
+    const unitsInput = document.getElementById('id_units_per_package');
+    const cartonsInput = document.getElementById('id_packages_per_carton');
+    const totalUnits = document.getElementById('totalUnits');
+
+    function numberValue(input, fallback = 0) {
+        const value = Number.parseFloat(input.value);
+        return Number.isFinite(value) ? value : fallback;
+    }
+
+    function refreshTotal() {
+        const quantity = numberValue(quantityInput);
+        const units = numberValue(unitsInput, 1);
+        const cartons = numberValue(cartonsInput, 1);
+        let total = quantity;
+        if (modeInput.value === 'paquet') total = quantity * units;
+        if (modeInput.value === 'carton') total = quantity * units * cartons;
+        totalUnits.textContent = total.toLocaleString('fr-FR', { maximumFractionDigits: 2 });
+    }
+
+    [quantityInput, modeInput, unitsInput, cartonsInput].forEach((input) => {
+        input.addEventListener('input', refreshTotal);
+        input.addEventListener('change', refreshTotal);
+    });
+    refreshTotal();
+</script>
+{% endblock %}

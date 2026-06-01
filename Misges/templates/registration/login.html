@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - {{ store_settings.store_name|default:'Supermarché' }}</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-a: #7f1d1d;
+            --primary-b: #be123c;
+            --primary-light: #fef2f2;
+        }
+        body.theme-green {
+            --primary-a: #16a34a;
+            --primary-b: #0f766e;
+            --primary-light: #f0fdf4;
+        }
+        body.theme-burgundy {
+            --primary-a: #7f1d1d;
+            --primary-b: #be123c;
+            --primary-light: #fef2f2;
+        }
+        body.theme-dark {
+            --primary-a: #6366f1;
+            --primary-b: #06b6d4;
+            --primary-light: #1e1b4b;
+        }
+        body.theme-light {
+            --primary-a: #2563eb;
+            --primary-b: #14b8a6;
+            --primary-light: #eff6ff;
+        }
+        body {
+            background: linear-gradient(135deg, var(--primary-a), var(--primary-b));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: "Inter", system-ui, -apple-system, sans-serif;
+        }
+        .login-card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.2);
+            overflow: hidden;
+        }
+        .login-header {
+            background: var(--primary-a);
+            color: white;
+            padding: 1.5rem 1.5rem 1rem;
+            text-align: center;
+        }
+        .login-header i {
+            font-size: 1.75rem;
+            background: rgba(255,255,255,0.12);
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-bottom: .5rem;
+        }
+        .login-header h1 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .login-header p {
+            font-size: .75rem;
+            opacity: .75;
+            margin-bottom: 0;
+        }
+        .login-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+        }
+        .btn-login {
+            background: var(--primary-a);
+            border: none;
+            border-radius: 6px;
+            padding: .5rem;
+            font-weight: 600;
+            color: white;
+            transition: background .15s ease;
+            font-size: .875rem;
+        }
+        .btn-login:hover {
+            background: var(--primary-b);
+            color: white;
+        }
+        .form-control {
+            border-radius: 6px;
+            padding: .5rem .75rem;
+            font-size: .875rem;
+            border-color: #e2e8f0;
+        }
+        .form-control:focus {
+            border-color: var(--primary-a);
+            box-shadow: 0 0 0 2px rgba(127, 29, 29, .12);
+        }
+        .brand-footer {
+            text-align: center;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.6);
+            font-size: .75rem;
+        }
+    </style>
+</head>
+<body class="theme-{{ store_settings.theme|default:'burgundy' }}">
+    <main class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-lg-4">
+                <div class="login-card card">
+                    <div class="login-header">
+                        {% if store_settings.logo %}
+                            <img src="{{ store_settings.logo.url }}" alt="Logo" style="height:52px;margin-bottom:.5rem;">
+                        {% else %}
+                            <i class="bi bi-shop"></i>
+                        {% endif %}
+                        <h1>{{ store_settings.store_name|default:'Supermarché' }}</h1>
+                        <p>Gestion de votre boutique</p>
+                    </div>
+                    <div class="login-body">
+                        {% if form.errors %}
+                            <div class="alert alert-danger d-flex align-items-center gap-2 py-2" role="alert" style="border-radius:6px;">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                <span style="font-size:.8125rem;">Identifiant ou mot de passe incorrect.</span>
+                            </div>
+                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ next }}">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold small text-secondary" for="id_username">Utilisateur</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small text-secondary" for="id_password">Mot de passe</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                                    {{ form.password }}
+                                </div>
+                            </div>
+                            <button class="btn btn-login w-100" type="submit">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="brand-footer">
+                    Développé par Hinkomou Moulna Clement
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

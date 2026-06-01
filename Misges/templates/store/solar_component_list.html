@@ -1,0 +1,73 @@
+{% extends 'store/base.html' %}
+{% block title %}Catalogue solaire - {{ block.super }}{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="h3 mb-1"><i class="bi bi-box-seam me-2"></i>Catalogue solaire</h1>
+            <p class="text-secondary mb-0">Gérez votre base d'équipements et matériels</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary btn-sm" href="{% url 'store:solar_component_create' %}"><i class="bi bi-plus-lg me-1"></i>Nouveau composant</a>
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'store:solar_project_list' %}">Projets</a>
+        </div>
+    </div>
+</div>
+
+<!-- Filtres -->
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="q" class="form-control form-control-sm" placeholder="Rechercher..." value="{{ request.GET.q }}">
+    </div>
+    <div class="col-md-3">
+        <select name="category" class="form-select form-select-sm">
+            <option value="">Toutes catégories</option>
+            <option value="panneau" {% if request.GET.category == 'panneau' %}selected{% endif %}>Panneau solaire</option>
+            <option value="batterie" {% if request.GET.category == 'batterie' %}selected{% endif %}>Batterie</option>
+            <option value="onduleur" {% if request.GET.category == 'onduleur' %}selected{% endif %}>Onduleur</option>
+            <option value="structure" {% if request.GET.category == 'structure' %}selected{% endif %}>Structure</option>
+            <option value="cable" {% if request.GET.category == 'cable' %}selected{% endif %}>Câble</option>
+            <option value="tableau" {% if request.GET.category == 'tableau' %}selected{% endif %}>Tableau</option>
+            <option value="main_oeuvre" {% if request.GET.category == 'main_oeuvre' %}selected{% endif %}>Main-d'œuvre</option>
+            <option value="divers" {% if request.GET.category == 'divers' %}selected{% endif %}>Divers</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-primary btn-sm w-100"><i class="bi bi-funnel me-1"></i>Filtrer</button>
+    </div>
+</form>
+
+<div class="card shadow-sm">
+    <div class="table-shell">
+        <table class="table app-table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th class="text-end">Prix vente</th>
+                    <th class="text-end">Prix revient</th>
+                    <th class="text-end">Stock</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in components %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td><span class="badge bg-secondary">{{ c.get_category_display }}</span></td>
+                    <td class="text-end">{{ c.unit_price|floatformat:0 }} F</td>
+                    <td class="text-end">{{ c.cost_price|floatformat:0 }} F</td>
+                    <td class="text-end">{{ c.stock|floatformat:0 }}</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'store:solar_component_update' c.pk %}"><i class="bi bi-pencil"></i></a>
+                        <form method="post" action="{% url 'store:solar_component_delete' c.pk %}" class="d-inline" onsubmit="return confirm('Supprimer {{ c.name }} ?')">{% csrf_token %}<button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted py-4">Aucun composant. <a href="{% url 'store:solar_component_create' %}">Ajoutez-en un</a>.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

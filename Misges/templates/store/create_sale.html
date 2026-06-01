@@ -1,0 +1,454 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}Caisse - Supermarché{% endblock %}
+
+{% block content %}
+<style>
+.search-wrapper {
+    position: relative;
+}
+.product-pick-grid {
+    height: 190px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+.quick-add-item {
+    background: var(--surface-bg, #fff);
+    border-color: var(--surface-border, #e2e8f0) !important;
+    flex-shrink: 0;
+}
+.quick-add-item:hover {
+    border-color: var(--bs-primary, #2563eb) !important;
+    box-shadow: 0 0 0 1px var(--bs-primary, #2563eb);
+}
+.quick-add-qty {
+    text-align: center;
+    padding: 0 2px;
+}
+.chat-bubble {
+    position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2, #e040fb);
+    color: #fff; border: none; font-size: 28px;
+    box-shadow: 0 4px 24px rgba(102,126,234,.45);
+    cursor: pointer; transition: transform .2s;
+    display: flex; align-items: center; justify-content: center;
+}
+.chat-bubble:hover { transform: scale(1.1); }
+.chat-panel {
+    position: fixed; bottom: 95px; right: 20px; z-index: 9998;
+    width: 480px; max-width: calc(100vw - 40px);
+    background: linear-gradient(145deg, #f8faff, #eef1f9);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(102,126,234,.18);
+    display: none; flex-direction: column;
+    overflow: hidden; max-height: 620px;
+}
+.chat-panel.open { display: flex; }
+.chat-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; padding: 14px 18px; font-weight: 700;
+    display: flex; align-items: center; gap: 10px; font-size: 16px;
+}
+.chat-header .close-btn { margin-left: auto; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+.chat-msgs {
+    flex: 1; overflow-y: auto; padding: 14px;
+    display: flex; flex-direction: column; gap: 10px;
+    min-height: 250px; max-height: 420px;
+    background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(238,241,249,.5));
+}
+.chat-msg {
+    padding: 10px 16px; border-radius: 14px; max-width: 92%;
+    line-height: 1.5; font-size: 15px; word-wrap: break-word;
+}
+.chat-msg.user { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-msg.assistant { background: linear-gradient(135deg, #ffffff, #f1f0f0); color: #333; align-self: flex-start; border-bottom-left-radius: 4px; }
+.chat-input-bar {
+    display: flex; gap: 8px; padding: 12px 14px;
+    border-top: 1px solid var(--surface-border,#e2e8f0);
+    background: linear-gradient(0deg, #f8faff, #fff);
+}
+.chat-input-bar input { flex: 1; border-radius: 8px; font-size: 15px; padding: 8px 12px; }
+.chat-input-bar button { border-radius: 8px; font-size: 15px; padding: 8px 16px; }
+.chat-welcome { text-align: center; color: #888; font-size: 14px; padding: 24px 14px; line-height: 1.6; }
+.suggestion-dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 1060;
+    margin-top: 4px;
+    border: 1px solid var(--surface-border, #e2e8f0);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    background: var(--surface-bg, #fff);
+    overflow: hidden;
+}
+.suggestion-dropdown[hidden] {
+    display: none;
+}
+.suggestion-dropdown-inner {
+    max-height: 340px;
+    overflow-y: auto;
+}
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .5rem .65rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--surface-border, #e2e8f0);
+}
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover { background: var(--hover-color, rgba(37,99,235,.05)); }
+.suggestion-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    min-width: 0;
+}
+.suggestion-info strong { font-size: .85rem; }
+.suggestion-info .text-secondary { font-size: .8rem; font-weight: 600; }
+.suggestion-info small { font-size: .7rem; opacity: .65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+</style>
+<div class="ribbon ribbon-green"><i class="bi bi-cash-stack"></i>Vente</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <small class="text-secondary">Ajoute les articles achetés par le client et valide la vente.</small>
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'store:sale_history' %}">
+        <i class="bi bi-clock-history me-1"></i>Historique
+    </a>
+</div>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <i class="bi bi-person text-primary"></i>
+    <label class="form-check-label small fw-semibold" for="enableClient">
+                <input class="form-check-input" type="checkbox" id="enableClient" checked>
+                Client
+            </label>
+        </div>
+        <div id="clientFields" class="row g-2">
+            <div class="col-md-5">
+                <input type="text" class="form-control form-control-sm" name="customer_name" id="customerName" placeholder="Quel est le nom du client ? (optionnel)" form="saleForm">
+            </div>
+            <div class="col-md-3">
+                <input type="tel" class="form-control form-control-sm" name="customer_phone" id="customerPhone" placeholder="Son téléphone ? (optionnel)" form="saleForm">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+document.getElementById('enableClient').addEventListener('change', function() {
+    document.getElementById('clientFields').style.display = this.checked ? 'flex' : 'none';
+});
+</script>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <div class="search-wrapper">
+            <label class="form-label fw-semibold" for="productSearch">
+                <i class="bi bi-search me-1"></i>Rechercher un produit à vendre
+            </label>
+            <div class="d-flex">
+                <input type="search" class="form-control" id="productSearch" placeholder="Tape le nom, le code ou la catégorie..." data-voice="true" style="flex:1;">
+            </div>
+            <div class="suggestion-dropdown" id="suggestionDropdown" hidden>
+                <div class="suggestion-dropdown-inner"></div>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-3 product-pick-grid" id="productPickGrid">
+            {% for product in products %}
+                <div class="quick-add-item d-inline-flex align-items-center gap-1 border rounded p-1"
+                     data-search="{{ product.code }} {{ product.name }} {% if product.category %}{{ product.category.name }}{% endif %}">
+                    <button type="button" class="btn btn-sm btn-outline-primary quick-add-btn"
+                            data-product="{{ product.id }}"
+                            data-label="{{ product.name }}"
+                            title="Ajouter {{ product.name }}">
+                        <i class="bi bi-plus-circle"></i>
+                    </button>
+                    <span class="small fw-semibold text-nowrap">{{ product.name }}</span>
+                    <input type="number" class="form-control form-control-sm quick-add-qty"
+                           value="1" min="0.01" step="0.01" style="width:50px;height:24px;font-size:11px">
+                    <span class="badge bg-light text-dark ms-1" style="font-size:10px">{{ product.stock }} {{ product.get_unit_display }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <p class="text-secondary small mb-0 mt-2" id="productSearchEmpty" hidden>Aucun produit trouvé.</p>
+    </div>
+</div>
+
+{% if quick_products %}
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        {% for product in quick_products %}
+            <button type="button" class="btn btn-light quick-sale-btn"
+                    data-product="{{ product.id }}"
+                    data-label="{{ product.name }}"
+                    data-unit="{{ product.get_unit_display }}">
+                <i class="bi bi-lightning-charge me-1"></i>{{ product.name }}
+            </button>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="post" id="saleForm">
+    {% csrf_token %}
+    <div class="table-shell mb-3">
+        <table class="table app-table align-middle mb-0" id="saleTable">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th class="qty-col">Quantité</th>
+                    <th class="unit-col">Unité</th>
+                    <th style="width:100px;">Mode</th>
+                    <th class="action-col"></th>
+                </tr>
+            </thead>
+            <tbody id="saleRows">
+                <tr class="sale-row">
+                    <td>
+                        <select name="product" class="form-select product-select" required>
+                            <option value="">Choisir un produit</option>
+                            {% for product in products %}
+                                <option value="{{ product.id }}" data-unit="{{ product.get_unit_display }}" data-pack="{{ product.pack_size }}" data-search="{{ product.code }} {{ product.name }} {% if product.category %}{{ product.category.name }}{% endif %}">
+                                    {{ product.name }} - {{ product.price }} FCFA - stock {{ product.stock }} {{ product.get_unit_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="number" name="quantity" min="0.01" step="0.01" value="1" class="form-control" required></td>
+                    <td class="line-unit text-secondary">-</td>
+                    <td>
+                        <select name="sale_mode" class="form-select mode-select">
+                            <option value="piece">Pièce</option>
+                            <option value="paquet">Paquet</option>
+                            <option value="carton">Carton</option>
+                            <option value="cartouche">Cartouche</option>
+                            <option value="kg">Kg</option>
+                            <option value="l">Litre</option>
+                        </select>
+                    </td>
+                    <td><button type="button" class="btn btn-outline-danger icon-btn remove-row" title="Retirer la ligne"><i class="bi bi-x-lg"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3">
+        <button type="button" class="btn btn-outline-primary" id="addRow">
+            <i class="bi bi-plus-circle me-1"></i>Ajouter un autre article
+        </button>
+        <div class="d-flex gap-2 align-items-center">
+            <input type="date" class="form-control form-control-sm" name="sale_date" id="saleDate" style="width:auto">
+            <input type="text" class="form-control form-control-sm" name="notes" id="saleNotes" placeholder="Notes (optionnel)" style="width:auto">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-check2-circle me-1"></i>Valider la vente
+            </button>
+        </div>
+    </div>
+</form>
+
+<template id="saleRowTemplate">
+    <tr class="sale-row">
+        <td>
+            <select name="product" class="form-select product-select" required>
+                <option value="">Choisir un produit</option>
+                {% for product in products %}
+                    <option value="{{ product.id }}" data-unit="{{ product.get_unit_display }}" data-pack="{{ product.pack_size }}" data-search="{{ product.code }} {{ product.name }} {% if product.category %}{{ product.category.name }}{% endif %}">
+                        {{ product.name }} - {{ product.price }} FCFA - stock {{ product.stock }} {{ product.get_unit_display }}
+                    </option>
+                {% endfor %}
+            </select>
+        </td>
+        <td><input type="number" name="quantity" min="0.01" step="0.01" value="1" class="form-control" required></td>
+        <td class="line-unit text-secondary">-</td>
+        <td>
+            <select name="sale_mode" class="form-select mode-select">
+                <option value="piece">Pièce</option>
+                <option value="paquet">Paquet</option>
+                <option value="carton">Carton</option>
+                <option value="cartouche">Cartouche</option>
+                <option value="kg">Kg</option>
+                <option value="l">Litre</option>
+            </select>
+        </td>
+        <td><button type="button" class="btn btn-outline-danger icon-btn remove-row" title="Retirer la ligne"><i class="bi bi-x-lg"></i></button></td>
+    </tr>
+</template>
+
+<div class="modal fade" id="scannerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-upc-scan me-2"></i>Scanner un code-barres</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="stopScanner()"></button>
+            </div>
+            <div class="modal-body">
+                <div id="scannerContainer" style="width:100%;min-height:250px;"></div>
+                <p class="text-secondary small mt-2 mb-0 text-center">Place le code-barres devant la cam&eacute;ra</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/html5-qrcode.min.js"></script>
+<script src="{% static 'store/js/sale.js' %}"></script>
+<script>
+    const rows = document.getElementById('saleRows');
+    const template = document.getElementById('saleRowTemplate');
+
+    function refreshUnits() {
+        rows.querySelectorAll('.sale-row').forEach((row) => {
+            const select = row.querySelector('.product-select');
+            const unit = select.selectedOptions[0]?.dataset.unit || '-';
+            row.querySelector('.line-unit').textContent = unit;
+        });
+    }
+
+    function addRow(productId = '', qty) {
+        const fragment = template.content.cloneNode(true);
+        const row = fragment.querySelector('.sale-row');
+        if (productId) {
+            row.querySelector('.product-select').value = productId;
+        }
+        if (qty) {
+            row.querySelector('input[name="quantity"]').value = qty;
+        }
+        rows.appendChild(fragment);
+        refreshUnits();
+    }
+
+    document.getElementById('addRow').addEventListener('click', () => addRow());
+    rows.addEventListener('change', refreshUnits);
+    rows.addEventListener('click', (event) => {
+        const button = event.target.closest('.remove-row');
+        if (!button) return;
+        if (rows.querySelectorAll('.sale-row').length > 1) {
+            button.closest('.sale-row').remove();
+        }
+        refreshUnits();
+    });
+    function quickSale(productId, qty, label, btn) {
+        var form = new FormData();
+        form.append('product_id', productId);
+        form.append('quantity', qty);
+        form.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+        if (btn) btn.disabled = true;
+        fetch('{% url "store:quick_sale" %}', { method:'POST', body:form })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    var toast = document.createElement('div');
+                    toast.className = 'position-fixed top-0 start-50 translate-middle-x p-3';
+                    toast.style.zIndex = '99999';
+                    toast.innerHTML = '<div class="toast show align-items-center text-bg-success border-0"><div class="d-flex"><div class="toast-body"><strong>' + data.product + '</strong> vendu : ' + data.quantity + ' — ' + data.total + ' FCFA</div><button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.closest(\'.position-fixed\').remove()"></button></div></div>';
+                    document.body.appendChild(toast);
+                    setTimeout(function() { toast.remove(); }, 3000);
+                    if (btn) {
+                        var wrapper = btn.closest('.quick-add-item');
+                        if (wrapper) {
+                            var qtyInput = wrapper.querySelector('.quick-add-qty');
+                            if (qtyInput) qtyInput.value = 1;
+                        }
+                    }
+                } else {
+                    alert('Erreur: ' + data.error);
+                }
+            })
+            .catch(function() { alert('Erreur réseau'); })
+            .finally(function() { if (btn) btn.disabled = false; });
+    }
+
+    document.querySelectorAll('.quick-sale-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            quickSale(this.dataset.product, 1, this.dataset.label, this);
+        });
+    });
+    document.querySelectorAll('.quick-add-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var wrapper = this.closest('.quick-add-item');
+            var qtyInput = wrapper.querySelector('.quick-add-qty');
+            var qty = parseFloat(qtyInput.value) || 1;
+            quickSale(this.dataset.product, qty, this.dataset.label, this);
+        });
+    });
+
+    const productSearch = document.getElementById('productSearch');
+    const productSearchEmpty = document.getElementById('productSearchEmpty');
+    const productButtons = document.querySelectorAll('.product-pick-btn');
+    const quickAddItems = document.querySelectorAll('.quick-add-item');
+
+    function filterProducts() {
+        const term = productSearch.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        productButtons.forEach((button) => {
+            const isVisible = !term || button.dataset.search.toLowerCase().includes(term);
+            button.hidden = !isVisible;
+            if (isVisible) visibleCount += 1;
+        });
+        quickAddItems.forEach((item) => {
+            const isVisible = !term || item.dataset.search.toLowerCase().includes(term);
+            item.hidden = !isVisible;
+            if (isVisible) visibleCount += 1;
+        });
+
+        rows.querySelectorAll('.product-select option').forEach((option) => {
+            if (!option.value) return;
+            option.hidden = Boolean(term) && !option.dataset.search.toLowerCase().includes(term);
+        });
+
+        productSearchEmpty.hidden = visibleCount > 0;
+    }
+
+    productSearch.addEventListener('input', filterProducts);
+
+    // AI autocomplete - "Ask assistant" in dropdown
+    var searchTimeout = null;
+    productSearch.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        var dropdown = document.getElementById('suggestionDropdown');
+        var inner = dropdown.querySelector('.suggestion-dropdown-inner');
+        var existing = dropdown.querySelector('.ai-suggestion');
+        if (existing) existing.remove();
+        var term = this.value.trim();
+        if (term.length < 3) return;
+        searchTimeout = setTimeout(function() {
+            var aiItem = document.createElement('div');
+            aiItem.className = 'suggestion-item ai-suggestion';
+            aiItem.innerHTML = '<i class="bi bi-robot text-primary me-2"></i><span class="small">💡 Demander à l\'assistant : "<strong>' + term + '</strong>"</span>';
+            aiItem.style.cursor = 'pointer';
+            aiItem.addEventListener('click', function() {
+                document.getElementById('chatInput').value = term;
+                document.getElementById('chatPanel').classList.add('open');
+                document.getElementById('chatInput').focus();
+            });
+            inner.appendChild(aiItem);
+            dropdown.hidden = false;
+        }, 600);
+    });
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-wrapper')) {
+            document.getElementById('suggestionDropdown').hidden = true;
+        }
+    });
+
+    // Set today's date
+    var d = new Date();
+    document.getElementById('saleDate').value = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+
+    refreshUnits();
+
+    // --- Chat Assistant
+    document.addEventListener('DOMContentLoaded', function() {
+        var panel = document.getElementById('chatPanel');
+        var input = document.getElementById('chatInput');
+        if (!panel || !input) return;
+        // The chat UI is defined in base.html
+        // Only the search integration remains here
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}Commande{% endblock %} - Supermarché</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #16a34a;
+            --primary-dark: #15803d;
+            --primary-light: #dcfce7;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --surface: #ffffff;
+            --bg: #f0fdf4;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg); margin: 0; padding: 0; color: #1a1a2e;
+        }
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 2px 12px rgba(22, 163, 74, .25);
+        }
+        .app-header h1 { font-size: 18px; margin: 0; font-weight: 700; flex: 1; }
+        .app-header a { color: #fff; text-decoration: none; font-size: 20px; }
+        .badge-cart {
+            background: #fff; color: var(--primary); border-radius: 50px;
+            padding: 2px 8px; font-size: 12px; font-weight: 700; margin-left: 4px;
+        }
+        .container { max-width: 640px; margin: 0 auto; padding: 12px; }
+        .card {
+            background: var(--surface); border-radius: 12px; padding: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 12px;
+        }
+        .card-title { font-size: 14px; font-weight: 600; color: #64748b; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            border: none; border-radius: 8px; padding: 10px 20px; font-size: 15px;
+            font-weight: 600; cursor: pointer; transition: all .15s;
+        }
+        .btn:active { transform: scale(.97); }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-sm { padding: 6px 12px; font-size: 13px; }
+        .btn-block { width: 100%; }
+        .btn-cart {
+            position: fixed; bottom: 16px;left: 50%;transform:translateX(-50%);z-index:99;
+            background: var(--primary); color: #fff; padding: 14px 32px; border-radius: 50px;
+            font-size: 16px; font-weight: 700; border: none; box-shadow: 0 4px 20px rgba(22,163,74,.4);
+            display: flex; align-items: center; gap: 8px; text-decoration: none;
+        }
+        .btn-cart:hover { background: var(--primary-dark); color: #fff; }
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .product-item { background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+        .product-item img { width: 100%; height: 140px; object-fit: cover; }
+        .product-info { padding: 10px; }
+        .product-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .product-price { color: var(--primary); font-weight: 700; font-size: 16px; }
+        .product-stock { font-size: 11px; color: #94a3b8; }
+        .qty-controls { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+        .qty-btn {
+            width: 32px; height: 32px; border-radius: 50%; border: 1px solid #e2e8f0;
+            background: var(--surface); font-size: 18px; font-weight: 700; color: var(--primary);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .qty-value { font-weight: 700; font-size: 16px; min-width: 24px; text-align: center; }
+        .status-indicator {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px; border-radius: 50px; font-size: 13px; font-weight: 600;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-preparing { background: #dbeafe; color: #1e40af; }
+        .status-ready { background: #dcfce7; color: #166534; }
+        .status-unavailable { background: #fee2e2; color: #991b1b; }
+        .status-delivered { background: #f0fdf4; color: #14532d; }
+        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 999; }
+        @media (max-width: 400px) { .product-grid { grid-template-columns: 1fr; } }
+        .empty-cart { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-cart i { font-size: 48px; margin-bottom: 12px; }
+        {% block extra_style %}{% endblock %}
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <a href="{% url 'commande:catalog' %}"><i class="bi bi-shop"></i></a>
+        <h1>{% block header %}Supermarché{% endblock %}</h1>
+        <a href="{% url 'commande:cart' %}" style="position:relative;">
+            <i class="bi bi-cart3"></i>
+            {% with cart_count=request.session.cart.values|length %}
+            {% if cart_count %}<span class="badge-cart">{{ cart_count }}</span>{% endif %}
+            {% endwith %}
+        </a>
+    </header>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+    <div id="toastContainer" class="toast"></div>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <script>
+    function showToast(msg, type) {
+        type = type || 'success';
+        var el = document.createElement('div');
+        el.className = 'alert alert-' + type + ' shadow-sm mb-0';
+        el.textContent = msg;
+        var c = document.getElementById('toastContainer');
+        c.innerHTML = '';
+        c.appendChild(el);
+        setTimeout(function() { c.innerHTML = ''; }, 2500);
+    }
+    function getCSRF() {
+        return document.querySelector('[name=csrfmiddlewaretoken]');
+    }
+    </script>
+    {% block extra_script %}{% endblock %}
+</body>
+</html>

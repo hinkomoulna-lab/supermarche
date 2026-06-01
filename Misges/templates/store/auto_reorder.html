@@ -1,0 +1,29 @@
+{% extends 'store/base.html' %}
+{% block title %}Réapprovisionnement automatique - Supermarché{% endblock %}
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Réapprovisionnement automatique</h1>
+        <p class="text-secondary mb-0">Produits nécessitant un réapprovisionnement.</p>
+    </div>
+</div>
+<div class="table-shell">
+    <table class="table app-table align-middle mb-0">
+        <thead><tr><th>Produit</th><th>Stock actuel</th><th>Stock min.</th><th>Vitesse vente</th><th>Jours restants</th><th>Qté suggérée</th></tr></thead>
+        <tbody>
+            {% for item in products %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.stock }}</td>
+                    <td>{{ item.min_stock }}</td>
+                    <td>{{ item.sale_velocity }}</td>
+                    <td>{{ item.days_remaining }}</td>
+                    <td>{{ item.suggested_qty }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-center">Aucun produit à réapprovisionner.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,252 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}Paramètres - Supermarché{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <h1 class="h3 mb-1">Paramètres</h1>
+            <p class="text-secondary mb-0">Personnalise ton magasin, la facture, la langue et les alertes.</p>
+        </div>
+        {% if store_settings.logo %}
+            <img src="{{ store_settings.logo.url }}" alt="Logo" style="height:56px;max-width:140px;object-fit:contain;">
+        {% endif %}
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="row g-3">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent fw-bold py-3">Informations du magasin</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nom du magasin</label>
+                        {{ form.store_name }}
+                        {{ form.store_name.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Langue</label>
+                        {{ form.language }}
+                        {{ form.language.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Textes spirituels</label>
+                        {{ form.scripture_mode }}
+                        {{ form.scripture_mode.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Adresse</label>
+                        {{ form.address }}
+                        {{ form.address.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Numéro de téléphone</label>
+                        {{ form.phone_number }}
+                        {{ form.phone_number.errors }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Message de bienvenue</label>
+                        {{ form.welcome_message }}
+                        {{ form.welcome_message.errors }}
+                        <div class="form-text">S'affiche sur la page d'accueil.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent fw-bold py-3">Apparence</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Logo</label>
+                        {{ form.logo }}
+                        {{ form.logo.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Image de fond</label>
+                        {{ form.background_image }}
+                        {{ form.background_image.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Filigrane facture</label>
+                        {{ form.invoice_watermark }}
+                        {{ form.invoice_watermark.errors }}
+                        {% if store_settings.invoice_watermark %}
+                            <div class="form-text">Actuelle : <a href="{{ store_settings.invoice_watermark.url }}" target="_blank">{{ store_settings.invoice_watermark.name }}</a></div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Signature fournisseur</label>
+                        {{ form.signature }}
+                        {{ form.signature.errors }}
+                        {% if store_settings.signature %}
+                            <div class="form-text">Actuelle : <a href="{{ store_settings.signature.url }}" target="_blank">{{ store_settings.signature.name }}</a></div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Thème</label>
+                        {{ form.theme }}
+                        {{ form.theme.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Disposition de facture</label>
+                        {{ form.invoice_layout }}
+                        {{ form.invoice_layout.errors }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent fw-bold py-3">Alertes & Finances</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch mt-2">
+                            {{ form.voice_alerts }}
+                            <label class="form-check-label" for="{{ form.voice_alerts.id_for_label }}">Alertes vocales (stock faible)</label>
+                        </div>
+                        <div class="form-text">Quand activé, une voix annonce les produits en rupture de stock.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Limite mensuelle de dépenses (FCFA)</label>
+                        {{ form.monthly_expense_limit }}
+                        {{ form.monthly_expense_limit.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Devise</label>
+                        {{ form.currency }}
+                        {{ form.currency.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Taux 1 EUR = X FCFA</label>
+                        {{ form.eur_rate }}
+                        {{ form.eur_rate.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Taux 1 USD = X FCFA</label>
+                        {{ form.usd_rate }}
+                        {{ form.usd_rate.errors }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent fw-bold py-3">SMS & WhatsApp</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Clé API SMS</label>
+                        {{ form.sms_api_key }}
+                        {{ form.sms_api_key.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Expéditeur SMS</label>
+                        {{ form.sms_from }}
+                        {{ form.sms_from.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Clé API WhatsApp</label>
+                        {{ form.whatsapp_api_key }}
+                        {{ form.whatsapp_api_key.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">ID téléphone WhatsApp</label>
+                        {{ form.whatsapp_phone_number_id }}
+                        {{ form.whatsapp_phone_number_id.errors }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Compte bancaire par défaut</label>
+                        {{ form.default_bank_account }}
+                        {{ form.default_bank_account.errors }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent fw-bold py-3">Étiquettes de prix</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Disposition</label>
+                        {{ form.label_layout }}
+                        {{ form.label_layout.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Taille de police</label>
+                        {{ form.label_font_size }}
+                        {{ form.label_font_size.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Bordure</label>
+                        {{ form.label_border_style }}
+                        {{ form.label_border_style.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Colonnes écran</label>
+                        {{ form.label_columns_screen }}
+                        {{ form.label_columns_screen.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Colonnes impression</label>
+                        {{ form.label_columns_print }}
+                        {{ form.label_columns_print.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Logo étiquettes</label>
+                        {{ form.label_logo }}
+                        {{ form.label_logo.errors }}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check form-switch mt-4">
+                            {{ form.label_show_store_name }}
+                            <label class="form-check-label" for="{{ form.label_show_store_name.id_for_label }}">Nom du magasin</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check form-switch mt-4">
+                            {{ form.label_show_barcode }}
+                            <label class="form-check-label" for="{{ form.label_show_barcode.id_for_label }}">Code-barres</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check form-switch mt-4">
+                            {{ form.label_show_code }}
+                            <label class="form-check-label" for="{{ form.label_show_code.id_for_label }}">Code produit</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-success"><i class="bi bi-check2-circle me-1"></i>Enregistrer</button>
+        <a href="{% url 'store:account_create' %}" class="btn btn-outline-primary ms-2"><i class="bi bi-person-plus me-1"></i>Créer un compte</a>
+        <a href="{% url 'store:home' %}" class="btn btn-secondary ms-2"><i class="bi bi-arrow-left me-1"></i>Retour</a>
+    </div>
+</div>
+</form>
+{% if request.GET.saved and request.GET.embed %}
+<script>
+if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: 'store-settings-saved' }, window.location.origin);
+}
+</script>
+{% endif %}
+{% endblock %}

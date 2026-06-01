@@ -1,0 +1,16 @@
+{% extends 'store/base.html' %}
+{% block title %}Supprimer la promotion - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">Supprimer la promotion</h1>
+        <p>Es-tu sûr de vouloir supprimer la promotion <strong>{{ promotion.name }}</strong> ?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a class="btn btn-secondary ms-2" href="{% url 'store:promotion_list' %}">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

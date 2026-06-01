@@ -1,0 +1,38 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ title }} - Supermarché{% endblock %}
+
+{% block content %}
+<div class="card page-header mb-4">
+    <div class="card-body">
+        <h1 class="h3 mb-1">{{ title }}</h1>
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="col-md-4">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                    {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                </div>
+            {% endfor %}
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a class="btn btn-secondary" href="{% url 'store:promotion_list' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const appliesToAll = document.querySelector('[name="applies_to_all"]');
+    const productsField = document.querySelector('[name="products"]');
+    function toggleProducts() {
+        productsField.closest('.col-md-4').style.display = appliesToAll.checked ? 'none' : 'block';
+    }
+    if (appliesToAll) {
+        appliesToAll.addEventListener('change', toggleProducts);
+        toggleProducts();
+    }
+});
+</script>
+{% endblock %}

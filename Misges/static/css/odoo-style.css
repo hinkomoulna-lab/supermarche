@@ -1,0 +1,645 @@
+/* ===== ODOO + TWITTER/X INSPIRED DESIGN ===== */
+/* Fusion du professionnalisme d'Odoo et du minimalisme de Twitter */
+
+:root {
+  --o-font: "Inter", system-ui, -apple-system, sans-serif;
+  --o-radius: 8px;
+  --o-radius-sm: 4px;
+  --o-radius-pill: 9999px;
+  --o-shadow: 0 1px 2px rgba(0,0,0,.05);
+  --o-shadow-md: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
+  --o-sidebar-w: 220px;
+  --o-border: #eff3f4;
+  --o-text: #0f1419;
+  --o-text-secondary: #536471;
+  --o-bg: #f7f9f9;
+  --o-surface: #ffffff;
+  --o-primary: #1d9bf0;
+  --o-primary-hover: #1a8cd8;
+  --o-primary-light: #e8f5fe;
+  --o-success: #00ba7c;
+  --o-warning: #ffad1f;
+  --o-danger: #f4212e;
+  --o-info: #0891b2;
+  --o-hover: rgba(15,20,25,.05);
+  --o-hover-dark: rgba(255,255,255,.08);
+}
+
+/* Buttons — Twitter-style clean, pill & flat */
+.btn {
+  font-family: var(--o-font);
+  font-size: .8125rem;
+  font-weight: 600;
+  padding: .375rem .85rem;
+  border-radius: var(--o-radius-pill);
+  transition: all .15s ease;
+  box-shadow: none !important;
+}
+.btn-sm { padding: .25rem .65rem; font-size: .75rem; border-radius: var(--o-radius-pill); }
+.btn-lg { padding: .5rem 1.25rem; font-size: .875rem; border-radius: var(--o-radius-pill); }
+.btn-primary {
+  background: var(--primary-a, var(--o-primary));
+  border-color: var(--primary-a, var(--o-primary));
+}
+.btn-primary:hover {
+  background: var(--primary-b, var(--o-primary-hover));
+  border-color: var(--primary-b, var(--o-primary-hover));
+}
+.btn-outline-primary {
+  color: var(--primary-a, var(--o-primary));
+  border-color: var(--surface-border, var(--o-border));
+}
+.btn-outline-primary:hover {
+  background: var(--hover-color, var(--o-primary-light));
+  border-color: var(--primary-a, var(--o-primary));
+  color: var(--primary-a, var(--o-primary));
+}
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: var(--o-text-secondary);
+  border-radius: var(--o-radius-pill);
+}
+.btn-ghost:hover {
+  background: var(--o-hover);
+  color: var(--o-text);
+}
+.btn-success { background: var(--o-success); border-color: var(--o-success); }
+.btn-danger { background: var(--o-danger); border-color: var(--o-danger); }
+.btn-warning { background: var(--o-warning); border-color: var(--o-warning); color: #fff; }
+
+/* Forms — Twitter clean style */
+.form-control, .form-select {
+  font-family: var(--o-font);
+  font-size: .8125rem;
+  padding: .5rem .75rem;
+  border-radius: var(--o-radius);
+  border: 1px solid var(--surface-border, var(--o-border));
+  background: var(--surface-bg, var(--o-surface));
+  transition: border-color .15s ease, box-shadow .15s ease;
+  box-shadow: none;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-a, var(--o-primary));
+  box-shadow: 0 0 0 3px rgba(29,155,240,.15);
+}
+.form-label {
+  font-size: .8125rem;
+  font-weight: 500;
+  margin-bottom: .25rem;
+  color: var(--app-text, var(--o-text));
+}
+.form-text { font-size: .75rem; color: var(--o-text-secondary); }
+
+/* Cards — flat, minimal, Twitter-style */
+.card {
+  border: 1px solid var(--surface-border, var(--o-border));
+  border-radius: var(--o-radius);
+  box-shadow: none;
+  background: var(--surface-bg, var(--o-surface));
+  transition: box-shadow .15s ease;
+}
+.card-body { padding: 1rem; }
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--surface-border, var(--o-border));
+  padding: .75rem 1rem;
+  font-weight: 600;
+  font-size: .875rem;
+}
+
+/* Tables */
+.table-shell {
+  border: 1px solid var(--surface-border, var(--o-border));
+  border-radius: var(--o-radius);
+  overflow: auto;
+  background: var(--surface-bg, var(--o-surface));
+  box-shadow: var(--o-shadow);
+}
+.app-table {
+  min-width: 760px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 0;
+}
+.app-table thead {
+  background: var(--app-bg, var(--o-bg));
+}
+.app-table thead th {
+  color: var(--o-text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: .6875rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border: 0;
+  border-bottom: 1px solid var(--surface-border, var(--o-border)) !important;
+  padding: .5rem .6rem;
+  white-space: nowrap;
+}
+.app-table tbody td {
+  border-bottom: 1px solid var(--surface-border, var(--o-border));
+  vertical-align: middle;
+  padding: .45rem .6rem;
+  font-size: .8125rem;
+}
+.app-table tbody tr:last-child td { border-bottom: 0; }
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background: var(--stripe-color, rgba(0,0,0,.015));
+}
+tbody tr {
+  transition: background .12s ease;
+}
+
+/* Badges */
+.badge {
+  font-family: var(--o-font);
+  font-weight: 500;
+  font-size: .6875rem;
+  padding: .2em .5em;
+  border-radius: 4px;
+}
+.badge-soft-success {
+  background: rgba(22,163,74,.1);
+  color: #15803d;
+}
+.badge-soft-danger {
+  background: rgba(220,38,38,.1);
+  color: #b91c1c;
+}
+.badge-soft-warning {
+  background: rgba(245,158,11,.1);
+  color: #b45309;
+}
+.badge-soft-info {
+  background: rgba(8,145,178,.1);
+  color: #0e7490;
+}
+.badge-soft-primary {
+  background: rgba(37,99,235,.1);
+  color: #1d4ed8;
+}
+
+/* Status dots (Odoo style) */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.status-dot-green { background: var(--o-success); }
+.status-dot-red { background: var(--o-danger); }
+.status-dot-yellow { background: var(--o-warning); }
+.status-dot-blue { background: var(--o-primary); }
+.status-dot-gray { background: #94a3b8; }
+
+/* Kanban cards (Odoo style) */
+.kanban-card {
+  border: 1px solid var(--o-border);
+  border-radius: var(--o-radius);
+  background: var(--o-surface);
+  padding: .75rem;
+  box-shadow: var(--o-shadow);
+  transition: box-shadow .12s ease;
+}
+.kanban-card:hover {
+  box-shadow: var(--o-shadow-md);
+}
+.kanban-card-title {
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--o-text);
+  margin-bottom: .25rem;
+}
+.kanban-card-sub {
+  font-size: .75rem;
+  color: var(--o-text-secondary);
+}
+
+/* Odoo-style page header */
+.o-page-header {
+  margin-bottom: 1.25rem;
+}
+.o-page-header h1 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: .15rem;
+  color: var(--o-text);
+}
+.o-page-header p {
+  font-size: .8125rem;
+  color: var(--o-text-secondary);
+  margin-bottom: 0;
+}
+
+/* Odoo breadcrumb style */
+.o-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .75rem;
+  color: var(--o-text-secondary);
+  margin-bottom: .5rem;
+}
+.o-breadcrumb a {
+  color: var(--o-primary);
+  text-decoration: none;
+}
+.o-breadcrumb a:hover {
+  text-decoration: underline;
+}
+.o-breadcrumb .sep {
+  color: #cbd5e1;
+}
+
+/* Twitter-style search bar (pill, icon inside) */
+.o-search {
+  position: relative;
+}
+.o-search .form-control {
+  padding-left: 2.5rem;
+  padding-right: 1rem;
+  background: var(--o-bg);
+  border: 1px solid transparent;
+  border-radius: var(--o-radius-pill);
+  font-size: .8125rem;
+}
+.o-search .form-control:focus {
+  background: var(--o-surface);
+  border-color: var(--o-primary);
+}
+.o-search i {
+  position: absolute;
+  left: .85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--o-text-secondary);
+  font-size: .8125rem;
+}
+
+/* Stat cards — Twitter trend-style */
+.o-stat {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem;
+  background: var(--o-surface);
+  border: 1px solid var(--o-border);
+  border-radius: var(--o-radius);
+  transition: background .12s ease;
+  box-shadow: none;
+}
+.o-stat:hover {
+  background: rgba(15,20,25,.02);
+}
+.o-stat-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--o-radius);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.o-stat-body { flex: 1; }
+.o-stat-label {
+  font-size: .6875rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--o-text-secondary);
+  margin-bottom: .1rem;
+}
+.o-stat-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--o-text);
+  line-height: 1.2;
+}
+
+/* Odoo action panel */
+.o-actions {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+}
+
+/* Odoo filter bar */
+.o-filters {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: .625rem .75rem;
+  background: var(--o-surface);
+  border: 1px solid var(--o-border);
+  border-radius: var(--o-radius);
+  margin-bottom: .75rem;
+}
+.o-filters .form-control,
+.o-filters .form-select {
+  min-width: 140px;
+}
+
+/* Tabs — Twitter-style bold tabs */
+.o-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--o-border);
+  margin-bottom: 1rem;
+}
+.o-tab {
+  padding: .65rem 1rem;
+  font-size: .8125rem;
+  font-weight: 500;
+  color: var(--o-text-secondary);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .12s ease, border-color .12s ease;
+  margin-bottom: -1px;
+  position: relative;
+}
+.o-tab:hover {
+  color: var(--o-text);
+  background: var(--o-hover);
+}
+.o-tab.active {
+  color: var(--o-text);
+  font-weight: 700;
+  border-bottom-color: var(--o-primary);
+}
+
+/* Sidebar — Twitter/X style nav */
+.app-sidebar {
+  font-family: var(--o-font);
+  width: var(--o-sidebar-w);
+}
+.side-link, .side-group summary, .side-sublink {
+  font-size: .8125rem;
+  gap: .65rem;
+  padding: .45rem .6rem;
+  border-radius: var(--o-radius-pill);
+}
+.side-link i, .side-group summary i, .side-sublink i {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
+  font-size: .9rem;
+}
+.side-link.active,
+.side-group[open] > summary,
+.side-sublink.active {
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-weight: 600;
+}
+.side-link.active i,
+.side-group[open] > summary i {
+  background: rgba(255,255,255,.2);
+}
+.side-group summary::after {
+  opacity: .5;
+}
+.side-sublink {
+  border-radius: var(--o-radius-pill);
+  padding: .3rem .5rem;
+}
+.app-content {
+  margin-left: var(--o-sidebar-w);
+}
+
+/* Odoo modern buttons with icons only */
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: var(--o-radius);
+}
+
+/* Twitter-style list items */
+.o-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .65rem .75rem;
+  border-bottom: 1px solid var(--o-border);
+  transition: background .12s ease;
+}
+.o-list-item:last-child {
+  border-bottom: 0;
+}
+.o-list-item:hover {
+  background: var(--o-hover);
+}
+
+/* Twitter trend card */
+.o-trend {
+  padding: .65rem .75rem;
+  border-bottom: 1px solid var(--o-border);
+  transition: background .12s ease;
+  cursor: pointer;
+}
+.o-trend:last-child { border-bottom: 0; }
+.o-trend:hover { background: var(--o-hover); }
+.o-trend-category {
+  font-size: .6875rem;
+  color: var(--o-text-secondary);
+}
+.o-trend-name {
+  font-size: .8125rem;
+  font-weight: 700;
+  color: var(--o-text);
+  margin: .1rem 0;
+}
+.o-trend-count {
+  font-size: .6875rem;
+  color: var(--o-text-secondary);
+}
+
+/* Twitter verified badge */
+.o-verified {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--o-primary);
+  color: #fff;
+  font-size: .6rem;
+  margin-left: .25rem;
+}
+
+/* Twitter "Who to follow" card */
+.o-follow-suggest {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .65rem .75rem;
+  border-bottom: 1px solid var(--o-border);
+  transition: background .12s ease;
+}
+.o-follow-suggest:last-child { border-bottom: 0; }
+.o-follow-suggest:hover { background: var(--o-hover); }
+.o-follow-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--o-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.o-follow-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.o-follow-body { flex: 1; min-width: 0; }
+.o-follow-name {
+  font-size: .8125rem;
+  font-weight: 700;
+  color: var(--o-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.o-follow-handle {
+  font-size: .6875rem;
+  color: var(--o-text-secondary);
+}
+
+/* Section title (like "Trends for you") */
+.o-section-title {
+  padding: .75rem;
+  font-size: .8125rem;
+  font-weight: 700;
+  color: var(--o-text);
+  border-bottom: 1px solid var(--o-border);
+}
+
+/* Progress bar Odoo style */
+.o-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--o-bg);
+  overflow: hidden;
+}
+.o-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--o-primary);
+  transition: width .3s ease;
+}
+
+/* Twitter-style empty state */
+.o-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--o-text-secondary);
+}
+.o-empty i {
+  font-size: 2rem;
+  margin-bottom: .5rem;
+  opacity: .35;
+}
+.o-empty p {
+  font-size: .8125rem;
+  margin-bottom: .15rem;
+}
+
+/* Tables — minimal, Twitter-like clean rows */
+.app-table tbody tr {
+  transition: background .12s ease;
+}
+.app-table tbody tr:hover {
+  background: var(--o-hover) !important;
+}
+.app-table tbody td {
+  border-bottom: 1px solid var(--o-border);
+  vertical-align: middle;
+  padding: .5rem .6rem;
+  font-size: .8125rem;
+}
+
+/* Product thumb (minimal) */
+.product-thumb {
+  border-radius: var(--o-radius-sm);
+  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+}
+.product-thumb-empty {
+  border-radius: var(--o-radius-sm);
+  background: var(--o-hover);
+  color: var(--o-text-secondary);
+}
+
+/* Alert chip — pill style */
+.alert-chip {
+  border-radius: var(--o-radius-pill);
+  font-weight: 500;
+  border: 1px solid var(--o-border);
+  padding: .3rem .7rem;
+  box-shadow: none;
+  transition: background .12s ease, box-shadow .12s ease;
+}
+.alert-chip:hover {
+  box-shadow: none;
+  background: var(--o-hover);
+}
+.alert-chip-warning {
+  background: #fefce8;
+  border-color: #fde68a;
+}
+.alert-chip-danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+/* Calculator — smaller, minimal */
+.calculator-toggle {
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12) !important;
+}
+.calculator-panel {
+  border-radius: var(--o-radius) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,.15) !important;
+}
+.calculator-key {
+  border-radius: var(--o-radius) !important;
+  min-height: 38px !important;
+}
+.calculator-display {
+  border-radius: var(--o-radius) !important;
+}
+
+/* Footer minimal */
+.app-footer {
+  color: var(--o-text-secondary);
+  opacity: .6;
+  font-size: .75rem;
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+body.theme-dark .badge-soft-success { color: #86efac; background: rgba(22,163,74,.2); }
+body.theme-dark .badge-soft-danger { color: #fca5a5; background: rgba(220,38,38,.2); }
+body.theme-dark .badge-soft-warning { color: #fcd34d; background: rgba(245,158,11,.2); }
+body.theme-dark .badge-soft-info { color: #67e8f9; background: rgba(8,145,178,.2); }
+body.theme-dark .badge-soft-primary { color: #a5b4fc; background: rgba(37,99,235,.2); }
+body.theme-dark .alert-chip-warning { color: #fde68a; border-color: #92400e; background: rgba(146,64,14,.2); }
+body.theme-dark .alert-chip-danger { color: #fecaca; border-color: #991b1b; background: rgba(153,27,27,.2); }
+
+/* Responsive */
+@media (max-width: 991px) {
+  .app-content {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,349 @@
+{% extends 'store/base.html' %}
+{% block title %}Applications - Supermarché{% endblock %}
+{% block back_button %}
+<a class="btn btn-sm btn-outline-secondary me-1" href="{% url 'store:home' %}" title="Tableau de bord">
+    <i class="bi bi-speedometer2 me-1"></i>Tableau de bord
+</a>
+{% endblock %}
+
+{% block content %}
+<style>
+/* ── Splash ── */
+.splash {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: var(--body-bg, #f1f5f9);
+    transition: opacity .5s ease, visibility .5s ease;
+}
+.splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+.splash-icon {
+    width: 72px; height: 72px; border-radius: 20px;
+    background: linear-gradient(135deg, #7f1d1d, #b91c3d);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: #fff;
+    box-shadow: 0 8px 32px rgba(127,29,29,.35);
+    margin-bottom: 1.2rem; animation: pop .5s ease both;
+}
+@keyframes pop {
+    0% { transform: scale(.6); opacity: 0; }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.splash h2 { font-size: 1.3rem; font-weight: 800; color: var(--app-text); margin: 0 0 .25rem; }
+.splash p { font-size: .82rem; color: #8b95a5; margin: 0; }
+.splash .bar {
+    width: 120px; height: 3px; border-radius: 3px;
+    background: #e5e7eb; margin-top: 1.5rem; overflow: hidden;
+}
+.splash .bar-in {
+    height: 100%; width: 0; border-radius: 3px;
+    background: linear-gradient(90deg, #7f1d1d, #b91c3d);
+    animation: fill 1.2s ease both;
+}
+@keyframes fill { to { width: 100%; } }
+
+/* ── Cards ── */
+:root {
+    --r: 16px; --s: 0 2px 12px rgba(0,0,0,.07);
+    --sh: 0 12px 32px rgba(0,0,0,.14);
+}
+.hero { padding: 1.8rem 0 .5rem; text-align: center; }
+.hero h1 {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; margin: 0;
+    background: linear-gradient(135deg, var(--app-text) 30%, var(--primary-color, #2563eb) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero p { font-size: .82rem; color: #8b95a5; margin: .2rem 0 0; }
+.gr { margin-bottom: 1.5rem; }
+.gt {
+    font-size: .68rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .06em; color: #9ca3af; margin-bottom: .65rem;
+    padding-left: .5rem; display: flex; align-items: center; gap: .5rem;
+}
+.gt::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+.gd {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: .75rem;
+}
+.ac {
+    display: flex; flex-direction: column; align-items: flex-start;
+    justify-content: flex-end; padding: 1rem 1rem .85rem;
+    border-radius: var(--r); text-decoration: none;
+    color: #fff; font-size: .75rem; font-weight: 600;
+    box-shadow: var(--s); min-height: 100px;
+    position: relative; overflow: hidden; isolation: isolate;
+    transition: all .25s cubic-bezier(.22,1,.36,1);
+}
+.ac::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.35) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+}
+.ac:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--sh); color: #fff;
+}
+.ac:active { transform: translateY(-1px) scale(.98); }
+.ai {
+    font-size: 1.6rem; line-height: 1; margin-bottom: auto;
+    opacity: .9; z-index: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,.12));
+}
+.al { line-height: 1.2; z-index: 1; text-shadow: 0 1px 3px rgba(0,0,0,.2); }
+
+/* ── Modal ── */
+#am { display: none; position: fixed; inset: 0; z-index: 1060; }
+#am.s { display: flex; flex-direction: column; }
+#am .bk {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5); backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); z-index: 1061;
+}
+#am .fr {
+    position: relative; z-index: 1062;
+    display: flex; flex-direction: column;
+    margin: auto; background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 25px 80px rgba(0,0,0,.3);
+    overflow: hidden; resize: both;
+    width: 68vw; height: 64vh;
+    min-width: 320px; min-height: 300px;
+    animation: mi .2s ease;
+}
+@keyframes mi { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+.xl { width: 78vw; height: 72vh; }
+.lg { width: 68vw; height: 64vh; }
+.md { width: 48vw; height: 48vh; }
+@media (max-width:768px) { #am .fr, .xl, .lg, .md { width: 96vw; height: 90vh; } }
+#am .fh {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: .55rem 1.1rem; flex-shrink: 0;
+}
+#am .fh .ft {
+    font-size: .85rem; font-weight: 700; color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+#am .fh .fc {
+    background: rgba(255,255,255,.2); border: none;
+    font-size: 1.1rem; cursor: pointer; color: #fff;
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    line-height: 1; transition: background .15s;
+}
+#am .fh .fc:hover { background: rgba(255,255,255,.35); }
+#am iframe { flex: 1; width: 100%; border: none; background: #fff; }
+.splash ~ .gr, .splash ~ .hero, .splash ~ [data-btn] { transition: filter .2s; }
+body.mo .gr, body.mo .hero { filter: blur(4px); pointer-events: none; user-select: none; }
+.fl { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #fff; z-index: 1; top: 44px; }
+.fl.h { display: none; }
+.sp { width: 30px; height: 30px; border: 3px solid #e5e7eb; border-top-color: #6b7280; border-radius: 50%; animation: spin .65s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<!-- Splash -->
+<div class="splash" id="splash">
+    <div class="splash-icon"><i class="bi bi-shop"></i></div>
+    <h2>Bienvenue</h2>
+    <p>Chargement des applications…</p>
+    <div class="bar"><div class="bar-in"></div></div>
+</div>
+
+<div class="hero">
+    <h1>Applications</h1>
+    <p><i class="bi bi-grid-3x3-gap-fill me-1"></i>Cliquez sur une application</p>
+</div>
+
+<!-- VENTE & CAISSE -->
+<div class="gr">
+    <div class="gt">Vente &amp; Caisse</div>
+    <div class="gd">
+        <a class="ac" href="{% url 'store:create_sale' %}" data-title="Vendre" data-color="#dc2626" style="background:linear-gradient(135deg,#7f1d1d,#dc2626);">
+            <span class="ai"><i class="bi bi-cash-stack"></i></span>
+            <span class="al">Vendre</span>
+        </a>
+        <a class="ac" href="{% url 'store:sale_history' %}" data-title="Ventes" data-color="#16a34a" style="background:linear-gradient(135deg,#166534,#22c55e);">
+            <span class="ai"><i class="bi bi-clock-history"></i></span>
+            <span class="al">Ventes</span>
+        </a>
+        <a class="ac" href="{% url 'store:cash_session_list' %}" data-title="Caisse" data-color="#ca8a04" style="background:linear-gradient(135deg,#a16207,#eab308);">
+            <span class="ai"><i class="bi bi-cash-stack"></i></span>
+            <span class="al">Caisse</span>
+        </a>
+    </div>
+</div>
+
+<!-- PRODUITS & STOCK -->
+<div class="gr">
+    <div class="gt">Produits &amp; Stock</div>
+    <div class="gd">
+        <a class="ac" href="{% url 'store:product_list' %}" data-title="Produits" data-color="#3b82f6" style="background:linear-gradient(135deg,#1e40af,#3b82f6);">
+            <span class="ai"><i class="bi bi-box-seam"></i></span>
+            <span class="al">Produits</span>
+        </a>
+        <a class="ac" href="{% url 'store:supply_history' %}" data-title="Approvisionnement" data-color="#d97706" style="background:linear-gradient(135deg,#92400e,#d97706);">
+            <span class="ai"><i class="bi bi-truck"></i></span>
+            <span class="al">Approvisionnement</span>
+        </a>
+        <a class="ac" href="{% url 'store:reception_list' %}" data-title="Réception" data-color="#16a34a" style="background:linear-gradient(135deg,#166534,#22c55e);">
+            <span class="ai"><i class="bi bi-box-arrow-in-down"></i></span>
+            <span class="al">Réception</span>
+        </a>
+        <a class="ac" href="{% url 'store:inventory_list' %}" data-title="Inventaire" data-color="#0891b2" style="background:linear-gradient(135deg,#0e7490,#22d3ee);">
+            <span class="ai"><i class="bi bi-clipboard-data"></i></span>
+            <span class="al">Inventaire</span>
+        </a>
+        <a class="ac" href="{% url 'store:supplier_list' %}" data-title="Fournisseurs" data-color="#6b7280" style="background:linear-gradient(135deg,#4b5563,#9ca3af);">
+            <span class="ai"><i class="bi bi-building"></i></span>
+            <span class="al">Fournisseurs</span>
+        </a>
+    </div>
+</div>
+
+<!-- FINANCE -->
+<div class="gr">
+    <div class="gt">Finance</div>
+    <div class="gd">
+        <a class="ac" href="{% url 'store:expense_list' %}" data-title="Dépenses" data-color="#f97316" style="background:linear-gradient(135deg,#c2410c,#f97316);">
+            <span class="ai"><i class="bi bi-wallet2"></i></span>
+            <span class="al">Dépenses</span>
+        </a>
+        <a class="ac" href="{% url 'store:profit_view' %}" data-title="Bénéfices" data-color="#06b6d4" style="background:linear-gradient(135deg,#0e7490,#06b6d4);">
+            <span class="ai"><i class="bi bi-graph-up-arrow"></i></span>
+            <span class="al">Bénéfices</span>
+        </a>
+        <a class="ac" href="{% url 'store:bank_account_list' %}" data-title="Banques" data-color="#22c55e" style="background:linear-gradient(135deg,#166534,#4ade80);">
+            <span class="ai"><i class="bi bi-bank"></i></span>
+            <span class="al">Banques</span>
+        </a>
+    </div>
+</div>
+
+<!-- CLIENTS & DETTES -->
+<div class="gr">
+    <div class="gt">Clients &amp; Dettes</div>
+    <div class="gd">
+        <a class="ac" href="{% url 'store:customer_list' %}" data-title="Clients" data-color="#14b8a6" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">
+            <span class="ai"><i class="bi bi-people"></i></span>
+            <span class="al">Clients</span>
+        </a>
+        <a class="ac" href="{% url 'store:debt_list' %}" data-title="Dettes" data-color="#a855f7" style="background:linear-gradient(135deg,#7e22ce,#a855f7);">
+            <span class="ai"><i class="bi bi-file-earmark-text"></i></span>
+            <span class="al">Dettes</span>
+        </a>
+        <a class="ac" href="{% url 'store:return_list' %}" data-title="Retours" data-color="#ec4899" style="background:linear-gradient(135deg,#be185d,#ec4899);">
+            <span class="ai"><i class="bi bi-arrow-return-left"></i></span>
+            <span class="al">Retours</span>
+        </a>
+        <a class="ac" href="{% url 'store:loyalty_dashboard' %}" data-title="Fidélité" data-color="#d946ef" style="background:linear-gradient(135deg,#86198f,#d946ef);">
+            <span class="ai"><i class="bi bi-star"></i></span>
+            <span class="al">Fidélité</span>
+        </a>
+    </div>
+</div>
+
+<!-- SERVICES -->
+<div class="gr">
+    <div class="gt">Services</div>
+    <div class="gd">
+        <a class="ac" href="{% url 'store:phone_credit_list' %}" data-title="Crédits" data-color="#f97316" style="background:linear-gradient(135deg,#9a3412,#f97316);">
+            <span class="ai"><i class="bi bi-phone-vibrate"></i></span>
+            <span class="al">Crédits</span>
+        </a>
+        <a class="ac" href="{% url 'store:giftcard_list' %}" data-title="Cartes" data-color="#f43f5e" style="background:linear-gradient(135deg,#9d174d,#f43f5e);">
+            <span class="ai"><i class="bi bi-gift"></i></span>
+            <span class="al">Cartes</span>
+        </a>
+        <a class="ac" href="{% url 'store:solar_project_list' %}" data-title="Solaire" data-color="#f59e0b" style="background:linear-gradient(135deg,#b45309,#f59e0b);">
+            <span class="ai"><i class="bi bi-sun"></i></span>
+            <span class="al">Solaire</span>
+        </a>
+    </div>
+</div>
+
+<!-- ADMINISTRATION -->
+<div class="gr">
+    <div class="gt">Administration</div>
+    <div class="gd">
+        <a class="ac" href="{% url 'store:report_dashboard' %}" data-title="Rapports" data-color="#6366f1" style="background:linear-gradient(135deg,#4338ca,#6366f1);">
+            <span class="ai"><i class="bi bi-bar-chart-line"></i></span>
+            <span class="al">Rapports</span>
+        </a>
+        <a class="ac" href="{% url 'store:feature_list' %}" data-title="Paramètres" data-color="#6b7280" style="background:linear-gradient(135deg,#374151,#6b7280);">
+            <span class="ai"><i class="bi bi-sliders"></i></span>
+            <span class="al">Paramètres</span>
+        </a>
+        <a class="ac" href="{% url 'store:database_tools' %}" data-title="Données" data-color="#374151" style="background:linear-gradient(135deg,#111827,#374151);">
+            <span class="ai"><i class="bi bi-database-down"></i></span>
+            <span class="al">Données</span>
+        </a>
+        <a class="ac" href="{% url 'store:connected_devices' %}" data-title="Appareils" data-color="#7c3aed" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);">
+            <span class="ai"><i class="bi bi-phone"></i></span>
+            <span class="al">Appareils</span>
+        </a>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="am">
+    <div class="bk" onclick="cm()"></div>
+    <div class="fr" id="mf">
+        <div class="fh" id="mh">
+            <span class="ft" id="mt"></span>
+            <button class="fc" onclick="cm()">&times;</button>
+        </div>
+        <div class="fl" id="ml"><div class="sp"></div></div>
+        <iframe id="mi"></iframe>
+    </div>
+</div>
+
+<script>
+// ── Click → modal ──
+document.addEventListener('click', function(e) {
+    var c = e.target.closest('.ac');
+    if (!c) return;
+    var t = c.getAttribute('data-title');
+    var color = c.getAttribute('data-color');
+    if (t && color) {
+        e.preventDefault();
+        om(c.href, t, color);
+    }
+});
+
+// ── Modal ──
+var sizes = {xl:0, lg:0, md:0};
+function sm(url) {
+    var f = document.getElementById('mf');
+    Object.keys(sizes).forEach(function(s) { f.classList.remove(s); });
+    if (url.indexOf('/produits/')>=0 || url.indexOf('/approvisionnements/')>=0 || url.indexOf('/ventes/')>=0 || url.indexOf('/depenses/')>=0 || url.indexOf('/dettes/')>=0 || url.indexOf('/clients/')>=0) f.classList.add('xl');
+    else if (url.indexOf('/solaire/')>=0 || url.indexOf('/pos/')>=0 || url.indexOf('/parametres/')>=0 || url.indexOf('/base-donnees/')>=0) f.classList.add('md');
+    else f.classList.add('lg');
+}
+function om(url, title, color) {
+    var ifr = document.getElementById('mi');
+    sm(url);
+    document.getElementById('mh').style.background = color;
+    document.getElementById('mt').textContent = title;
+    document.getElementById('ml').classList.remove('h');
+    ifr.src = url;
+    document.getElementById('am').classList.add('s');
+    document.body.classList.add('mo');
+}
+function cm() {
+    document.getElementById('am').classList.remove('s');
+    document.body.classList.remove('mo');
+}
+document.getElementById('mi').addEventListener('load', function() {
+    document.getElementById('ml').classList.add('h');
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('am').classList.contains('s')) cm();
+});
+
+// ── Splash ──
+window.addEventListener('load', function() {
+    setTimeout(function() { document.getElementById('splash').classList.add('hide'); }, 1400);
+});
+</script>
+{% endblock %}

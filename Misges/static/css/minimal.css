@@ -1,0 +1,79 @@
+/* Minimal, stylish override for Supermarché UI */
+:root{
+    --app-bg:#ffffff;
+    --app-text:#0f172a;
+    --surface-bg:#ffffff;
+    --surface-border:transparent;
+    --muted-text:#475569;
+    --primary-a:#111827;
+    --primary-b:#374151;
+    --header-bar-bg:transparent;
+    --header-bar-text:#0f172a;
+}
+/* Reset heavy shadows and gradients */
+.header-bar{background:var(--surface-bg);box-shadow:none;border-bottom:1px solid rgba(15,23,42,.04);} 
+.header-bar .brand img{height:26px}
+.header-btn, .header-hamburger, .header-user-btn{background:transparent;border:1px solid rgba(15,23,42,.04);color:var(--header-bar-text);opacity:1}
+.header-search .form-control{background:transparent;border:1px solid rgba(15,23,42,.06);color:var(--app-text)}
+.app-sidebar{background:transparent;color:var(--app-text);border-right:1px solid rgba(15,23,42,.04)}
+.side-link, .side-sublink{background:transparent;color:var(--muted-text)}
+.side-link:hover, .side-sublink:hover{background:rgba(15,23,42,.03);color:var(--app-text)}
+.app-content{margin-left:200px}
+.app-footer{border-top:1px solid rgba(15,23,42,.04);background:transparent;color:var(--muted-text);opacity:1}
+.btn-primary{background:linear-gradient(90deg,var(--primary-a),var(--primary-b));border:none}
+/* Tighter spacing, larger readable type */
+body{font-family: Inter, system-ui, -apple-system, sans-serif;font-size:0.95rem;background:var(--app-bg);color:var(--app-text)}
+.header-bar .brand span{font-weight:600}
+.side-brand span, .side-link span{font-weight:600}
+.container-fluid{padding-left:1rem;padding-right:1rem}
+/* Mobile-friendly minor tweaks */
+@media (max-width:991px){.app-content{margin-left:0}.app-sidebar{transform:translateX(-100%)}}
+/* Minimal utility helpers */
+.m-hide{display:none!important}
+
+/* Clean up product thumbnails */
+.product-thumb{width:56px;height:56px;border-radius:8px;box-shadow:none}
+
+/* Reduce visual noise for search suggestions */
+.search-suggestions{box-shadow:0 6px 18px rgba(16,24,40,.06);border-radius:10px}
+
+/* Minimalist visual overhaul */
+body{background:#fff;color:#111827;font-size:.95rem;line-height:1.5;text-rendering:optimizeLegibility;}
+html, body, .app-wrapper{min-height:100%;}
+.header-bar{height:56px;padding:0 1rem;gap:.75rem;border-bottom:1px solid rgba(15,23,42,.06);box-shadow:none;background:#fff;}
+.header-bar .brand{font-size:.95rem;color:#111827;font-weight:700;letter-spacing:.02em;}
+.header-bar .brand i{color:#111827;}
+.header-btn, .header-hamburger, .header-user-btn{background:#fff;border:1px solid rgba(15,23,42,.08);color:#475569;box-shadow:none;}
+.header-btn:hover, .header-hamburger:hover, .header-user-btn:hover{background:rgba(15,23,42,.04);}
+.header-search{background:#f8fafc;border:1px solid rgba(15,23,42,.08);border-radius:999px;padding:.15rem .8rem;}
+.header-search .form-control{background:transparent;border:none;box-shadow:none;color:#111827;height:34px;}
+.header-search .form-control:focus{background:transparent;border:none;box-shadow:none;color:#111827;}
+.header-search i{color:#94a3b8;}
+.header-search-btn{background:#111827;color:#fff;border-radius:999px;width:34px;height:34px;}
+.network-chip{border:1px solid rgba(15,23,42,.08);background:#f8fafc;color:#475569;}
+.cart-fab{background:#111827;box-shadow:0 12px 24px rgba(17,24,39,.12);}
+.calculator-toggle{background:#111827;}
+.bottom-nav{background:#fff;border-top:1px solid rgba(15,23,42,.06);}
+.bottom-nav-item{color:#64748b;}
+.bottom-nav-item.active{color:#111827;}
+.app-sidebar{width:220px;background:#fff;color:#475569;border-right:1px solid rgba(15,23,42,.06);box-shadow:none;}
+.app-sidebar .side-brand{border-bottom:none;background:transparent;padding:1rem;}
+.side-nav{padding:.5rem;}
+.side-link, .side-group summary, .side-sublink{background:transparent;color:#475569;border:none;}
+.side-link:hover, .side-group summary:hover, .side-sublink:hover{background:rgba(15,23,42,.04);color:#111827;}
+.side-link.active, .side-sublink.active{background:rgba(17,24,39,.08);color:#111827;}
+.side-link.active::before, .side-sublink.active::before{background:#111827;}
+.app-content{margin-left:220px;}
+.app-footer{border-top:1px solid rgba(15,23,42,.06);background:transparent;color:#64748b;opacity:1;padding:.75rem 0;margin-top:auto;}
+.table-shell, .metric-card, .report-share, .card, .alert, .modal-content, .form-control, .form-select{background:#fff;border-color:rgba(15,23,42,.08);box-shadow:none;}
+.btn-primary{background:#111827;border:none;color:#fff;box-shadow:none;}
+.btn-outline-primary{color:#111827;border-color:rgba(15,23,42,.12);}
+.btn-outline-primary:hover{background:rgba(17,24,39,.05);}
+.alert-chip{background:#f8fafc;border-color:rgba(15,23,42,.08);color:#111827;}
+.metric-chip{background:#f8fafc;border-color:rgba(15,23,42,.06);}
+.metric-chip i{background:#111827;box-shadow:none;}
+.nav-progress{background:#111827;}
+.search-suggestions{border-color:rgba(15,23,42,.08);}
+.toast-notif{border-color:rgba(15,23,42,.08);}
+.back-to-top{background:#f8fafc;color:#111827;border:1px solid rgba(15,23,42,.08);}
+@media (max-width:991px){.app-content{margin-left:0;}.app-sidebar{transform:translateX(-100%);}}
